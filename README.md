@@ -1,29 +1,40 @@
 # My-MCP-Intranet - 内网 MCP 服务器集群
 
-8个独立 MCP Server，可按需部署在不同 IP 的服务器上，实现功能隔离与故障域分离。
+> v2.0 — 11 个独立 MCP Server，可按需部署在不同 IP 的服务器上，实现功能隔离与故障域分离。
 
 ## 架构概览
 
 ```
-                     ┌─────────────────────────────────────┐
-                     │          AI 客户端                   │
-                     │  (CherryStudio / OpenCode / Dify /   │
-                     │   Cursor / Claude Desktop)           │
-                     └──┬──┬──┬──┬──┬──┬──┬──┬──┬──────────┘
-                        │  │  │  │  │  │  │  │
-        ┌───────────────┼──┼──┼──┼──┼──┼──┼──┼────────────┐
-        │               │  │  │  │  │  │  │  │            │
-        ▼               ▼  ▼  ▼  ▼  ▼  ▼  ▼  ▼            ▼
-┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-│ mcp-file-doc │ │mcp-markitdown│ │mcp-browser-  │ │mcp-sequential│ │mcp-data-     │ │mcp-datetime │ │mcp-ops-     │ │mcp-fetch-    │
-│   :8002      │ │   :8007      │ │playwright    │ │-thinking     │ │platform      │ │   :8010      │ │ monitor :8004│ │ intranet :8005│
-│              │ │              │ │   :8008      │ │   :8009      │ │   :8003      │ │              │ │              │ │              │
-│ 文件操作     │ │ Markitdown   │ │ 浏览器自动化  │ │ 结构化推理   │ │ 数据库查询   │ │ 时间日期     │ │ 系统监控     │ │ 内网抓取     │
-│ 远程传输     │ │ 格式转换     │ │ 页面截图     │ │ 分步深度思考 │ │ Python沙箱   │ │ 时区转换     │ │ 日志分析     │ │ 网页正文提取 │
-│ 智能填表     │ │ Markdown渲染 │ │ 元素交互     │ │ 回溯修正     │ │ 数据可视化   │ │ Cron解析     │ │ 命令执行     │ │ 配置管理     │
-│ Word高级操作 │ │              │ │ JS执行       │ │ 分支推理     │ │ 知识库检索   │ │              │ │              │ │              │
-└──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘
-    26 tools        4 tools        14 tools         1 tool         21 tools         7 tools        13 tools        19 tools
+                     ┌──────────────────────────────────────────────────────────────┐
+                     │                         AI 客户端                              │
+                     │  (CherryStudio / OpenCode / Dify / Cursor / Claude Desktop)    │
+                     └──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──────────────────────────────┘
+                        │  │  │  │  │  │  │  │  │  │  │
+        ┌───────────────┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──────────────────────────────┐
+        │               │  │  │  │  │  │  │  │  │  │  │                              │
+        ▼               ▼  ▼  ▼  ▼  ▼  ▼  ▼  ▼  ▼  ▼  ▼                              ▼
+┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+│ mcp-file-doc │ │mcp-markitdown│ │mcp-browser-  │ │mcp-sequential│ │mcp-data-     │ │mcp-datetime │
+│   :8002      │ │   :8007      │ │playwright    │ │-thinking     │ │platform      │ │   :8010      │
+│              │ │              │ │   :8008      │ │   :8009      │ │   :8003      │ │              │
+│ 文件操作     │ │ Markitdown   │ │ 浏览器自动化  │ │ 结构化推理   │ │ 数据库查询   │ │ 时间日期     │
+│ 远程传输     │ │ 格式转换     │ │ 页面截图     │ │ 分步深度思考 │ │ Python沙箱   │ │ 时区转换     │
+│ 智能填表     │ │ Markdown渲染 │ │ 元素交互     │ │ 回溯修正     │ │ 数据可视化   │ │ Cron解析     │
+│ Word高级操作 │ │              │ │ JS执行       │ │ 分支推理     │ │ 知识库检索   │ │              │
+└──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘
+    26 tools        4 tools        14 tools         1 tool         21 tools         7 tools
+
+┌──────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌──────────────┐ ┌──────────────┐
+│ mcp-ops-     │ │ mcp-fetch-      │ │ ppt-master-mcp  │ │ mcp-spread-  │ │ mcp-drawio   │
+│ monitor      │ │ intranet        │ │    :8011        │ │ sheet-pdf    │ │   :8020      │
+│   :8004      │ │    :8005        │ │                 │ │    :8012     │ │   :6002      │
+│              │ │                 │ │ AI PPT 生成     │ │              │ │              │
+│ 系统监控     │ │ 内网抓取        │ │ AI 配图(16+)   │ │ Excel 操作   │ │ AI 图表生成  │
+│ 日志分析     │ │ 网页正文提取    │ │ 模板(20+)      │ │ CSV 处理     │ │ Draw.io 编辑 │
+│ 命令执行     │ │ 配置管理        │ │ SVG→PPTX       │ │ PDF 操作     │ │ 实时预览     │
+│              │ │                 │ │ PPTX 增强       │ │              │ │              │
+└──────────────┘ └─────────────────┘ └─────────────────┘ └──────────────┘ └──────────────┘
+    13 tools        19 tools            15 tools            14 tools          6 tools
 ```
 
 ## 服务器总览
@@ -38,6 +49,9 @@
 | [mcp-datetime](./mcp-datetime/) | **8010** | 7 | 时间日期查询、时区转换、Cron解析 | 无 |
 | [mcp-ops-monitor](./mcp-ops-monitor/) | 8004 | 13 | CPU/内存/磁盘监控、日志分析、命令执行 | 需部署在目标主机 |
 | [mcp-fetch-intranet](./mcp-fetch-intranet/) | 8005 | 19 | 内网网页抓取、正文提取、递归爬取、配置管理 | 需内网可达 |
+| [**ppt-master-mcp**](./ppt-master-mcp/) | **8011** | **15** | **AI PPT 生成与增强**、20+模板、AI配图(16+后端)、PPTX导出 | 需 ppt-master v4.2.0 |
+| [mcp-spreadsheet-pdf](./mcp-spreadsheet-pdf/) | 8012 | 14 | Excel/CSV/PDF 操作、统计图表、智能填表 | 需 PyMuPDF |
+| [mcp-drawio](./mcp-drawio/) | 8020 | 6 | **AI Draw.io 图表生成**、实时预览、图库注入 | 需 Chromium |
 
 ## 快速启动
 
@@ -129,7 +143,10 @@ docker-compose up -d mcp-sequential-thinking
     "mcp-data-platform":          { "type": "streamableHttp", "url": "http://127.0.0.1:8003/mcp" },
     "mcp-datetime":               { "type": "streamableHttp", "url": "http://127.0.0.1:8010/mcp" },
     "mcp-ops-monitor":            { "type": "streamableHttp", "url": "http://127.0.0.1:8004/mcp" },
-    "mcp-fetch-intranet":         { "type": "streamableHttp", "url": "http://127.0.0.1:8005/mcp" }
+    "mcp-fetch-intranet":         { "type": "streamableHttp", "url": "http://127.0.0.1:8005/mcp" },
+    "ppt-master-mcp":             { "type": "streamableHttp", "url": "http://127.0.0.1:8011/mcp" },
+    "mcp-spreadsheet-pdf":        { "type": "streamableHttp", "url": "http://127.0.0.1:8012/mcp" },
+    "mcp-drawio":                 { "type": "streamableHttp", "url": "http://127.0.0.1:8020/mcp" }
   }
 }
 ```
@@ -146,6 +163,9 @@ docker-compose up -d mcp-sequential-thinking
 | mcp-datetime | Streamable HTTP | `http://<IP>:8010/mcp` |
 | mcp-ops-monitor | Streamable HTTP | `http://<IP>:8004/mcp` |
 | mcp-fetch-intranet | Streamable HTTP | `http://<IP>:8005/mcp` |
+| ppt-master-mcp | Streamable HTTP | `http://<IP>:8011/mcp` |
+| mcp-spreadsheet-pdf | Streamable HTTP | `http://<IP>:8012/mcp` |
+| mcp-drawio | Streamable HTTP | `http://<IP>:8020/mcp` |
 
 ## 设计原则
 
@@ -167,6 +187,9 @@ docker-compose up -d mcp-sequential-thinking
 | mcp-datetime | 无持久化 | — |
 | mcp-ops-monitor | 无持久化 | — |
 | mcp-fetch-intranet | SQLite | `~/mcp-user-data/config_manager.db` (Windows) `/data/mcp-user-data/config_manager.db` (Linux) |
+| ppt-master-mcp | Docker Volume | `ppt_master_data:/app/workspaces` |
+| mcp-spreadsheet-pdf | Docker Volume | `spreadsheet_pdf_data:/data` |
+| mcp-drawio | Docker Volume | `drawio_data:/data` |
 
 ## 许可证
 

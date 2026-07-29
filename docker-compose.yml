@@ -129,7 +129,7 @@ services:
       - mcp-network
 
   # ============================================================
-  # Server 9: PPT Master AI PPT 生成
+  # Server 9: PPT Master - AI PPT 生成与增强 (v2.0.0)
   # ============================================================
   ppt-master-mcp:
     build: ./ppt-master-mcp
@@ -137,9 +137,12 @@ services:
     restart: unless-stopped
     ports:
       - "8011:8011"
+    env_file:
+      - ./ppt-master-mcp/.env
     environment:
       - TZ=Asia/Shanghai
-      - PPT_IMAGE_GEN_ENABLED=${PPT_IMAGE_GEN_ENABLED:-true}
+      - PPT_IMAGE_GEN_ENABLED=${PPT_IMAGE_GEN_ENABLED:-false}
+      - PPT_AUDIO_ENABLED=${PPT_AUDIO_ENABLED:-false}
     volumes:
       - ppt_master_data:/app/workspaces
     networks:

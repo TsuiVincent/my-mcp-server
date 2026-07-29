@@ -1,5 +1,7 @@
 # 新增 PPT 模板指南
 
+> 适用于 ppt-master-mcp v2.0.0 / ppt-master v4.2.0
+
 ppt-master-mcp 支持三类模板：**Layouts（布局风格）**、**Decks（品牌模板包）**、**Charts（图表模板）**。新增后用户通过 `ppt_list_templates` 即可发现和使用。
 
 ---
@@ -308,3 +310,14 @@ AI：请选择模板风格 —— 共 N 个可用：
 ```
 
 LLM 调用 `ppt_list_templates` 即可自动列出新模板，`design_spec.md` 内容也会一并返回供 AI 参考生成。
+
+---
+
+## 内网离线环境注意事项
+
+在内网离线环境下新增模板时：
+
+1. **图片素材**：SVG 中引用的 Logo/背景图必须是本地文件（相对路径），不能使用外网 URL
+2. **字体一致性**：`design_spec.md` 中指定的字体必须在 PPTX 生成环境中可用，否则 PowerPoint 会回退到默认字体
+3. **模板验证**：新增后可直接调用 `ppt_list_templates` 验证（无需重启服务器，实时读取文件系统）
+4. **离线模式下**：AI 生图不可用，模板 SVG 中不要依赖 AI 生成的配图占位，使用纯色/渐变背景代替

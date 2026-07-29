@@ -1,6 +1,8 @@
 # PPT Master MCP Server
 
-AI 驱动的 PPT 生成服务。将 [ppt-master](https://github.com/hugohe3/ppt-master) 的 PPT 生成能力封装为 MCP (Model Context Protocol) 工具，支持通过 MCP 协议调用。
+> **v2.0.0** | 基于 [ppt-master v4.2.0](https://github.com/hugohe3/ppt-master) | [CHANGELOG](CHANGELOG.md)
+
+AI 驱动的 PPT 生成与增强服务。将 ppt-master 的能力封装为 MCP (Model Context Protocol) 工具，支持通过 MCP 协议调用。提供 4 条顶级路线：Generate PPTX（从零生成）/ Create Template（复刻模板）/ Fill Native PPTX（模板填充）/ Enhance Native PPTX（增强已有 PPTX）。
 
 ## 功能概览
 
@@ -9,13 +11,15 @@ AI 驱动的 PPT 生成服务。将 [ppt-master](https://github.com/hugohe3/ppt-
 | `ppt_workspace_init` | 初始化 PPT 项目工作区 |
 | `ppt_file_write` | 写入工作区文件（SVG 页面等） |
 | `ppt_file_read` | 读取工作区文件（回顾前页保持风格一致） |
+| `ppt_file_read_base64` | 二进制文件 Base64 读取 |
 | `ppt_file_list` | 列出工作区所有文件 |
-| `ppt_parse_source` | 解析源文档（PDF/DOCX/PPTX/XLSX/MD/URL）为 Markdown |
-| `ppt_list_templates` | 列出所有可用模板（layouts/decks/charts），含设计规范 |
-| `ppt_generate_image` | AI 图像生成配图（需配置 API Key，见下方） |
-| `ppt_svg_to_pptx` | SVG 转为可编辑 PPTX（分页拆分 → SVG 最终化 → PPTX 组装） |
-| `ppt_render_preview` | 生成预览 HTML 并启动预览服务器 |
-| `ppt_export_pptx` | 获取已生成 PPTX（Base64 + HTTP 下载双通道） |
+| `ppt_parse_source` | 解析源文档（PDF/DOCX/PPTX/XLSX/MD/URL/EPUB）为 Markdown，使用 source_to_md 统一调度器 |
+| `ppt_list_templates` | 列出所有可用模板摘要（layouts/decks/charts） |
+| `ppt_get_template` | 获取单个模板的完整 design_spec |
+| `ppt_generate_image` | AI 图像生成配图（需配置 API Key，支持 16+ 后端） |
+| `ppt_svg_to_pptx` | SVG 转为可编辑 PPTX（DrawingML 原生转换） |
+| `ppt_render_preview` | 生成预览 HTML |
+| `ppt_export_pptx` | 导出 PPTX，返回 download_url |
 | `ppt_get_info` | 获取工作区状态信息 |
 | `ppt_project_cleanup` | 清理项目工作区 |
 
@@ -30,6 +34,9 @@ AI 驱动的 PPT 生成服务。将 [ppt-master](https://github.com/hugohe3/ppt-
 | `WORKSPACES_DIR` | 工作区目录 | `./workspaces` |
 | `PPT_MASTER_PATH` | ppt-master 项目路径 | `./ppt-master-main` |
 | `PPT_IMAGE_GEN_ENABLED` | AI 生图开关 | `false` |
+| `PPT_AUDIO_ENABLED` | 音频旁白开关（需部署内网 TTS） | `false` |
+
+完整配置项参见 [.env.example](.env.example)（含 16+ 生图后端、5 TTS 后端、图片搜索等全部配置）。
 
 ---
 
@@ -170,12 +177,12 @@ AI 图像生成功能已关闭（...）  ← 关闭状态
 
 ```bash
 cd ppt-master-mcp
-cp ppt-master-main/.env.example ppt-master-main/.env
+cp .env.example .env
 ```
 
 ### 2. 选择后端并填写
 
-编辑 `ppt-master-mcp/ppt-master-main/.env`：
+编辑 `ppt-master-mcp/.env`：
 
 **OpenAI（推荐，`gpt-image-2` 综合质量最佳）**
 
@@ -272,7 +279,7 @@ MCP Client  →  ppt-master-mcp (server.py, 端口 8011)
                   └── 预览服务（内置 HTTP snippet server）
 ```
 
-核心依赖：`python-pptx`、`cairosvg`、`PyMuPDF`、`python-docx`、`markitdown`。
+核心依赖：`python-pptx`、`skia-pathops`、`PyMuPDF`、`mammoth`、`curl_cffi`。
 
 ---
 

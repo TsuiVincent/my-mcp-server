@@ -18,12 +18,12 @@ PPT_MASTER_MCP_SEED = {
     "status": "active",
     "createdAt": "now",  # 替换为实际时间
     "updatedAt": "now",  # 替换为实际时间
-    "version": "1.1.0",
+    "version": "2.0.0",
     "license": "MIT",
     "contactPhone": "",
     "logoUrl": "_random_local_logo()",  # 替换为实际调用
-    "overview": "AI驱动的PPT生成服务。支持源文档解析(PDF/DOCX/PPTX/URL/Markdown)、SVG编辑、模板浏览(20+模板)、AI配图生成、实时预览和原生可编辑PPTX导出。基于 ppt-master 开源项目封装。",
-    "usageInstructions": "1. 在 individual-mcp/ppt-master-mcp/ 目录下运行 start.bat 启动 MCP Server（默认端口8011）\n2. 平台对话中勾选此 MCP 即可使用\n3. 建议搭配「PPT生成助手」Skill 使用，获得最佳交互体验",
+    "overview": "AI驱动的PPT生成与增强服务。支持源文档解析(PDF/DOCX/PPTX/URL/Markdown)、SVG编辑、模板浏览(20+模板)、AI配图生成(16+后端)、实时预览、原生可编辑PPTX导出，以及给已有PPTX添加转场动画/音频旁白/演讲者备注。基于 ppt-master v4.2.0 开源项目封装。",
+    "usageInstructions": "1. 在 individual-mcp/ppt-master-mcp/ 目录下运行 start.bat 启动 MCP Server（默认端口8011）\n2. 平台对话中勾选此 MCP 即可使用\n3. 建议搭配「PPT生成助手」Skill 使用，获得最佳交互体验\n4. 新增「Native PPTX增强」功能：可给已有PPTX追加转场动画和音频旁白",
     "endpoint": "http://127.0.0.1:8011",
     "serverConfig": {
         "mcpServers": {
@@ -38,10 +38,12 @@ PPT_MASTER_MCP_SEED = {
         {"name": "ppt_workspace_init", "description": "初始化PPT项目工作区，创建项目目录结构"},
         {"name": "ppt_file_write", "description": "将内容写入项目工作区文件（如SVG页面）"},
         {"name": "ppt_file_read", "description": "读取项目工作区中的文件内容，用于回顾前页保持风格一致"},
+        {"name": "ppt_file_read_base64", "description": "以base64编码读取工作区文件"},
         {"name": "ppt_file_list", "description": "列出项目工作区中的所有文件"},
-        {"name": "ppt_parse_source", "description": "解析源文档(PDF/DOCX/PPTX/XLSX/MD/URL)为Markdown"},
+        {"name": "ppt_parse_source", "description": "解析源文档(PDF/DOCX/PPTX/XLSX/MD/URL)为Markdown，使用source_to_md统一调度器"},
         {"name": "ppt_list_templates", "description": "列出所有可用PPT模板(layouts/decks/charts)，附带每个模板的设计规范(配色/字体/布局)"},
-        {"name": "ppt_generate_image", "description": "调用AI图像生成模型为PPT生成配图，支持OpenAI/Gemini/Stability等后端"},
+        {"name": "ppt_get_template", "description": "获取单个模板的完整设计规范"},
+        {"name": "ppt_generate_image", "description": "调用AI图像生成模型为PPT生成配图，支持OpenAI/Gemini/Stability等16+后端"},
         {"name": "ppt_svg_to_pptx", "description": "将SVG文件转换为可编辑的PPTX（自动执行后处理:分页拆分→SVG最终化→PPTX组装）"},
         {"name": "ppt_render_preview", "description": "生成预览HTML并启动本地预览服务器，返回预览链接"},
         {"name": "ppt_export_pptx", "description": "获取已生成的PPTX文件（返回Base64数据+HTTP下载链接双通道）"},
@@ -65,12 +67,12 @@ PPT_MASTER_SKILL_SEED = {
     "status": "active",
     "createdAt": "now",  # 替换为实际时间
     "updatedAt": "now",  # 替换为实际时间
-    "version": "1.1.0",
+    "version": "2.0.0",
     "license": "MIT",
     "contactPhone": "",
     "logoUrl": "_random_local_logo()",  # 替换为实际调用
-    "overview": "将文档/文字/网页转换为专业可编辑的PowerPoint演示文稿。支持PDF/DOCX/URL/Markdown等多种输入，20+专业模板可选（含完整设计规范），支持AI生成配图，AI逐页手写SVG保证排版质量，支持实时预览和在线调整。",
-    "usageInstructions": "1. 在对话中说「帮我做一份PPT」或提供文档链接/文件\n2. AI会引导你选择模板、确认大纲\n3. AI逐页生成SVG页面（可随时预览，可选AI配图）\n4. 完成后通过Base64内联或HTTP直链生成可编辑的PPTX文件供下载",
+    "overview": "将文档/文字/网页转换为专业可编辑的PowerPoint演示文稿。提供4条路线: Generate PPTX（从零生成）/ Template Fill（模板填空）/ Enhance Native PPTX（增强已有PPTX）。支持PDF/DOCX/URL/Markdown等多种输入，20+专业模板可选（含完整设计规范），支持AI生成配图(16+后端)，AI逐页手写SVG保证排版质量，支持实时预览和在线调整，支持给已有PPTX追加转场动画和音频旁白。",
+    "usageInstructions": "1. 在对话中说「帮我做一份PPT」或提供文档链接/文件\n2. AI会引导你选择路线（新建生成 / 增强已有PPTX）\n3. AI引导选择模板、确认大纲\n4. AI逐页生成SVG页面（可随时预览，可选AI配图）\n5. 完成后生成可编辑的PPTX文件供下载\n6. 增强模式：给已有PPTX追加转场动画和音频旁白",
     "systemPrompt": """## ⛔ 强制规则（违反将导致PPT无法生成）
 1. **你必须调用工具列表中前缀为 `ppt_master_mcp_001__` 的 MCP 工具来生成PPT。**
 2. **绝对禁止在回复中直接输出 SVG/HTML 代码让用户自己保存。**

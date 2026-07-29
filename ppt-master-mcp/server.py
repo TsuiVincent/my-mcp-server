@@ -589,29 +589,12 @@ def _tool_parse_source(project_id: str, source_path: str = None, source_url: str
         source_dest.parent.mkdir(exist_ok=True)
         shutil.copy2(str(source), str(source_dest))
 
-        # 根据扩展名选择解析器
-        if ext == '.pdf':
-            result = _run_python_script('source_to_md/pdf_to_md.py', str(source_dest), cwd=str(ws), timeout=120)
-        elif ext in ('.docx', '.doc', '.odt', '.rtf', '.epub', '.html', '.htm', '.tex', '.rst', '.org'):
-            result = _run_python_script('source_to_md/doc_to_md.py', str(source_dest), cwd=str(ws), timeout=120)
-        elif ext in ('.xlsx', '.xlsm', '.xls'):
-            result = _run_python_script('source_to_md/excel_to_md.py', str(source_dest), cwd=str(ws), timeout=120)
-        elif ext in ('.pptx', '.pptm'):
-            result = _run_python_script('source_to_md/ppt_to_md.py', str(source_dest), cwd=str(ws), timeout=120)
-        elif ext in ('.md', '.markdown', '.txt'):
-            content = source_dest.read_text(encoding='utf-8', errors='replace')
-            output_file.write_text(content, encoding='utf-8')
-            return {
-                'success': True,
-                'project_id': project_id,
-                'source_type': ext,
-                'source': str(source_dest),
-                'output_file': str(output_file),
-                'content_preview': content[:2000],
-                'content_length': len(content),
-            }
-        else:
-            return {'success': False, 'error': f'不支持的文件格式: {ext}'}
+        # 统一调度器 source_to_md.py：自动识别格式并分派到对应子转换器
+        # 支持 PDF/DOCX/PPTX/XLSX/EPUB/HTML/MD/TXT 等所有格式
+        result = _run_python_script(
+            'source_to_md.py', str(source_dest),
+            cwd=str(ws), timeout=120,
+        )
 
         if result['success']:
             md_files = sorted(ws.glob('*.md'), key=lambda x: x.stat().st_mtime, reverse=True)
@@ -630,7 +613,7 @@ def _tool_parse_source(project_id: str, source_path: str = None, source_url: str
 
         return {
             'success': False,
-            'error': f'文档解析失败',
+            'error': '文档解析失败',
             'stdout': result.get('stdout', ''),
             'stderr': result.get('stderr', ''),
         }
@@ -1151,6 +1134,59 @@ def create_mcp_server() -> FastMCP:
         """
         result = _tool_export_pptx(project_id, output_name)
         return json.dumps(result, ensure_ascii=False, indent=2)
+
+    # ── Native PPTX 增强（暂不暴露，Enhance 路由走现有工具组合）──
+    # 待 native_enhance_pptx.py 稳定后启用此工具
+    # @mcp.tool()
+    # async def ppt_native_enhance(
+    #     project_id: str,
+    #     pptx_file: str,
+    #     action: str = 'init',
+    #     project_name: str = None,
+    # ) -> str:
+    #     """增强已有 PPTX 文件。可添加转场动画、音频旁白、演讲者备注，不修改原有幻灯片内容。
+    #
+    #     三步流程：
+    #         1. action='init'   → 初始化增强项目（需提供 pptx_file + project_name）
+    #         2. action='validate' → 验证项目配置
+    #         3. action='apply'  → 应用增强并导出新 PPTX
+    #     """
+    #     ws = _get_workspace(project_id)
+    #     action = action.lower().strip()
+    #
+    #     if action == 'init':
+    #         if not pptx_file or not pptx_file.strip():
+    #             return json.dumps({'success': False, 'error': 'init 操作需要提供 pptx_file 和 project_name'}, ensure_ascii=False)
+    #         name = project_name or f"enhance_{project_id}"
+    #         result = _run_python_script(
+    #             'native_enhance_pptx.py', 'init', pptx_file,
+    #             '--name', name, cwd=str(ws), timeout=60,
+    #         )
+    #     elif action == 'validate':
+    #         result = _run_python_script(
+    #             'native_enhance_pptx.py', 'validate', str(ws),
+    #             timeout=60,
+    #         )
+    #     elif action == 'apply':
+    #         result = _run_python_script(
+    #             'native_enhance_pptx.py', 'apply', str(ws),
+    #             timeout=120,
+    #         )
+    #     else:
+    #         return json.dumps({
+    #             'success': False,
+    #             'error': f'未知操作: {action}，支持 init / validate / apply',
+    #         }, ensure_ascii=False)
+    #
+    #     output = {'success': result['success'], 'action': action}
+    #     if result['success']:
+    #         output['message'] = result.get('stdout', f'{action} 完成')[:2000]
+    #         output['stdout'] = result.get('stdout', '')[:3000]
+    #     else:
+    #         output['error'] = result.get('error') or result.get('stderr', f'{action} 失败')
+    #         output['stderr'] = result.get('stderr', '')[:3000]
+    #     output['returncode'] = result.get('returncode', -1)
+    #     return json.dumps(output, ensure_ascii=False, indent=2)
 
     # ── AI 图像生成 ──
     if PPT_IMAGE_GEN_ENABLED:
