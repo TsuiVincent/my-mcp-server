@@ -1,34 +1,34 @@
-> See shared-standards.md for common technical constraints.
+> See [`shared-standards-core.md`](./shared-standards-core.md) for common technical constraints.
 
 # Image Layout Specification
 
-Layout rules for pages where the image is placed **side-by-side with body text** as a container block. Strategist and Executor both follow these rules when the image's narrative intent is *side-by-side*.
+Sizing reference for side-by-side or multi-image pages. Use after Strategist proposes a preferred composition; this file never locks layout or crop policy.
 
-**Core principle (side-by-side)**: compute container layout from the image's original aspect ratio so the image displays completely — no excess whitespace, no cropping.
+**Preferred pattern, Executor-owned realization**: Let original aspect ratio inform the container. Every slide using a `no-crop` asset keeps one complete visible instance; a same-slide same-source detail crop may supplement it. An `adaptive` asset may use `meet` or a focal-safe `slice`. Rework geometry or choose another composition when the recommendation produces weak hierarchy, unsafe cropping, excessive dead space, or a poorer communication result. Preserve binding resource/content/crop constraints; a pattern-only change needs no upstream update.
 
-> **Scope**: this spec applies to *side-by-side* intent only. Other intents (hero / full-bleed, atmosphere / background, accent / inline) use full-bleed placement where ratio alignment is not a constraint and cropping is expected — the ratio→split table below does NOT apply. See `references/strategist.md` §h for intent selection.
+> **Scope**: The ratio tables and formulas are calculation aids for a selected side-by-side or multi-image plan. Hero, background, accent, and other compositions stay outside this file. Layout never overrides the `no-crop` boundary owned by [`strategist-image.md`](./strategist-image.md) and [`executor-image.md`](./executor-image.md).
 
 ---
 
 ## Layout Decision Flow
 
 ```
-1. Decide narrative intent (hero / atmosphere / side-by-side / accent) — see strategist.md §h
-2. If intent = side-by-side: continue below. Otherwise: compose per narrative; this spec does not apply.
-3. Get image original dimensions → Calculate ratio (width/height)
-4. Select layout type based on ratio
-5. Calculate maximum display size for the image
-6. Allocate remaining space for text area
-7. Fill results into the Design Specification's image resource list
+1. Read the narrative intent, hierarchy, and preferred primary/modifier ids from Strategist's plan.
+2. If the preferred or Executor-selected pattern is not side-by-side or multi-image, this spec does not apply.
+3. Read the asset's `no-crop` boundary and original dimensions; calculate ratio (width/height).
+4. Use the tables as candidate structures, not an automatic selector.
+5. Calculate the image/text rectangles, then choose `meet` or focal-safe `slice` within the crop boundary.
+6. Revise geometry or choose another composition when the result weakens hierarchy, legibility, or required image content.
+7. Return upstream only for a different resource, role, must-use decision, crop boundary, or another binding constraint; Executor owns pattern-only realization changes.
 ```
 
-**When to run**: if image approach includes "B) User-provided", run the scan and populate the image resource list after the Strategist's Eight Confirmations and before content analysis / outlining.
+**When to run**: after `analyze_images.py` has produced current dimensions and a side-by-side or multi-image composition is under consideration. Skip this sizing reference for other page structures.
 
 ---
 
-## Layout Type Selection (side-by-side intent)
+## Layout Starting Points (side-by-side intent)
 
-| Image Ratio | Layout Type | Image Position | Description |
+| Image Ratio | Useful Starting Structure | Image Position | Description |
 |-------------|-------------|----------------|-------------|
 | > 2.0 (ultra-wide) | Top-bottom split | Top full-width | Image spans canvas width, height proportional |
 | 1.5-2.0 (wide) | Top-bottom split | Top | Image width = content area width, height proportional |
@@ -36,7 +36,7 @@ Layout rules for pages where the image is placed **side-by-side with body text**
 | 0.8-1.2 (square) | Left-right split | Left | Image takes content area height, width proportional |
 | < 0.8 (portrait) | Left-right split | Left | Image height = content area height, width proportional |
 
-> Boundary ratio (e.g., 1.5): decide by text volume — more text → left-right; less text → top-bottom.
+> Boundary ratios are orientation cues, not thresholds. Let text volume, focal content, page hierarchy, and crop safety decide.
 
 ---
 
@@ -62,8 +62,9 @@ Image width = W = 1160 px
 Image height = W / R = 1160 / R px
 Text area height = H - image height - gap(20px)
 
-Validation: Text area height >= 150px (at least 3-4 lines of text)
-If not satisfied → Switch to left-right layout
+Review: if the remaining text area cannot carry the planned copy legibly,
+rebalance the rectangles or choose another composition while preserving binding
+resource/content/crop constraints.
 ```
 
 ### Left-Right Layout Calculation
@@ -82,7 +83,7 @@ Image height = image width / R
 Text area width = W - image width - gap(20px)
 ```
 
-**Validation**: Text area width >= 280px; otherwise reduce image area width.
+**Review**: if the remaining text area cannot carry the planned copy legibly, rebalance the image/text rectangles or choose another composition while preserving binding resource/content/crop constraints.
 
 ---
 
@@ -106,8 +107,8 @@ Image: 773x560 (left), Text area: 367x560 (right) → 7:3 left-right
 
 ```
 Original: 1820x1040, R=1.75
-Try top-bottom: image height=663, text area=-43 ❌
-Switch to left-right: image 780x446 (left), text area 360x600 (right) → 7:3 left-right
+Strategist compares top-bottom: image height=663, text area=-43 ❌
+Strategist recommends left-right: image 780x446 (left), text area 360x600 (right) → 7:3 left-right
 ```
 
 ---
@@ -116,7 +117,7 @@ Switch to left-right: image 780x446 (left), text area 360x600 (right) → 7:3 le
 
 Default selection table assumes **landscape or square canvas**. For portrait canvases (height > width), left-right splits leave both columns too narrow — use the override below.
 
-| Canvas Orientation | Image Ratio | Recommended Layout | Reason |
+| Canvas Orientation | Image Ratio | Useful Starting Structure | Reason |
 |-------------------|-------------|-------------------|--------|
 | Portrait (Xiaohongshu, Story) | > 1.5 (wide) | Top-bottom | Same as landscape canvas |
 | Portrait (Xiaohongshu, Story) | 1.2-1.5 (standard) | Top-bottom | Left-right too narrow on tall canvas |
@@ -165,20 +166,18 @@ Image positions:
   (60, 390)  570x290    (650, 390) 570x290
 ```
 
-> Multi-image slides: use `preserveAspectRatio="xMidYMid meet"` on all images for consistent in-cell display.
+> Multi-image slides: decide `meet` or focal-safe `slice` per asset. On every slide using a `no-crop` source, keep one complete instance; a same-slide same-source detail crop may supplement it. Do not force every image into the same scaling mode merely for grid uniformity.
 
 ---
 
-## Prohibited Practices
+## Composition Checks
 
-| Prohibited | Correct Approach |
+| Check | Action |
 |-----------|-----------------|
-| Fixed 50:50 or arbitrary ratios | Dynamic calculation based on image ratio |
-| Forcing wide image into square container | Use top-bottom layout or increase image area width |
-| Placing portrait image in narrow horizontal strip | Use left-right layout, image on left |
-| Image whitespace exceeding 10% | Recalculate layout or choose alternative approach |
-| Cropping key image content | Use `preserveAspectRatio="xMidYMid meet"` |
-| Text area too small to read | Ensure text area >= 150px (top-bottom) or >= 280px (left-right) |
+| Proportion does not reflect information weight | Rebalance image and text rectangles |
+| Container conflicts with the native ratio | Change the container, choose `meet`, or use a focal-safe crop |
+| Required pixels, labels, identity, or evidence would be cropped | Use a legal anchor with `meet` and recompose around the complete image |
+| Text area cannot carry the planned copy legibly | Increase its area or choose another composition while preserving binding constraints |
 
 ---
 
@@ -189,15 +188,16 @@ This spec only defines layout calculation. Write computed fields into the Image 
 | Field | Meaning |
 |-------|---------|
 | `Ratio` | Original image width / height |
-| `Layout plan` | Top-bottom / left-right / grid, including split ratio when relevant |
-| `Image area` | Computed display rectangle size |
-| `Text area` | Computed remaining text area size |
+| `Layout pattern` | Strategist-recommended catalog pattern; preferred composition, Executor-owned realization |
+| `Crop Policy` | `no-crop` requires one complete instance; `adaptive` lets Executor choose `meet` or focal-safe `slice` |
+| `Reference` | Optional calculated image/text rectangles, focal notes, and composition intent |
+| `spec_lock.md images` value | `<path> | source=<Acquire Via> | pattern=<Layout pattern> | crop=<adaptive|no-crop>`; source/crop exactly project §VIII, while pattern preserves its ordered catalog ids (or normalized custom prose) as a recommendation, not a geometry/realization lock |
 
 For SVG `<image>` syntax, path rules, `preserveAspectRatio`, external refs, and Base64 embedding: see [`svg-image-embedding.md`](svg-image-embedding.md).
 
 ### SVG Image Embedding Examples
 
-Complete display (data charts, side-by-side — must not crop):
+Complete display (`no-crop` assets such as data charts):
 
 ```xml
 <image href="../images/xxx.png"
@@ -205,7 +205,9 @@ Complete display (data charts, side-by-side — must not crop):
        preserveAspectRatio="xMidYMid meet"/>
 ```
 
-Crop-to-fill (backgrounds and hero images only):
+**Hard rule — no-crop placement**: On every slide using the source, retain one visible complete instance with one of the nine legal anchors plus `meet`, never `none`, and no `clip-path`, `mask`, clipping overflow, or nested `<svg>` viewport. An auxiliary same-slide detail or lens may crop the same source only while the complete instance remains visible. Definitions and hidden nodes are not placements; an image materialized through a visible local `<use>` is.
+
+Crop-to-fill (an `adaptive` asset with a verified focal-safe crop):
 
 ```xml
 <image href="../images/bg.png"
@@ -218,12 +220,12 @@ Crop-to-fill (backgrounds and hero images only):
 ## Automation Tool
 
 ```bash
-python3 scripts/analyze_images.py <project_path>/images                    # Default: PPT 16:9
+python3 scripts/analyze_images.py <project_path>/images                    # Infer project canvas; fallback PPT 16:9
 python3 scripts/analyze_images.py <project_path>/images --canvas ppt43     # PPT 4:3
 python3 scripts/analyze_images.py <project_path>/images --canvas xiaohongshu  # Xiaohongshu
 ```
 
-`--canvas` selects target format (default `ppt169`). The tool computes layout type (top-bottom / left-right), image display area, and text area per the formulas above. Output is a Markdown table — paste directly into the image resource list.
+`--canvas` explicitly overrides the project-derived format; `ppt169` is only the fallback. The tool computes a top-bottom / left-right candidate, image display area, and text area from the formulas above. Treat its output as planning input; record the composition actually selected for the page.
 
 ---
 
@@ -231,5 +233,5 @@ python3 scripts/analyze_images.py <project_path>/images --canvas xiaohongshu  # 
 
 | Role | Responsibility |
 |------|---------------|
-| **Strategist** | Run analyze_images.py, calculate layout per this spec, populate image resource list |
-| **Executor** | Strictly follow the layout plan and dimensions in the image resource list when generating SVGs |
+| **Strategist** | Run `analyze_images.py`, recommend a catalog pattern, select resources, and record the crop boundary |
+| **Executor** | Choose the actual composition for the asset/page while preserving role, source, must-use, content, and `no-crop` constraints |

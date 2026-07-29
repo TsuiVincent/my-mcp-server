@@ -1,6 +1,9 @@
 # Image Tools
 
-> Architecture rationale (why provider-specific config keys instead of a generic `IMAGE_API_KEY`, why permissive license filter with strict-mode escape hatch, why external refs in dev but two divergent embedding strategies for delivery): see [docs/technical-design.md "Image Acquisition & Embedding"](../../../../docs/technical-design.md#image-acquisition--embedding).
+> **Design boundary**: keep provider credentials explicit, keep in-pipeline
+> acquisition manifest-driven, and treat external image references as authoring
+> inputs while delivery writes self-contained SVG previews and native PPTX
+> media.
 
 Image tools cover formula rendering, prompt-based AI generation, web image search, image inspection, and Gemini watermark removal.
 
@@ -40,11 +43,17 @@ Output files land directly under `project/images/`. Formula filenames should use
 
 Unified image generation entry point.
 
+This script is the **Path A** API/proxy executor for generated images. In the
+PPT pipeline, always check `design_spec.md §I / AI Image Acquisition Path`
+before running manifest mode: only `api` / `auto` permits Path A;
+`host-native` uses the host's image tool directly and `manual` uses the
+read-only Markdown sidecar. For a project manifest, a missing or unknown value
+fails closed and returns to Generate Step 4 recovery.
+
 ```bash
 python3 scripts/image_gen.py "A modern futuristic workspace"
 python3 scripts/image_gen.py "Abstract tech background" --aspect_ratio 16:9 --image_size 4K
 python3 scripts/image_gen.py "Concept car" -o projects/demo/images
-python3 scripts/image_gen.py "Beautiful landscape" -n "low quality, blurry, watermark"
 python3 scripts/image_gen.py --list-backends
 ```
 
@@ -153,9 +162,12 @@ Analyze images in a project directory before writing the design spec or composin
 
 ```bash
 python3 scripts/analyze_images.py <project_path>/images
+python3 scripts/analyze_images.py <project_path>/images --canvas ppt43
 ```
 
-Use this instead of opening image files directly when following the project workflow.
+Without `--canvas`, the tool resolves the project format and falls back to `ppt169`; the flag is an explicit override. The atomic CSV records EXIF-corrected native dimensions/`AspectRatio`, optional source `SourceDisplayRatio`, format, and actual transparent-pixel presence. Native ratio—not source display metadata—drives bitmap layout/crop. An empty folder rewrites a header-only report; unreadable supported files still refresh the report and produce a non-zero exit.
+
+Use this as the default inventory and geometry source; it does not perform semantic image understanding. Generate planning follows the Strategist's context-first boundary: source context, captions / alt text / titles, filenames, user notes, and existing resource records come first. Only a specific asset whose meaning or safe placement remains materially ambiguous may be inspected, and the workflow never bulk-opens the image folder.
 
 ## `image_search.py`
 
@@ -167,25 +179,29 @@ python3 scripts/image_search.py "offshore wind farm" \
   --orientation landscape -o projects/demo/images
 ```
 
-Providers (Openverse and Wikimedia work with no key; configure Pexels / Pixabay for better stock-photo quality):
+For multiple web rows, `--batch images/image_queries.json` searches them concurrently (modest default, `--concurrency N` / `IMAGE_SEARCH_CONCURRENCY` to tune) instead of one call per row — the web sister of `image_gen.py --manifest`. Schema and status semantics: [`image-searcher.md`](../../references/image-searcher.md) §5.
+
+Providers (Pexels / Pixabay are tried first when keyed; Openverse and Wikimedia are zero-config fallbacks):
 
 | Provider | Config | Strength |
 |---|---|---|
-| `openverse` | zero-config | fallback aggregator: Wikimedia + Flickr + museums + rawpixel |
-| `wikimedia` | zero-config | educational, scientific, geographic, historical |
 | `pexels` | recommended: `PEXELS_API_KEY` | modern stock photography, people, workplace, lifestyle |
 | `pixabay` | recommended: `PIXABAY_API_KEY` | broad type coverage including photos and illustrations |
+| `openverse` | zero-config | fallback aggregator: Wikimedia + Flickr + museums + rawpixel |
+| `wikimedia` | zero-config | educational, scientific, geographic, historical |
 
-Default search chain (when `--provider` is unset): zero-config providers first, then keyed providers whose API key is set in the environment. Keyed providers without a key are silently skipped. For polished visual decks, configure at least one keyed provider.
+Default search chain (when `--provider` is unset): configured Pexels, configured Pixabay, Openverse, then Wikimedia. Missing keyed credentials are silently skipped. For polished visual decks, configure at least one keyed provider.
 
 `image_search.py` uses the same `.env` lookup order as `image_gen.py`, so skill installs can keep `PEXELS_API_KEY` / `PIXABAY_API_KEY` in `~/.ppt-master/.env`.
 
 Query guidance:
 
+Keep the Design Spec §VIII `Reference` as the full visual/crop intent; write a separate 1–4 word concrete provider query for this CLI.
+
 | Case | Pattern |
 |---|---|
-| Generic stock concept | `boardroom meeting, professional editorial photography, natural light` |
-| China-specific landmark | Official Chinese place name + concrete scene |
+| Generic stock concept | `boardroom meeting` |
+| China-specific landmark | 1–4 official place/identity words |
 | Avoid | Negative prompt wording such as `not tourist snapshot` |
 
 License filter:
@@ -207,11 +223,20 @@ python3 scripts/image_search.py "abstract gradient" \
   -o projects/demo/images
 ```
 
+Suitability & manual replacement (a web top hit is metadata-relevant, not guaranteed visually right):
+
+- By default only the best match is downloaded, plus a downscaled review copy at `images/.review/<stem>.jpg` (the placed asset stays full-resolution).
+- For exact subjects (landmarks, people, companies, products), use `--require-terms` or batch `required_terms` so visually plausible but wrong metadata is rejected before ranking. Example: `--require-terms Chongqing --require-terms "Jiefangbei|Liberation Monument"`. Keep proper-name / geography anchors; do not broaden to generic terms like `canyon`, `stone pillar`, or `ancient town` just to improve coverage.
+- `--save-candidates` (with `--max-candidates`, default 4) keeps an opt-in escalation pool under `candidates/<stem>/`; review it, then `--promote candidate_03.jpg --filename <name>.jpg`.
+- `--from-url <url> --filename <name>.jpg` downloads a user-chosen image URL and replaces the target (recorded `license_tier: manual`) — the model-agnostic manual path; works even without a multimodal model.
+
+Full review / escalation flow: [`image-searcher.md`](../../references/image-searcher.md) §5.
+
 Output:
 
 - Image saved to the specified output directory (auto-converts webp → jpg via Pillow when the filename extension demands)
 - `image_sources.json` manifest with full provenance (provider, license, license_tier, author, source URL, dimensions, attribution_text)
-- Manifest is idempotent on `filename` — rerunning replaces that entry only
+- Manifest is idempotent on `filename` and written atomically; damaged existing provenance blocks replacement
 
 Allowed licenses (default): CC0, Public Domain, Pexels License, Pixabay Content License, CC BY, CC BY-SA. Auto-rejected: CC BY-NC, CC BY-ND, CC BY-NC-SA, CC BY-NC-ND, all rights reserved, unknown.
 

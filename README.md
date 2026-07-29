@@ -1,6 +1,6 @@
 # My-MCP-Intranet - 内网 MCP 服务器集群
 
-8个独立 MCP Server，可按需部署在不同 IP 的服务器上，实现功能隔离与故障域分离。
+11个独立 MCP Server，可按需部署在不同 IP 的服务器上，实现功能隔离与故障域分离。
 
 ## 架构概览
 
@@ -35,9 +35,12 @@
 | [mcp-browser-playwright](./mcp-browser-playwright/) | 8008 | 14 | **浏览器自动化**、页面截图、元素交互、JS 执行 | 需 Chromium |
 | [mcp-sequential-thinking](./mcp-sequential-thinking/) | 8009 | 1 | **结构化多步推理**、回溯修正、分支推理 | 无 |
 | [mcp-data-platform](./mcp-data-platform/) | 8003 | 21 | 数据库查询、Python沙箱、数据可视化、知识库检索 | 需数据库连接 |
-| [mcp-datetime](./mcp-datetime/) | **8010** | 7 | 时间日期查询、时区转换、Cron解析 | 无 |
+| [mcp-datetime](./mcp-datetime/) | 8010 | 7 | 时间日期查询、时区转换、Cron解析 | 无 |
 | [mcp-ops-monitor](./mcp-ops-monitor/) | 8004 | 13 | CPU/内存/磁盘监控、日志分析、命令执行 | 需部署在目标主机 |
 | [mcp-fetch-intranet](./mcp-fetch-intranet/) | 8005 | 19 | 内网网页抓取、正文提取、递归爬取、配置管理 | 需内网可达 |
+| [ppt-master-mcp](./ppt-master-mcp/) | 8011 | 14 | **AI 驱动PPT生成**、文档解析、模板选择、SVG→PPTX导出、实时预览 | 需 cairosvg/PyMuPDF |
+| [mcp-spreadsheet-pdf](./mcp-spreadsheet-pdf/) | 8012 | 12 | Excel/CSV读写、PDF解析/生成、中文PDF支持 | 需 openpyxl/reportlab |
+| [mcp-drawio](./mcp-drawio/) | 8020 | 8 | Draw.io 图表创建/编辑、XML操作、PNG/SVG导出、内置预览 | 无 |
 
 ## 快速启动
 
@@ -88,8 +91,6 @@ docker-compose up -d mcp-browser-playwright
 docker-compose up -d mcp-sequential-thinking
 ```
 
-## 新增服务介绍
-
 ### mcp-browser-playwright (:8008) - 浏览器自动化
 
 基于 Playwright + Chromium，支持内网后台自动化操作。
@@ -129,7 +130,10 @@ docker-compose up -d mcp-sequential-thinking
     "mcp-data-platform":          { "type": "streamableHttp", "url": "http://127.0.0.1:8003/mcp" },
     "mcp-datetime":               { "type": "streamableHttp", "url": "http://127.0.0.1:8010/mcp" },
     "mcp-ops-monitor":            { "type": "streamableHttp", "url": "http://127.0.0.1:8004/mcp" },
-    "mcp-fetch-intranet":         { "type": "streamableHttp", "url": "http://127.0.0.1:8005/mcp" }
+    "mcp-fetch-intranet":         { "type": "streamableHttp", "url": "http://127.0.0.1:8005/mcp" },
+    "ppt-master-mcp":             { "type": "streamableHttp", "url": "http://127.0.0.1:8011/mcp" },
+    "mcp-spreadsheet-pdf":        { "type": "streamableHttp", "url": "http://127.0.0.1:8012/mcp" },
+    "mcp-drawio":                 { "type": "streamableHttp", "url": "http://127.0.0.1:8020/mcp" }
   }
 }
 ```
@@ -146,6 +150,9 @@ docker-compose up -d mcp-sequential-thinking
 | mcp-datetime | Streamable HTTP | `http://<IP>:8010/mcp` |
 | mcp-ops-monitor | Streamable HTTP | `http://<IP>:8004/mcp` |
 | mcp-fetch-intranet | Streamable HTTP | `http://<IP>:8005/mcp` |
+| ppt-master-mcp | Streamable HTTP | `http://<IP>:8011/mcp` |
+| mcp-spreadsheet-pdf | Streamable HTTP | `http://<IP>:8012/mcp` |
+| mcp-drawio | Streamable HTTP | `http://<IP>:8020/mcp` |
 
 ## 设计原则
 
@@ -167,6 +174,9 @@ docker-compose up -d mcp-sequential-thinking
 | mcp-datetime | 无持久化 | — |
 | mcp-ops-monitor | 无持久化 | — |
 | mcp-fetch-intranet | SQLite | `~/mcp-user-data/config_manager.db` (Windows) `/data/mcp-user-data/config_manager.db` (Linux) |
+| ppt-master-mcp | 本地文件系统 | `workspaces/` (模板/工作区文件) |
+| mcp-spreadsheet-pdf | 无持久化 | — |
+| mcp-drawio | 无持久化 | — |
 
 ## 许可证
 

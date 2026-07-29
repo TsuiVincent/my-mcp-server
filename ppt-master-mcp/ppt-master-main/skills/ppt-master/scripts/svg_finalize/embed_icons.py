@@ -9,7 +9,7 @@ Placeholder syntax (new SVGs must include a library prefix):
     <use data-icon="tabler-filled/home" x="100" y="200" width="48" height="48" fill="#0076A8"/>
     <use data-icon="tabler-outline/home" x="100" y="200" width="48" height="48" fill="#0076A8"/>
     <use data-icon="tabler-outline/home" x="100" y="200" width="48" height="48" fill="#0076A8" stroke-width="3"/>
-    <use data-icon="layered_slide_06_ill01"/>
+    <use data-icon="imported/layered_slide_06_ill01"/>
 
 Legacy compatibility accepted by the resolver:
     <use data-icon="rocket" .../> -> chunk-filled/rocket
@@ -30,7 +30,7 @@ Icon libraries (subdirectories of templates/icons/):
     tabler-outline/    - 5000+ stroke icons, 24x24 viewBox (use prefix: tabler-outline/name)
     phosphor-duotone/  - 1200+ duotone icons, 256x256 viewBox (single color + 0.2-opacity backplate)
     simple-icons/      - 3400+ brand logos, 24x24 viewBox (brand-inset library — used alongside the chosen primary library, NOT as a standalone library for generic icons)
-    <asset_id>.svg     - project-local extracted vector illustrations with data-icon-style="preserve-color"; preserve source colors and natural viewBox aspect ratio
+    imported/          - project-local extracted vector illustrations with data-icon-style="preserve-color"; preserve source colors and natural viewBox aspect ratio
 
 Usage:
     python3 scripts/svg_finalize/embed_icons.py <svg_file> [svg_file2] ...
@@ -51,6 +51,15 @@ import argparse
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
+_SCRIPTS_DIR = Path(__file__).resolve().parents[1]
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
+from console_encoding import configure_utf8_stdio  # noqa: E402
+from svg_to_pptx.drawingml.utils import parse_project_geometry_length  # noqa: E402
+
+configure_utf8_stdio()
+
 
 # Default icon directory
 DEFAULT_ICONS_DIR = Path(__file__).parent.parent.parent / 'templates' / 'icons'
@@ -64,6 +73,7 @@ ICON_BASE_SIZES = {
     'phosphor-duotone': 256,
     'simple-icons': 24,
 }
+_ICON_LIBRARY_ALIASES = {'chunk': 'chunk-filled'}
 DEFAULT_ICON_BASE_SIZE = 24
 BaseGeometry = float | tuple[float, float, float, float]
 
@@ -160,12 +170,9 @@ def _extract_shape_elements(content: str, color: str) -> list[str]:
 
 def _resolve_in_dir(icon_name: str, icons_dir: Path) -> tuple[Path, float]:
     """Resolve `icon_name` against a single icons dir (no fallback)."""
-    # Backward compat: 'chunk/name' → 'chunk-filled/name'
-    _LIB_ALIASES = {'chunk': 'chunk-filled'}
-
     if '/' in icon_name:
         lib, name = icon_name.split('/', 1)
-        lib = _LIB_ALIASES.get(lib, lib)  # resolve aliases
+        lib = _ICON_LIBRARY_ALIASES.get(lib, lib)  # resolve aliases
         icon_path = icons_dir / lib / f'{name}.svg'
         base_size = ICON_BASE_SIZES.get(lib, 24)
     else:
@@ -177,6 +184,59 @@ def _resolve_in_dir(icon_name: str, icons_dir: Path) -> tuple[Path, float]:
             base_size = 16
 
     return icon_path, base_size
+
+
+def _casefold_icon_name_in_dir(icon_name: str, icons_dir: Path) -> str | None:
+    """Return the exact on-disk identifier when only casing differs."""
+    if not icons_dir.is_dir():
+        return None
+
+    search_dirs: list[Path] = []
+    expected_name = icon_name
+    if '/' in icon_name:
+        raw_lib, expected_name = icon_name.split('/', 1)
+        requested_lib = _ICON_LIBRARY_ALIASES.get(raw_lib.casefold(), raw_lib)
+        library_dir = icons_dir / requested_lib
+        if not library_dir.is_dir():
+            library_dir = next(
+                (
+                    path for path in icons_dir.iterdir()
+                    if path.is_dir()
+                    and path.name.casefold() == requested_lib.casefold()
+                ),
+                library_dir,
+            )
+        search_dirs.append(library_dir)
+    else:
+        search_dirs.extend((icons_dir / 'chunk-filled', icons_dir))
+
+    expected_filename = f'{expected_name}.svg'.casefold()
+    for search_dir in search_dirs:
+        if not search_dir.is_dir():
+            continue
+        matches = sorted(
+            path for path in search_dir.iterdir()
+            if path.is_file()
+            and path.suffix.casefold() == '.svg'
+            and path.name.casefold() == expected_filename
+        )
+        if len(matches) != 1:
+            continue
+        relative = matches[0].relative_to(icons_dir).with_suffix('')
+        return relative.as_posix()
+    return None
+
+
+def suggest_icon_name(
+    icon_name: str,
+    icons_dir: Path,
+    fallback_dir: Path | None = None,
+) -> str | None:
+    """Suggest an exact project-first icon identifier without auto-correcting it."""
+    suggestion = _casefold_icon_name_in_dir(icon_name, icons_dir)
+    if suggestion is None and fallback_dir is not None:
+        suggestion = _casefold_icon_name_in_dir(icon_name, fallback_dir)
+    return suggestion
 
 
 def resolve_icon_path(icon_name: str, icons_dir: Path, fallback_dir: Path | None = None) -> tuple[Path, float]:
@@ -222,6 +282,16 @@ def extract_paths_from_icon(icon_path: Path, target_color: str = '#000000') -> t
     return elements, style, base_size
 
 
+def _attr_value(tag_text: str, attr: str) -> str | None:
+    """Return an attribute value from a raw tag, accepting either quote style."""
+    match = re.search(
+        rf'\b{re.escape(attr)}\s*=\s*(["\'])(.*?)\1',
+        tag_text,
+        re.DOTALL,
+    )
+    return match.group(2) if match else None
+
+
 def parse_use_element(use_match: str) -> dict[str, str | float]:
     """
     Parse attributes of a use element.
@@ -233,42 +303,42 @@ def parse_use_element(use_match: str) -> dict[str, str | float]:
         Attribute dictionary
     """
     attrs: dict[str, str | float] = {}
-    
+
     # Extract data-icon
-    icon_match = re.search(r'data-icon="([^"]+)"', use_match)
-    if icon_match:
-        attrs['icon'] = icon_match.group(1)
-    
+    icon_value = _attr_value(use_match, 'data-icon')
+    if icon_value:
+        attrs['icon'] = icon_value
+
     # Extract numeric attributes
     for attr in ['x', 'y', 'width', 'height']:
-        match = re.search(rf'{attr}="([^"]+)"', use_match)
-        if match:
-            attrs[attr] = float(match.group(1))
-    
+        value = _attr_value(use_match, attr)
+        if value is not None:
+            attrs[attr] = parse_project_geometry_length(value, attr)
+
     # Extract fill color
-    fill_match = re.search(r'fill="([^"]+)"', use_match)
-    if fill_match:
-        attrs['fill'] = fill_match.group(1)
+    fill_value = _attr_value(use_match, 'fill')
+    if fill_value is not None:
+        attrs['fill'] = fill_value
 
     # Stroke-style icons may be authored with natural SVG semantics:
     # fill="none" stroke="#HEX". Keep accepting fill as the canonical color
     # carrier, but preserve stroke so outline icons do not collapse to none.
-    stroke_match = re.search(r'stroke="([^"]+)"', use_match)
-    if stroke_match:
-        attrs['stroke'] = stroke_match.group(1)
+    stroke_value = _attr_value(use_match, 'stroke')
+    if stroke_value is not None:
+        attrs['stroke'] = stroke_value
 
     # Live preview direct edits may write an absolute transform matrix back to
     # the placeholder. Preserve it so the expanded icon matches the edited
     # browser geometry instead of falling back to the original x/y placement.
-    transform_match = re.search(r'transform="([^"]+)"', use_match)
-    if transform_match:
-        attrs['transform'] = transform_match.group(1)
+    transform_value = _attr_value(use_match, 'transform')
+    if transform_value is not None:
+        attrs['transform'] = transform_value
 
     # Extract optional stroke-width override (stroke-style icons only).
     # Tabler-outline ships at stroke-width=2; passing 1.5 reads thin, 3 reads bold.
-    stroke_width_match = re.search(r'stroke-width="([^"]+)"', use_match)
-    if stroke_width_match:
-        attrs['stroke-width'] = stroke_width_match.group(1)
+    stroke_width_value = _attr_value(use_match, 'stroke-width')
+    if stroke_width_value is not None:
+        attrs['stroke-width'] = stroke_width_value
 
     return attrs
 
@@ -378,9 +448,10 @@ def process_svg_file(svg_path: Path, icons_dir: Path, dry_run: bool = False, ver
     
     content = svg_path.read_text(encoding='utf-8')
     
-    # Match <use data-icon="xxx" ... /> elements
-    use_pattern = r'<use\s+[^>]*data-icon="[^"]*"[^>]*/>'
-    matches = list(re.finditer(use_pattern, content))
+    # Match self-closing <use data-icon="..."/> placeholders. Attribute
+    # parsing below accepts both single and double quotes.
+    use_pattern = r'<use\b(?=[^>]*\bdata-icon\s*=)[^>]*/>'
+    matches = list(re.finditer(use_pattern, content, re.IGNORECASE | re.DOTALL))
     
     if not matches:
         if verbose:
@@ -400,11 +471,25 @@ def process_svg_file(svg_path: Path, icons_dir: Path, dry_run: bool = False, ver
             continue
 
         icon_path, _ = resolve_icon_path(str(icon_name), icons_dir, fallback_dir)
+        if not icon_path.exists():
+            suggestion = suggest_icon_name(str(icon_name), icons_dir, fallback_dir)
+            hint = (
+                f"; identifiers are case-sensitive; use '{suggestion}'"
+                if suggestion else ""
+            )
+            print(
+                f"[WARN] Icon not found: {icon_name}{hint} "
+                f"(in {svg_path.name})"
+            )
+            continue
+
         elements, style, base_size = extract_paths_from_icon(icon_path)
         color = resolve_icon_color(attrs, style)
-        
         if not elements:
-            print(f"[WARN] Icon not found: {icon_name} (in {svg_path.name})")
+            print(
+                f"[WARN] Icon has no embeddable shapes: {icon_name} "
+                f"(in {svg_path.name})"
+            )
             continue
         
         replacement = generate_icon_group(attrs, elements, style, base_size)

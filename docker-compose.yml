@@ -139,7 +139,9 @@ services:
       - "8011:8011"
     environment:
       - TZ=Asia/Shanghai
-      - PPT_IMAGE_GEN_ENABLED=${PPT_IMAGE_GEN_ENABLED:-true}
+      - PPT_OFFLINE_MODE=${PPT_OFFLINE_MODE:-true}
+      - PPT_IMAGE_GEN_ENABLED=${PPT_IMAGE_GEN_ENABLED:-false}
+      - PPT_AUDIO_ENABLED=${PPT_AUDIO_ENABLED:-false}
     volumes:
       - ppt_master_data:/app/workspaces
     networks:
