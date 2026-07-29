@@ -5,8 +5,6 @@ PPT Master MCP Server
 将 ppt-master 的PPT生成能力封装为 MCP (Model Context Protocol) 工具。
 支持 SkillHub 平台通过 MCP 协议调用。
 
-版本: 1.2.0 (ppt-master 核心 v4.2.0)
-
 功能:
   - workspace 管理 (创建/文件读写/文件列表)
   - 源文档解析 (PDF/DOCX/MD/TXT/URL)
@@ -91,20 +89,8 @@ def _load_dotenv(env_path: Path = None):
 
 _load_dotenv()
 
-# ── 离线模式配置 ───────────────────────────────────────────
-PPT_OFFLINE_MODE = os.environ.get('PPT_OFFLINE_MODE', 'false').lower() == 'true'
-# AI 图像生成开关（默认关闭，离线模式强制关闭）
-PPT_IMAGE_GEN_ENABLED = (
-    os.environ.get('PPT_IMAGE_GEN_ENABLED', 'false').lower() == 'true'
-    and not PPT_OFFLINE_MODE
-)
-# 旁白音频合成开关（默认关闭，离线模式强制关闭）
-PPT_AUDIO_ENABLED = (
-    os.environ.get('PPT_AUDIO_ENABLED', 'false').lower() == 'true'
-    and not PPT_OFFLINE_MODE
-)
-# URL 网页抓取开关（离线模式强制关闭）
-PPT_WEB_FETCH_ENABLED = not PPT_OFFLINE_MODE
+# AI 图像生成开关（默认关闭）
+PPT_IMAGE_GEN_ENABLED = os.environ.get('PPT_IMAGE_GEN_ENABLED', 'false').lower() == 'true'
 
 # ============================================================
 # 辅助函数
@@ -201,26 +187,6 @@ def _list_deck_templates() -> list[dict]:
                 'summary': info.get('summary', ''),
                 'canvas_format': info.get('canvas_format', 'ppt169'),
                 'page_count': info.get('page_count', 5),
-                'primary_color': info.get('primary_color', ''),
-            })
-    return templates
-
-
-def _list_brand_templates() -> list[dict]:
-    """列出可用品牌配色模板（不含 design_spec 内容，需要时单独获取）。"""
-    brands_dir = PPT_TEMPLATES_DIR / 'brands'
-    index_path = brands_dir / 'brands_index.json'
-    templates = []
-
-    if index_path.exists():
-        with open(index_path, 'r', encoding='utf-8') as f:
-            index = json.load(f)
-        for name, info in index.items():
-            templates.append({
-                'id': name,
-                'type': 'brand',
-                'name': name,
-                'summary': info.get('summary', ''),
                 'primary_color': info.get('primary_color', ''),
             })
     return templates
@@ -591,8 +557,6 @@ def _tool_parse_source(project_id: str, source_path: str = None, source_url: str
 
     # URL 模式
     if source_url:
-        if not PPT_WEB_FETCH_ENABLED:
-            return {'success': False, 'error': '离线模式下不支持 URL 网页抓取。请直接提供源文件路径或内容。'}
         result = _run_python_script(
             'source_to_md/web_to_md.py', source_url,
             cwd=str(ws), timeout=60,
@@ -684,9 +648,6 @@ def _tool_list_templates(template_type: str = 'all') -> dict:
     if template_type in ('all', 'deck'):
         result['templates']['decks'] = _list_deck_templates()
 
-    if template_type in ('all', 'brand'):
-        result['templates']['brands'] = _list_brand_templates()
-
     if template_type in ('all', 'chart'):
         result['templates']['charts'] = _list_chart_templates()
 
@@ -694,7 +655,7 @@ def _tool_list_templates(template_type: str = 'all') -> dict:
     result['total'] = total
     result['message'] = (
         f'共 {total} 个模板可用。'
-        f'Brands 提供品牌配色规范，Layouts 提供页面布局风格，Decks 是完整品牌模板包，Charts 是图表模板。'
+        f'Layouts 提供页面布局风格，Decks 是完整品牌模板包，Charts 是图表模板。'
         f'选择模板后请告诉用户模板名称，用户确认后LLM可以开始生成SVG。'
     )
     return result
@@ -702,8 +663,7 @@ def _tool_list_templates(template_type: str = 'all') -> dict:
 
 def _read_design_spec(template_type: str, template_name: str) -> str:
     """读取指定模板的 design_spec.md 内容。"""
-    # v4.2.0: design_spec.md 已移到 templates/ 子目录下
-    spec_path = PPT_TEMPLATES_DIR / template_type / template_name / 'templates' / 'design_spec.md'
+    spec_path = PPT_TEMPLATES_DIR / template_type / template_name / 'design_spec.md'
     if spec_path.exists():
         try:
             return spec_path.read_text(encoding='utf-8')
@@ -714,8 +674,8 @@ def _read_design_spec(template_type: str, template_name: str) -> str:
 
 def _tool_get_template(template_type: str, template_name: str) -> dict:
     """获取单个模板的完整信息，包含 design_spec 内容。"""
-    if template_type not in ('layouts', 'decks', 'charts', 'brands'):
-        return {'success': False, 'error': f'type 必须为 layouts/decks/charts/brands, 收到: {template_type}'}
+    if template_type not in ('layouts', 'decks', 'charts'):
+        return {'success': False, 'error': f'type 必须为 layouts/decks/charts, 收到: {template_type}'}
 
     index_path = PPT_TEMPLATES_DIR / template_type / f'{template_type}_index.json'
     if not index_path.exists():
@@ -724,26 +684,18 @@ def _tool_get_template(template_type: str, template_name: str) -> dict:
     with open(index_path, 'r', encoding='utf-8') as f:
         index = json.load(f)
 
-    # charts 索引结构不同：{"meta": {...}, "charts": {...}}
-    if template_type == 'charts':
-        charts = index.get('charts', {})
-        if template_name not in charts:
-            available = ', '.join(list(charts.keys())[:20])
-            return {'success': False, 'error': f'图表 "{template_name}" 不存在。前20个: {available}'}
-        info = charts[template_name]
-        design_spec = ''  # 图表没有 design_spec，返回空
-    else:
-        if template_name not in index:
-            available = ', '.join(index.keys())
-            return {'success': False, 'error': f'模板 "{template_name}" 不存在。可用: {available}'}
-        info = index[template_name]
-        design_spec = _read_design_spec(template_type, template_name)
+    if template_name not in index:
+        available = ', '.join(index.keys())
+        return {'success': False, 'error': f'模板 "{template_name}" 不存在。可用: {available}'}
+
+    info = index[template_name]
+    design_spec = _read_design_spec(template_type, template_name)
 
     return {
         'success': True,
         'template': {
             'id': template_name,
-            'type': template_type[:-1] if template_type != 'brands' else 'brand',
+            'type': template_type[:-1],  # layouts → layout
             'name': template_name,
             'summary': info.get('summary', ''),
             'canvas_format': info.get('canvas_format', 'ppt169'),
@@ -1261,14 +1213,10 @@ def main():
     _ensure_workspaces()
 
     logger.info(f"PPT Master MCP Server 启动中...")
-    logger.info(f"  - 版本: 1.2.0 (ppt-master 核心 v4.2.0)")
     logger.info(f"  - ppt-master 路径: {PPT_MASTER_DIR}")
     logger.info(f"  - 工作区目录: {WORKSPACES_DIR}")
     logger.info(f"  - 模板目录: {PPT_TEMPLATES_DIR}")
-    logger.info(f"  - 运行模式: {'离线模式' if PPT_OFFLINE_MODE else '在线模式'}")
-    logger.info(f"  - AI 图像生成: {'已启用' if PPT_IMAGE_GEN_ENABLED else '已关闭'}")
-    logger.info(f"  - 旁白音频: {'已启用' if PPT_AUDIO_ENABLED else '已关闭'}")
-    logger.info(f"  - URL 抓取: {'已启用' if PPT_WEB_FETCH_ENABLED else '已关闭（离线模式）'}")
+    logger.info(f"  - AI 图像生成: {'已启用' if PPT_IMAGE_GEN_ENABLED else '已关闭（PPT_IMAGE_GEN_ENABLED=false）'}")
 
     mcp = create_mcp_server()
 

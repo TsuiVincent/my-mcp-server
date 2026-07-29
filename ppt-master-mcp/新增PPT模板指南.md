@@ -1,108 +1,52 @@
 # 新增 PPT 模板指南
 
-ppt-master-mcp (v4.2.0) 支持四类模板：**Brands（品牌配色规范）**、**Layouts（布局风格）**、**Decks（品牌整包）**、**Charts（图表组件）**。新增后用户通过 `ppt_list_templates` 即可发现和使用。
+ppt-master-mcp 支持三类模板：**Layouts（布局风格）**、**Decks（品牌模板包）**、**Charts（图表模板）**。新增后用户通过 `ppt_list_templates` 即可发现和使用。
 
 ---
+
 ## 目录结构总览
 
 ```
 ppt-master-mcp/
 └── ppt-master-main/
     └── skills/ppt-master/templates/
-        ├── brands/               ← 品牌配色规范 (NEW)
-        │   └── brands_index.json    ← 模板索引
         ├── layouts/              ← 布局风格模板
-        │   └── layouts_index.json   ← 模板索引
-        │   └── presentation_core/   ← 示例：一个 layout 模板
-        │       └── templates/
-        │           ├── *.svg        ← 页面 SVG 文件
-        │           └── design_spec.md ← 设计规范（核心参考）
+        │   ├── layouts_index.json   ← 模板索引（新增后必须更新）
+        │   ├── ai_ops/              ← 示例：一个 layout 模板目录
+        │   │   ├── 01_cover.svg
+        │   │   ├── 02_toc.svg
+        │   │   ├── 02_chapter.svg
+        │   │   ├── 03_content.svg
+        │   │   ├── 04_ending.svg
+        │   │   └── design_spec.md   ← 设计规范（AI生成SVG的参考依据）
+        │   ├── government_blue/
+        │   └── ... (更多)
         ├── decks/                ← 品牌整包模板
-        │   └── decks_index.json     ← 模板索引
-        │   └── 中国电信/
-        │       └── templates/
-        │           ├── *.svg
-        │           ├── design_spec.md
-        │           └── *.png        ← 品牌素材
-        └── charts/               ← 图表组件模板（76个）
-            └── charts_index.json
+        │   ├── decks_index.json     ← 模板索引
+        │   ├── 招商银行/             ← 示例：一个 deck 模板目录
+        │   │   ├── 01_cover.svg
+        │   │   ├── 02_toc.svg
+        │   │   ├── 02_chapter.svg
+        │   │   ├── 03_content.svg
+        │   │   ├── 04_ending.svg
+        │   │   ├── design_spec.md
+        │   │   ├── logo_dark.png     ← 品牌素材
+        │   │   └── cover_bg.png
+        │   └── ... (更多)
+        └── charts/               ← 图表组件模板（71个，一般不需新增）
+            ├── charts_index.json
             └── *.svg
 ```
 
-> **重要变化 (v4.2.0)**：`design_spec.md` 和 SVG 页面文件现在位于 `{模板名}/templates/` 子目录下，不是直接放在 `{模板名}/` 下。
-
 ---
 
-## 方式一：新增 Brand 品牌配色规范 (NEW)
-
-Brand 是纯配色+字体规范，**不含页面 SVG 文件**，用于为 AI 生成提供品牌视觉约束。
-
-### 步骤 1：创建目录和 design_spec.md
-
-```
-templates/brands/{品牌名}/
-└── templates/
-    └── design_spec.md     ← 配色+字体规范
-```
-
-design_spec.md 内容示例：
-
-```markdown
----
-layout_id: my_brand
-kind: brand
-summary: 适用于XX企业正式对外汇报、内部分析与方案演示
-primary_color: "#C00000"
-secondary_color: "#F5F5F5"
-accent_color: "#D4A853"
----
-
-# XX品牌 - 配色规范
-
-## I. 品牌概述
-- 品牌名称、适用场景
-
-## II. 配色方案
-| 角色 | 色值 | 用途 |
-|------|------|------|
-| 主色 | #C00000 | 标题、强调、装饰 |
-| 辅助色 | #F5F5F5 | 背景、卡片 |
-| 点缀色 | #D4A853 | 图表高亮、装饰线 |
-
-## III. 字体规范
-- 标题: 思源黑体 Bold, 32px
-- 正文: 思源宋体 Regular, 18px
-```
-
-### 步骤 2：更新 brands_index.json
-
-```json
-"my_brand": {
-  "summary": "XX企业正式对外汇报、内部分析与方案演示",
-  "primary_color": "#C00000"
-}
-```
-
----
-
-## 方式二：新增 Layout 布局模板（最常见）
+## 方式一：新增 Layout 布局模板（推荐，最常见）
 
 Layout 是纯设计风格的页面布局，**不含品牌元素**，用户可按主题选择后由 AI 生成对应风格的 SVG。
 
 ### 步骤 1：准备 SVG 页面文件
 
-在 `templates/layouts/` 下新建目录，再创建 `templates/` 子目录，放入 SVG 文件和 design_spec.md：
-
-```
-templates/layouts/{模板名}/
-└── templates/
-    ├── design_spec.md       ← 设计规范
-    ├── 01_cover.svg         ← 封面页
-    ├── 02_toc.svg           ← 目录页
-    ├── 02_chapter.svg       ← 章节过渡页
-    ├── 03_content.svg       ← 正文内容页
-    └── 04_ending.svg        ← 结束页
-```
+在 `templates/layouts/` 下新建目录，放入 5-6 个标准 SVG 文件：
 
 | 文件 | 用途 | 说明 |
 |------|------|------|
@@ -116,11 +60,11 @@ SVG 要求：
 - 画布尺寸：**1280 × 720 px**（16:9），viewBox="0 0 1280 720"
 - 使用**纯文本/占位符**而非真实内容（AI 生成时会替换）
 - 建议用 `<text>` 元素标记可替换区域，如 `<text>标题占位</text>`
-- 参考已有模板目录（如 `presentation_core/templates/`）中的 SVG 文件格式
+- 参考已有模板目录中的 SVG 文件格式
 
 ### 步骤 2：编写 design_spec.md 设计规范
 
-这是 AI 生成该风格 SVG 时的**核心参考文档**。参考 `layouts/presentation_core/templates/design_spec.md`，应包含：
+这是 AI 生成该风格 SVG 时的**核心参考文档**。参考 `layouts/ai_ops/design_spec.md`，应包含：
 
 ```markdown
 ---
@@ -186,22 +130,20 @@ page_types: [cover, toc, chapter, content, ending]
 
 ---
 
-## 方式三：新增 Deck 品牌整包模板
+## 方式二：新增 Deck 品牌整包模板
 
 Deck 是带有品牌元素的完整模板包（Logo、品牌色、背景图等），适合企业定制。
 
 ### 步骤 1：准备素材
 
-在 `templates/decks/` 下新建目录，再创建 `templates/` 子目录：
+在 `templates/decks/` 下新建目录，放入：
 
-```
-templates/decks/{模板名}/
-└── templates/
-    ├── design_spec.md       ← 设计规范（格式同 Layout）
-    ├── *.svg                ← 各页面 SVG（含品牌元素）
-    ├── logo.png             ← 品牌 Logo
-    └── *.png                ← 背景图、装饰元素等
-```
+| 文件 | 用途 |
+|------|------|
+| `01_cover.svg` ~ `04_ending.svg` | 各页面 SVG（含品牌元素） |
+| `design_spec.md` | 设计规范（格式同 Layout） |
+| `logo.png` | 品牌 Logo |
+| 其他图片 | 背景图、装饰元素等 |
 
 ### 步骤 2：更新 decks_index.json
 
@@ -224,7 +166,7 @@ SVG 中使用**相对路径**引用同目录下的图片：
 
 ---
 
-## 方式四：新增 Charts 图表模板（高级）
+## 方式三：新增 Charts 图表模板（高级，一般不需）
 
 图表模板是独立的 SVG 组件，用于嵌入正文页。新增需：
 
@@ -361,9 +303,8 @@ A: PowerPoint 对 PNG 透明度支持不稳定。建议给 `<image>` 下方放�
 ```
 用户：帮我做一份商业计划PPT
 AI：请选择模板风格 —— 共 N 个可用：
-   Brands: 中国电信（#C00000）、中汽研（#004098）、...
-   Layouts: presentation_core（20种页面类型）
-   Decks: 中国电信、中汽研...
+   Layouts: ai_ops（科技运维）、government_blue（政务蓝）、my_template（我的新模板）...
+   Decks: 招商银行、中国电信...
 ```
 
-LLM 调用 `ppt_list_templates` 即可自动列出新模板，`design_spec.md` 内容通过 `ppt_get_template` 返回供 AI 参考生成。
+LLM 调用 `ppt_list_templates` 即可自动列出新模板，`design_spec.md` 内容也会一并返回供 AI 参考生成。

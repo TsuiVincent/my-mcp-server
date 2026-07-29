@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
+# 使用清华镜像加速下载（torch/CUDA等大包）
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
