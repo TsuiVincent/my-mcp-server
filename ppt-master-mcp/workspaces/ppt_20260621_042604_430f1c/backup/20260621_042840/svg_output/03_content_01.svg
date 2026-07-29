@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bgGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5F8FC"/>
+      <stop offset="100%" stop-color="#EDF2F7"/>
+    </linearGradient>
+    <linearGradient id="topBarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1280" height="720" fill="url(#bgGradLight)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBarGrad)"/>
+
+  <!-- Title Bar -->
+  <rect x="60" y="30" width="50" height="50" fill="#0050B3" rx="4"/>
+  <text x="85" y="62" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">01</text>
+  <text x="130" y="65" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">民用监控系统已成为战略情报源</text>
+  <line x1="60" y1="95" x2="1220" y2="95" stroke="#0050B3" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- Key Message Bar -->
+  <rect x="60" y="110" width="1160" height="50" fill="#E3F2FD" rx="6"/>
+  <rect x="60" y="110" width="4" height="50" fill="#0050B3" rx="2"/>
+  <text x="640" y="141" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#1A2E44" text-anchor="middle">城市智慧化程度越高，战场透明化程度也越高——民用监控设施的战时军事价值急剧上升</text>
+
+  <!-- Content Area -->
+  <!-- Case card 1 -->
+  <rect x="60" y="180" width="560" height="200" fill="#FFFFFF" rx="8" stroke="#E0E6ED" stroke-width="1"/>
+  <rect x="60" y="180" width="8" height="200" fill="#0050B3" rx="4"/>
+  <rect x="80" y="195" width="100" height="26" fill="#00B4D8" rx="4"/>
+  <text x="130" y="214" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">核心案例</text>
+  <text x="200" y="214" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#1A2E44">以色列精确打击德黑兰</text>
+  <text x="80" y="250" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333D4A">
+    <tspan x="80" dy="0">● 2026.2.28开战当天，以色列空军对德黑兰市内</tspan>
+    <tspan x="88" dy="26">多个目标实施精确打击</tspan>
+    <tspan x="80" dy="26">● 打击坐标来源：8200部队与摩萨德多年渗透</tspan>
+    <tspan x="80" dy="26">● 长期系统性地接管交通摄像头等民用设备</tspan>
+    <tspan x="80" dy="26">● AI算法分析行为模式，识别军官护卫车队路线</tspan>
+  </text>
+
+  <!-- Data highlight card -->
+  <rect x="660" y="180" width="560" height="200" fill="#FFFFFF" rx="8" stroke="#E0E6ED" stroke-width="1"/>
+  <rect x="660" y="180" width="8" height="200" fill="#00B4D8" rx="4"/>
+  <rect x="680" y="195" width="100" height="26" fill="#0050B3" rx="4"/>
+  <text x="730" y="214" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">渗透手段</text>
+  <text x="680" y="255" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333D4A">
+    <tspan x="680" dy="0">● 交通监控摄像头——实时视频流加密回传</tspan>
+    <tspan x="680" dy="26">● 市政传感器——环境数据辅助情报分析</tspan>
+    <tspan x="680" dy="26">● 车牌识别——推断机构内部车辆隶属关系</tspan>
+    <tspan x="680" dy="26">● 出入频率统计——定位秘密指挥点</tspan>
+  </text>
+
+  <!-- Conclusion card -->
+  <rect x="60" y="400" width="1160" height="120" fill="#FFFFFF" rx="8" stroke="#0050B3" stroke-opacity="0.3" stroke-width="1"/>
+  <rect x="60" y="400" width="1160" height="4" fill="#0050B3"/>
+  <text x="640" y="440" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#C00000" text-anchor="middle">⚡ 核心结论</text>
+  <text x="640" y="475" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#333D4A" text-anchor="middle">民用监控设施已成为"城市安全 ↔ 战场透明"的一线之隔。防御方必须对监控设备</text>
+  <text x="640" y="500" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#333D4A" text-anchor="middle">实施严格的密码管理、固件更新和网络隔离。</text>
+
+  <!-- Source -->
+  <text x="60" y="700" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：金融时报、路透社2026年3月深度报道</text>
+  <text x="1220" y="700" font-family="Arial, sans-serif" font-size="14" fill="#999999" text-anchor="end">03</text>
+</svg>

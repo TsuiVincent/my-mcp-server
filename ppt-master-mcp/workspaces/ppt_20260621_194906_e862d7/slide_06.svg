@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="chapBg4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#002B5C"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+    <linearGradient id="glowRadial4" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00B4D8" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#00B4D8" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#chapBg4)"/>
+  <circle cx="950" cy="360" r="350" fill="url(#glowRadial4)"/>
+  <rect x="80" y="80" width="6" height="200" fill="#00B4D8"/>
+  <text x="120" y="280" font-family="Arial,sans-serif" font-size="160" font-weight="bold" fill="#FFFFFF" fill-opacity="0.08">04</text>
+  <text x="120" y="350" font-family="Microsoft YaHei,sans-serif" font-size="44" font-weight="bold" fill="#FFFFFF">算力节点</text>
+  <text x="120" y="405" font-family="Microsoft YaHei,sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF">已成为高价值战略目标</text>
+  <text x="120" y="460" font-family="Microsoft YaHei,sans-serif" font-size="18" fill="#A0D4FF">非对称反击：不打航母，专打数据中心</text>
+  <text x="120" y="495" font-family="Microsoft YaHei,sans-serif" font-size="16" fill="#80BFFF">伊朗无人机袭击AWS阿联酋/巴林数据中心</text>
+  <text x="120" y="525" font-family="Microsoft YaHei,sans-serif" font-size="16" fill="#80BFFF">EC2/S3/DynamoDB严重降级 · MQ-9被击落至少11架</text>
+  <rect x="120" y="560" width="100" height="4" fill="#00B4D8"/>
+  <circle cx="1050" cy="200" r="120" fill="#FFFFFF" fill-opacity="0.03"/>
+  <circle cx="1150" cy="500" r="80" fill="#FFFFFF" fill-opacity="0.04"/>
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3"/>
+</svg>

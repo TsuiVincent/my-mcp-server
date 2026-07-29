@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="contentBg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5FAFF" />
+      <stop offset="100%" stop-color="#FFFFFF" />
+    </linearGradient>
+    <linearGradient id="numGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8" />
+      <stop offset="100%" stop-color="#0050B3" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#contentBg2)" />
+  <rect x="0" y="0" width="1280" height="6" fill="url(#numGrad2)" />
+  <rect x="60" y="30" width="50" height="50" fill="#0050B3" />
+  <text x="85" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">2</text>
+  <text x="130" y="62" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="bold" fill="#1A1A1A">网络阻断已成为开战的"第一枪"</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#A0C4E8" stroke-width="1" stroke-dasharray="6 4" />
+  
+  <path fill="#001F4D" d="M68,120 H1212 A8,8 0 0 1 1220,128 V172 A8,8 0 0 1 1212,180 H68 A8,8 0 0 1 60,172 V128 A8,8 0 0 1 68,120 Z" />
+  <text x="640" y="155" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">开战当天伊朗全国互联网流量暴跌至正常水平的 <tspan fill="#00B4D8">约4%</tspan></text>
+  
+  <path fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1" d="M68,200 H622 A8,8 0 0 1 630,208 V332 A8,8 0 0 1 622,340 H68 A8,8 0 0 1 60,332 V208 A8,8 0 0 1 68,200 Z" />
+  <path fill="#00B4D8" d="M63,200 H63 A3,3 0 0 1 66,203 V337 A3,3 0 0 1 63,340 H63 A3,3 0 0 1 60,337 V203 A3,3 0 0 1 63,200 Z" />
+  <text x="86" y="232" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">多重打击同步展开</text>
+  <text font-size="14" fill="#444444" font-family="Microsoft YaHei, sans-serif" x="86" y="260">• NetBlocks：全国流量最低降至正常水平4%</text><text font-size="14" fill="#444444" font-family="Microsoft YaHei, sans-serif" x="86" y="282">• Cloudflare Radar：较前一周下降约98%</text><text font-size="14" fill="#444444" font-family="Microsoft YaHei, sans-serif" x="86" y="304">• IODA（乔治亚理工）：多维度连通性同步崩溃</text><path fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1" d="M658,200 H1212 A8,8 0 0 1 1220,208 V332 A8,8 0 0 1 1212,340 H658 A8,8 0 0 1 650,332 V208 A8,8 0 0 1 658,200 Z" />
+  <path fill="#00B4D8" d="M653,200 H653 A3,3 0 0 1 656,203 V337 A3,3 0 0 1 653,340 H653 A3,3 0 0 1 650,337 V203 A3,3 0 0 1 653,200 Z" />
+  <text x="676" y="232" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">网络战与心理战</text>
+  <text font-size="14" fill="#444444" font-family="Microsoft YaHei, sans-serif" x="676" y="260">• 伊朗通讯社IRNA、塔斯尼姆社遭入侵或下线</text><text font-size="14" fill="#444444" font-family="Microsoft YaHei, sans-serif" x="676" y="282">• BadeSaba祈祷App被劫持推送心理战信息</text><text font-size="14" fill="#444444" font-family="Microsoft YaHei, sans-serif" x="676" y="304">• 对外信息输出和内部指挥带宽几乎丧失</text><path fill="#E8F4FD" stroke="#00B4D8" stroke-width="1" d="M68,370 H1212 A8,8 0 0 1 1220,378 V442 A8,8 0 0 1 1212,450 H68 A8,8 0 0 1 60,442 V378 A8,8 0 0 1 68,370 Z" />
+  <text x="640" y="405" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#C41E3A">核心启示</text>
+  <text x="640" y="432" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#003580">网络战的窗口可能只有数小时，但这数小时足以决定整场战局的走向。关键信息基础设施的供应链安全与主动防御能力，已与航母、战斗机同等重要。</text>
+  
+  <path fill="#F0F6FF" stroke="#D0E4F5" stroke-width="1" d="M66,480 H1214 A6,6 0 0 1 1220,486 V524 A6,6 0 0 1 1214,530 H66 A6,6 0 0 1 60,524 V486 A6,6 0 0 1 66,480 Z" />
+  <text x="640" y="510" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#666666">数据来源：NetBlocks、Cloudflare Radar、IODA（乔治亚理工学院）、lukaszolejnik.com</text>
+  
+  <line x1="60" y1="660" x2="1220" y2="660" stroke="#D0E4F5" stroke-width="1" />
+  <text x="60" y="695" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">国际互联网监测组织 · 独立开源数据</text>
+  <text x="1220" y="695" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#999999">04</text>
+</svg>

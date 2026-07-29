@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+    <defs>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#C41E3A;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#640000;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#C4A44A;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#F5D68A;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#C4A44A;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="1280" height="720" fill="url(#bgGrad)"/>
+    <rect x="0" y="0" width="1280" height="6" fill="url(#goldGrad)"/>
+    <rect x="0" y="714" width="1280" height="6" fill="url(#goldGrad)"/>
+    <!-- 章号 -->
+    <text x="640" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="180" font-weight="bold" fill="#FFFFFF" fill-opacity="0.05">0{{CHAPTER_NUM}}</text>
+    <!-- 双金线装饰 -->
+    <rect x="440" y="360" width="400" height="3" fill="url(#goldGrad)"/>
+    <text x="640" y="430" text-anchor="middle" font-family="SimHei, Microsoft YaHei, sans-serif" font-size="48" font-weight="bold" fill="#FFFFFF">{{CHAPTER_TITLE}}</text>
+    <rect x="440" y="500" width="400" height="3" fill="url(#goldGrad)"/>
+    <text x="640" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#FFFFFF" fill-opacity="0.5" letter-spacing="4">{{CHAPTER_SUBTITLE}}</text>
+    <text x="640" y="680" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#F5D68A" fill-opacity="0.5">{{ORGANIZATION}}</text>
+</svg>

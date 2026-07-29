@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+    <defs>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#C41E3A;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#5A0000;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="1280" height="720" fill="url(#bgGrad)"/>
+    <circle cx="150" cy="150" r="400" fill="#FFFFFF" fill-opacity="0.02"/>
+    <circle cx="1130" cy="570" r="300" fill="#FFFFFF" fill-opacity="0.02"/>
+    <circle cx="640" cy="360" r="500" fill="#FFFFFF" fill-opacity="0.015"/>
+    <!-- 金色顶线 -->
+    <rect x="0" y="0" width="1280" height="4" fill="#F5D68A"/>
+    <!-- 章节号大字 -->
+    <text x="640" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="180" font-weight="bold" fill="#FFFFFF" fill-opacity="0.06">0{{CHAPTER_NUM}}</text>
+    <!-- 金色装饰条 -->
+    <rect x="500" y="360" width="280" height="5" fill="#F5D68A"/>
+    <!-- 章节标题 -->
+    <text x="640" y="430" text-anchor="middle" font-family="SimHei, Microsoft YaHei, sans-serif" font-size="50" font-weight="bold" fill="#FFFFFF">{{CHAPTER_TITLE}}</text>
+    <!-- 英文副标题 -->
+    <text x="640" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#FFFFFF" fill-opacity="0.6" letter-spacing="4">{{CHAPTER_SUBTITLE}}</text>
+    <!-- 底部 -->
+    <rect x="240" y="560" width="800" height="1" fill="#F5D68A" fill-opacity="0.3"/>
+    <rect x="0" y="680" width="1280" height="40" fill="#000000" fill-opacity="0.3"/>
+    <text x="640" y="707" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#FFFFFF" fill-opacity="0.6">{{ORGANIZATION}}</text>
+</svg>

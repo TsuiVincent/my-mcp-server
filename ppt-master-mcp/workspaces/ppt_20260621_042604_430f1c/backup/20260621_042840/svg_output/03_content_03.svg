@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bgGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5F8FC"/>
+      <stop offset="100%" stop-color="#EDF2F7"/>
+    </linearGradient>
+    <linearGradient id="topBarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1280" height="720" fill="url(#bgGradLight)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBarGrad)"/>
+
+  <!-- Title Bar -->
+  <rect x="60" y="30" width="50" height="50" fill="#0050B3" rx="4"/>
+  <text x="85" y="62" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">03</text>
+  <text x="130" y="65" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">战争账单即数据账单 · 算力节点成高价值目标</text>
+  <line x1="60" y1="95" x2="1220" y2="95" stroke="#0050B3" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- === Section A: 战争账单 === -->
+  <rect x="60" y="110" width="560" height="50" fill="#E3F2FD" rx="6"/>
+  <rect x="60" y="110" width="4" height="50" fill="#0050B3" rx="2"/>
+  <text x="80" y="141" font-family="Microsoft YaHei, sans-serif" font-size="17" font-weight="bold" fill="#1A2E44">战争账单：每一枚导弹都是一台会飞的计算机</text>
+
+  <!-- Data cards row 1 -->
+  <rect x="60" y="175" width="180" height="95" fill="#FFFFFF" rx="8" stroke="#E0E6ED" stroke-width="1"/>
+  <rect x="60" y="175" width="180" height="4" fill="#C00000"/>
+  <text x="150" y="208" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#C00000" text-anchor="middle">250-290亿</text>
+  <text x="150" y="235" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#6B7B8C" text-anchor="middle">前两月美军总花费（美元）</text>
+
+  <rect x="250" y="175" width="180" height="95" fill="#FFFFFF" rx="8" stroke="#E0E6ED" stroke-width="1"/>
+  <rect x="250" y="175" width="180" height="4" fill="#C00000"/>
+  <text x="340" y="208" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#C00000" text-anchor="middle">113亿</text>
+  <text x="340" y="235" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#6B7B8C" text-anchor="middle">第一周未预算支出（美元）</text>
+
+  <rect x="440" y="175" width="180" height="95" fill="#FFFFFF" rx="8" stroke="#E0E6ED" stroke-width="1"/>
+  <rect x="440" y="175" width="180" height="4" fill="#C00000"/>
+  <text x="530" y="208" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#C00000" text-anchor="middle">230万</text>
+  <text x="530" y="235" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#6B7B8C" text-anchor="middle">JASSM导弹单价（美元/枚）</text>
+
+  <!-- Description -->
+  <text x="60" y="300" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333D4A">
+    <tspan x="60" dy="0">● JASSM/战斧导弹 = 惯性导航 + 卫星接收 + 地形匹配 + 末端目标识别</tspan>
+    <tspan x="60" dy="24">● 防空弱化后改用JDAM（GBU-31约10.7万）——数据链需求降低致成本骤降</tspan>
+    <tspan x="60" dy="24">● THAAD库存消耗至少50%，Patriot拦截弹消耗42%-50%</tspan>
+  </text>
+
+  <!-- === Section B: 算力节点 === -->
+  <rect x="660" y="110" width="560" height="50" fill="#FFF3E0" rx="6"/>
+  <rect x="660" y="110" width="4" height="50" fill="#E65100" rx="2"/>
+  <text x="680" y="141" font-family="Microsoft YaHei, sans-serif" font-size="17" font-weight="bold" fill="#1A2E44">算力节点：伊朗非对称反击——不打航母，专打数据中心</text>
+
+  <rect x="660" y="175" width="560" height="150" fill="#FFFFFF" rx="8" stroke="#E0E6ED" stroke-width="1"/>
+  <rect x="660" y="175" width="8" height="150" fill="#E65100" rx="4"/>
+
+  <text x="690" y="208" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333D4A">
+    <tspan x="690" dy="0"><tspan font-weight="bold">2026.3.1-2</tspan> 伊朗无人机袭击海湾地区基础设施：</tspan>
+    <tspan x="690" dy="26">● AWS阿联酋ME-CENTRAL-1可用区被直接命中</tspan>
+    <tspan x="690" dy="26">● AWS巴林ME-SOUTH-1可用区遭受间接损害</tspan>
+    <tspan x="690" dy="26">● EC2、S3、DynamoDB等核心服务严重降级</tspan>
+    <tspan x="690" dy="26">● 这些数据中心托管着美军AI指挥链核心节点</tspan>
+  </text>
+
+  <!-- MQ-9 stat -->
+  <rect x="660" y="340" width="270" height="65" fill="#FFFFFF" rx="8" stroke="#E0E6ED" stroke-width="1"/>
+  <rect x="660" y="340" width="4" height="65" fill="#C00000"/>
+  <text x="795" y="370" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#C00000" text-anchor="middle">11架</text>
+  <text x="795" y="393" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B7B8C" text-anchor="middle">至少击落MQ-9"死神"无人机</text>
+
+  <rect x="950" y="340" width="270" height="65" fill="#FFFFFF" rx="8" stroke="#E0E6ED" stroke-width="1"/>
+  <rect x="950" y="340" width="4" height="65" fill="#C00000"/>
+  <text x="1085" y="370" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#C00000" text-anchor="middle">3000万</text>
+  <text x="1085" y="393" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B7B8C" text-anchor="middle">每架MQ-9成本（美元）</text>
+
+  <!-- Core message -->
+  <rect x="60" y="420" width="1160" height="80" fill="#0050B3" fill-opacity="0.06" rx="8" stroke="#0050B3" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="640" y="455" font-family="Microsoft YaHei, sans-serif" font-size="17" font-weight="bold" fill="#C00000" text-anchor="middle">⚡ 核心洞察</text>
+  <text x="640" y="483" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333D4A" text-anchor="middle">摧毁一个算力节点，可能比摧毁十个军事基地更具战略效果。数据中心与弹药库、指挥所同等重要。</text>
+
+  <!-- Footer -->
+  <text x="60" y="700" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：美军公开开支数据、AWS官方通告</text>
+  <text x="1220" y="700" font-family="Arial, sans-serif" font-size="14" fill="#999999" text-anchor="end">05</text>
+</svg>

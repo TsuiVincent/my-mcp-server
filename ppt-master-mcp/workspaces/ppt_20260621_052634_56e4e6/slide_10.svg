@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="70" fill="#003366"/>
+  <rect x="0" y="0" width="6" height="720" fill="#CC0000"/>
+  <text x="50" y="45" fill="#FFFFFF" font-size="20" font-weight="bold" font-family="Microsoft YaHei, sans-serif">四、算力节点已成为高价值战略目标</text>
+  <rect x="6" y="70" width="1274" height="50" fill="#F0F4F8"/>
+  <rect x="6" y="70" width="6" height="50" fill="#0066CC"/>
+  <text x="30" y="100" fill="#333333" font-size="15" font-family="Microsoft YaHei, sans-serif">核心观点：伊朗的非对称反击 — 不打航母，专打数据中心</text>
+  <!-- Left: AWS attack details -->
+  <rect x="40" y="145" width="580" height="240" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" rx="8"/>
+  <rect x="40" y="145" width="580" height="32" fill="#003366" rx="8"/>
+  <rect x="40" y="169" width="580" height="8" fill="#003366"/>
+  <text x="60" y="166" fill="#FFFFFF" font-size="14" font-weight="bold" font-family="Microsoft YaHei, sans-serif">伊朗无人机袭击云基础设施</text>
+  <text x="60" y="208" fill="#333333" font-size="14" font-weight="bold" font-family="Microsoft YaHei, sans-serif">攻击时间：2026年3月1日—2日</text>
+  <text x="60" y="233" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">目标一：AWS 阿联酋 ME-CENTRAL-1 可用区</text>
+  <text x="60" y="258" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">目标二：AWS 巴林 ME-SOUTH-1 可用区</text>
+  <text x="60" y="283" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">受损服务：EC2、S3、DynamoDB 等核心服务</text>
+  <text x="60" y="308" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">影响范围：海湾地区云服务严重降级</text>
+  <text x="60" y="338" fill="#CC0000" font-size="13" font-weight="bold" font-family="Microsoft YaHei, sans-serif">关键判断：云计算节点已成为高价值军事目标</text>
+  <!-- Right: MQ-9 losses -->
+  <rect x="660" y="145" width="580" height="240" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" rx="8"/>
+  <rect x="660" y="145" width="580" height="32" fill="#CC0000" rx="8"/>
+  <rect x="660" y="169" width="580" height="8" fill="#CC0000"/>
+  <text x="680" y="166" fill="#FFFFFF" font-size="14" font-weight="bold" font-family="Microsoft YaHei, sans-serif">MQ-9"死神"无人机战损分析</text>
+  <text x="680" y="208" fill="#333333" font-size="14" font-weight="bold" font-family="Microsoft YaHei, sans-serif">累计击落数量：≥ 11架</text>
+  <text x="680" y="233" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">单机成本：约 3000万~3500万美元</text>
+  <text x="680" y="258" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">总损失估算：约 3.3亿~3.85亿美元</text>
+  <text x="680" y="283" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">战损原因：综合运用防空系统与电子战手段</text>
+  <text x="680" y="313" fill="#CC0000" font-size="13" font-weight="bold" font-family="Microsoft YaHei, sans-serif">趋势：无人机的大规模运用使得成本不对称加剧</text>
+  <!-- Lower section: KPI cards -->
+  <rect x="40" y="420" width="280" height="80" fill="#E3F2FD" rx="8"/>
+  <rect x="40" y="420" width="6" height="80" fill="#1565C0"/>
+  <text x="60" y="448" fill="#1565C0" font-size="14" font-family="Microsoft YaHei, sans-serif">攻击策略</text>
+  <text x="60" y="478" fill="#333333" font-size="15" font-weight="bold" font-family="Microsoft YaHei, sans-serif">非对称：打击云计算中枢</text>
+  <rect x="340" y="420" width="280" height="80" fill="#FCE4EC" rx="8"/>
+  <rect x="340" y="420" width="6" height="80" fill="#C62828"/>
+  <text x="360" y="448" fill="#C62828" font-size="14" font-family="Microsoft YaHei, sans-serif">成本不对称</text>
+  <text x="360" y="478" fill="#333333" font-size="15" font-weight="bold" font-family="Microsoft YaHei, sans-serif">无人机 vs 云设施成本比</text>
+  <rect x="640" y="420" width="280" height="80" fill="#FFF3E0" rx="8"/>
+  <rect x="640" y="420" width="6" height="80" fill="#E65100"/>
+  <text x="660" y="448" fill="#E65100" font-size="14" font-family="Microsoft YaHei, sans-serif">战场效应</text>
+  <text x="660" y="478" fill="#333333" font-size="15" font-weight="bold" font-family="Microsoft YaHei, sans-serif">瘫痪指挥通信链路</text>
+  <rect x="940" y="420" width="300" height="80" fill="#E8F5E9" rx="8"/>
+  <rect x="940" y="420" width="6" height="80" fill="#2E7D32"/>
+  <text x="960" y="448" fill="#2E7D32" font-size="14" font-family="Microsoft YaHei, sans-serif">未来启示</text>
+  <text x="960" y="478" fill="#333333" font-size="15" font-weight="bold" font-family="Microsoft YaHei, sans-serif">算力即战力须重点防护</text>
+  <!-- Conclusion -->
+  <rect x="40" y="530" width="1200" height="70" fill="#FFF3E0" stroke="#FFB74D" stroke-width="1" rx="8"/>
+  <rect x="40" y="530" width="6" height="70" fill="#FF6B35" rx="2"/>
+  <text x="65" y="558" fill="#E65100" font-size="15" font-weight="bold" font-family="Microsoft YaHei, sans-serif">⚠ 核心启示</text>
+  <text x="65" y="580" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif"><tspan fill="#CC0000" font-weight="bold">算力节点已成为高价值战略目标。</tspan>未来的冲突中，数据中心与云计算基础设施将面临直接的物理威胁。</text>
+  <!-- Footer -->
+  <rect x="0" y="660" width="1280" height="60" fill="#F5F5F5"/>
+  <text x="60" y="695" fill="#999999" font-size="12" font-family="Microsoft YaHei, sans-serif">来源：公开报道</text>
+  <text x="640" y="695" text-anchor="middle" fill="#999999" font-size="12" font-family="Microsoft YaHei, sans-serif">第四章 · 算力节点</text>
+  <text x="1240" y="695" text-anchor="end" fill="#999999" font-size="12" font-family="Microsoft YaHei, sans-serif">10 / 13</text>
+</svg>

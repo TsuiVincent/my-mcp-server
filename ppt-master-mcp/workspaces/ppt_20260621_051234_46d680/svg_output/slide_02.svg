@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F0F6FF"/>
+      <stop offset="100%" stop-color="#E8F0FE"/>
+    </linearGradient>
+    <linearGradient id="barGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F8FBFF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+
+  <!-- Top decoration line -->
+  <rect x="0" y="0" width="1280" height="6" fill="url(#barGrad)"/>
+
+  <!-- Left-side decorative trapezoid -->
+  <polygon points="0,0 40,0 120,720 0,720" fill="#0050B3" fill-opacity="0.08"/>
+  <polygon points="0,0 20,0 60,720 0,720" fill="#0050B3" fill-opacity="0.04"/>
+
+  <!-- Gradient vertical bar -->
+  <rect x="0" y="0" width="6" height="720" fill="url(#barGrad)"/>
+
+  <!-- Section number block -->
+  <rect x="60" y="40" width="50" height="50" fill="#0050B3" rx="4"/>
+  <text x="85" y="72" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF" text-anchor="middle">01</text>
+
+  <!-- Title -->
+  <text x="130" y="72" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">报告提纲</text>
+
+  <!-- Dashed divider -->
+  <line x1="60" y1="110" x2="1220" y2="110" stroke="#B0D4F1" stroke-width="1" stroke-dasharray="6 4"/>
+
+  <!-- ===== TOC Items ===== -->
+  <!-- Item 1: 民用监控 -->
+  <rect x="80" y="140" width="540" height="80" fill="url(#cardGrad)" rx="8" stroke="#D0E4F7" stroke-width="1"/>
+  <rect x="80" y="140" width="4" height="80" fill="#00B4D8" rx="2"/>
+  <circle cx="110" cy="180" r="18" fill="#0050B3"/>
+  <text x="110" y="187" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="145" y="172" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#1A1A1A">民用监控系统已成为战略情报源</text>
+  <text x="145" y="200" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">交通摄像头→瞄准镜 · AI行为模式分析 · 开战首日精确打击</text>
+
+  <!-- Item 2: 网络阻断 -->
+  <rect x="80" y="240" width="540" height="80" fill="url(#cardGrad)" rx="8" stroke="#D0E4F7" stroke-width="1"/>
+  <rect x="80" y="240" width="4" height="80" fill="#00B4D8" rx="2"/>
+  <circle cx="110" cy="280" r="18" fill="#0050B3"/>
+  <text x="110" y="287" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="145" y="272" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#1A1A1A">网络阻断已成为开战的"第一枪"</text>
+  <text x="145" y="300" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">流量暴跌至4% · 新闻网站被入侵 · 数小时窗口决定战局</text>
+
+  <!-- Item 3: 战争账单 -->
+  <rect x="80" y="340" width="540" height="80" fill="url(#cardGrad)" rx="8" stroke="#D0E4F7" stroke-width="1"/>
+  <rect x="80" y="340" width="4" height="80" fill="#00B4D8" rx="2"/>
+  <circle cx="110" cy="380" r="18" fill="#0050B3"/>
+  <text x="110" y="387" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="145" y="372" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#1A1A1A">战争账单本质上就是数据账单</text>
+  <text x="145" y="400" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">前两月250-290亿美元 · 导弹=会飞的计算机 · JDAM成本骤降</text>
+
+  <!-- Item 4: 算力节点 -->
+  <rect x="660" y="140" width="540" height="80" fill="url(#cardGrad)" rx="8" stroke="#D0E4F7" stroke-width="1"/>
+  <rect x="660" y="140" width="4" height="80" fill="#00B4D8" rx="2"/>
+  <circle cx="690" cy="180" r="18" fill="#0050B3"/>
+  <text x="690" y="187" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">4</text>
+  <text x="725" y="172" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#1A1A1A">算力节点已成为高价值战略目标</text>
+  <text x="725" y="200" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">AWS数据中心被命中 · 11架MQ-9被击落 · 云主权危机</text>
+
+  <!-- Item 5: 星链 -->
+  <rect x="660" y="240" width="540" height="80" fill="url(#cardGrad)" rx="8" stroke="#D0E4F7" stroke-width="1"/>
+  <rect x="660" y="240" width="4" height="80" fill="#00B4D8" rx="2"/>
+  <circle cx="690" cy="280" r="18" fill="#0050B3"/>
+  <text x="690" y="287" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">5</text>
+  <text x="725" y="272" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#1A1A1A">没有绝对安全的通信手段</text>
+  <text x="725" y="300" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">星链渗透 vs 反间谍行动 · 射频干扰 · 通信本身无法隐藏</text>
+
+  <!-- Summary card -->
+  <rect x="660" y="340" width="540" height="80" fill="url(#cardGrad)" rx="8" stroke="#D0E4F7" stroke-width="1"/>
+  <rect x="660" y="340" width="4" height="80" fill="#C41E3A" rx="2"/>
+  <circle cx="690" cy="380" r="18" fill="#C41E3A"/>
+  <text x="690" y="386" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">∑</text>
+  <text x="725" y="372" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#1A1A1A">总结：三条总体判断</text>
+  <text x="725" y="400" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">数据定力 · 民用即战场 · 数据战无单方面绝对优势</text>
+
+  <!-- Connector line -->
+  <line x1="620" y1="180" x2="660" y2="180" stroke="#B0D4F1" stroke-width="2"/>
+  <line x1="620" y1="280" x2="660" y2="280" stroke="#B0D4F1" stroke-width="2"/>
+  <line x1="620" y1="380" x2="660" y2="380" stroke="#B0D4F1" stroke-width="2"/>
+
+  <!-- Footer -->
+  <rect x="0" y="680" width="1280" height="40" fill="#F0F6FF"/>
+  <text x="60" y="705" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">关于2026年美以对伊军事冲突中信息数据战的分析报告</text>
+  <text x="1220" y="705" font-family="Arial, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="end">02</text>
+
+  <!-- Bottom decoration -->
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3"/>
+</svg>

@@ -1,0 +1,56 @@
+# ============================================================
+# My-MCP-Intranet - 全量依赖文件
+# 
+# 按需安装：每个服务器有独立的 requirements.txt，
+# 此文件包含所有服务器的依赖并集。
+# 
+# 安装方式：
+#   pip install -r requirements.txt          # 安装全部
+#   pip install -r mcp-file-crud/requirements.txt   # 仅某服务器
+# ============================================================
+
+# --- 核心框架（所有服务器共用） ---
+mcp>=1.6.0
+httpx>=0.27.0
+uvicorn>=0.30.0
+python-dotenv
+
+# --- mcp-file-crud: 智能填表 + 文档创建 ---
+python-docx>=1.1.0
+openpyxl>=3.1.0
+
+# --- mcp-markitdown: Markitdown 转换 ---
+markitdown
+markdown
+
+# --- mcp-browser-playwright: 浏览器自动化 ---
+playwright>=1.40.0
+
+# --- mcp-sequential-thinking: 结构化推理 ---
+# (仅核心依赖，无额外包)
+
+# --- mcp-data-platform: 数据库 + 可视化 + 知识库 ---
+matplotlib
+pymysql
+psycopg2-binary
+chromadb
+sentence-transformers
+
+# --- mcp-datetime: 时间日期服务 ---
+python-dateutil
+pytz
+
+# --- mcp-ops-monitor: 系统监控 ---
+psutil
+
+# --- mcp-fetch-intranet: 内网抓取 + 配置管理 ---
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+
+# --- ppt-master-mcp: AI PPT 生成 ---
+PyMuPDF>=1.23.0
+python-pptx>=0.6.23
+Pillow>=10.0.0
+lxml>=4.9.0
+cairosvg>=2.7.0
+cairocffi>=1.6.0

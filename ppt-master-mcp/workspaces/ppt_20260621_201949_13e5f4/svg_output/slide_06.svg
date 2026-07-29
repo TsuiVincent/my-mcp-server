@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00418D"/>
+      <stop offset="100%" stop-color="#072C61"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="8" fill="url(#topBar)"/>
+  <rect x="80" y="100" width="4" height="36" fill="#C41E3A"/>
+  <text x="100" y="130" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#00418D">断网72小时</text>
+  <text x="100" y="155" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#6B7280">CASE STUDY: 72 HOURS OF INTERNET BLACKOUT</text>
+  <line x1="80" y1="170" x2="1200" y2="170" stroke="#E2E8F0" stroke-width="1"/>
+  
+  <!-- Key data metrics row -->
+  <rect x="80" y="200" width="260" height="90" fill="#F0F4F8" rx="6"/>
+  <text x="210" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#C41E3A">4%</text>
+  <text x="210" y="260" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7280">伊朗网络流量最低值</text>
+  
+  <rect x="370" y="200" width="260" height="90" fill="#F0F4F8" rx="6"/>
+  <text x="500" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#C41E3A">98%</text>
+  <text x="500" y="260" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7280">较前一周下降幅度</text>
+  
+  <rect x="660" y="200" width="260" height="90" fill="#F0F4F8" rx="6"/>
+  <text x="790" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#C41E3A">7:00 UTC</text>
+  <text x="790" y="260" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7280">2月28日开战时间</text>
+
+  <rect x="950" y="200" width="250" height="90" fill="#F0F4F8" rx="6"/>
+  <text x="1075" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#C41E3A">≈0%</text>
+  <text x="1075" y="260" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7280">德黑兰等主要省份</text>
+  
+  <!-- Timeline flow -->
+  <text x="80" y="330" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#00418D">事件时序</text>
+  
+  <rect x="80" y="350" width="1120" height="60" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" rx="4"/>
+  <rect x="80" y="350" width="6" height="60" fill="#00418D"/>
+  <text x="110" y="378" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#1A202C">7:00 UTC · 网络断崖式下跌</text>
+  <text x="110" y="398" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7280">NetBlocks监测显示伊朗全国互联网流量开始断崖式下跌</text>
+  
+  <rect x="80" y="420" width="1120" height="60" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" rx="4"/>
+  <rect x="80" y="420" width="6" height="60" fill="#C41E3A"/>
+  <text x="110" y="448" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#1A202C">网络攻击与军事打击同步展开</text>
+  <text x="110" y="468" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7280">IRNA、塔斯尼姆通讯社等主要新闻网站遭入侵或下线</text>
+  
+  <rect x="80" y="490" width="1120" height="60" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" rx="4"/>
+  <rect x="80" y="490" width="6" height="60" fill="#0066CC"/>
+  <text x="110" y="518" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#1A202C">心理战：BadeSaba祈祷应用被劫持</text>
+  <text x="110" y="538" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7280">伊朗国内主流祈祷应用遭劫持，推送心理战信息</text>
+  
+  <!-- Conclusion -->
+  <rect x="80" y="580" width="1120" height="50" fill="#FEF3E8" rx="6"/>
+  <rect x="80" y="580" width="6" height="50" fill="#C41E3A"/>
+  <text x="110" y="610" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#4A5568">网络战的窗口可能只有数小时，但这数小时足以决定整场战局的走向。关键信息基础设施的供应链安全已与航母同等重要。</text>
+  
+  <line x1="80" y1="660" x2="1200" y2="660" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="80" y="685" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#9CA3AF">来源：NetBlocks · Cloudflare Radar</text>
+  <text x="1200" y="685" text-anchor="end" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#9CA3AF">02 / 信息数据战分析 · 6</text>
+  
+  <line x1="80" y1="100" x2="80" y2="115" stroke="#00418D" stroke-width="2"/>
+  <line x1="80" y1="100" x2="95" y2="100" stroke="#00418D" stroke-width="2"/>
+  <line x1="1200" y1="100" x2="1200" y2="115" stroke="#00418D" stroke-width="2"/>
+  <line x1="1200" y1="100" x2="1185" y2="100" stroke="#00418D" stroke-width="2"/>
+</svg>

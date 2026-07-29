@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8" />
+      <stop offset="100%" stop-color="#0050B3" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1280" height="720" fill="#FFFFFF" />
+  
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBar)" />
+  
+  <path fill="#0050B3" d="M64,36 H106 A4,4 0 0 1 110,40 V82 A4,4 0 0 1 106,86 H64 A4,4 0 0 1 60,82 V40 A4,4 0 0 1 64,36 Z" />
+  <text x="85" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">01</text>
+  <text x="130" y="70" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">民用监控系统已成为战略情报源</text>
+  
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#E0E8F0" stroke-width="1" />
+  
+  
+  <path fill="#F0F6FF" d="M68,120 H1212 A8,8 0 0 1 1220,128 V172 A8,8 0 0 1 1212,180 H68 A8,8 0 0 1 60,172 V128 A8,8 0 0 1 68,120 Z" />
+  <path fill="#00B4D8" d="M62,120 H62 A2,2 0 0 1 64,122 V178 A2,2 0 0 1 62,180 H62 A2,2 0 0 1 60,178 V122 A2,2 0 0 1 62,120 Z" />
+  <text x="80" y="155" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#333333">核心论点：城市里的交通摄像头，原本用于治安管理，但在战时可以变成对手的全天候瞄准镜。</text>
+
+  
+  <path fill="#FAFCFF" stroke="#E0E8F0" stroke-width="1" d="M70,200 H610 A10,10 0 0 1 620,210 V470 A10,10 0 0 1 610,480 H70 A10,10 0 0 1 60,470 V210 A10,10 0 0 1 70,200 Z" />
+  <path fill="#0050B3" d="M70,200 H610 A10,10 0 0 1 620,210 V230 A10,10 0 0 1 610,240 H70 A10,10 0 0 1 60,230 V210 A10,10 0 0 1 70,200 Z" />
+  <rect x="60" y="230" width="560" height="10" fill="#0050B3" />
+  <text x="340" y="226" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">🎯 典型案例</text>
+  
+  <circle cx="85" cy="270" r="4" fill="#00B4D8" />
+  <text x="100" y="275" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A">2026年2月28日开战当天</text>
+  <text x="100" y="298" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">以色列空军对德黑兰多个目标实施精确打击</text>
+  <text x="100" y="318" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">—— 军官住所、革命卫队指挥点等</text>
+  
+  <circle cx="85" cy="350" r="4" fill="#00B4D8" />
+  <text x="100" y="355" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A">情报来源：8200部队 + 摩萨德</text>
+  <text x="100" y="378" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">多年网络渗透伊朗民用监控基础设施</text>
+  <text x="100" y="398" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">AI算法分析海量视频 → 行为模式识别</text>
+  
+  <circle cx="85" cy="430" r="4" fill="#00B4D8" />
+  <text x="100" y="435" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A">来源：金融时报/路透社</text>
+  <text x="100" y="458" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">多名以色列情报官员披露证实</text>
+
+  
+  <path fill="#F8FBFF" stroke="#00B4D8" stroke-opacity="0.2" stroke-width="2" d="M670,200 H1210 A10,10 0 0 1 1220,210 V470 A10,10 0 0 1 1210,480 H670 A10,10 0 0 1 660,470 V210 A10,10 0 0 1 670,200 Z" />
+  <path fill="#00B4D8" d="M670,200 H1210 A10,10 0 0 1 1220,210 V230 A10,10 0 0 1 1210,240 H670 A10,10 0 0 1 660,230 V210 A10,10 0 0 1 670,200 Z" />
+  <rect x="660" y="230" width="560" height="10" fill="#00B4D8" />
+  <text x="940" y="226" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">📋 战略分析</text>
+
+  <path fill="#FFFFFF" stroke="#E0E8F0" stroke-width="1" d="M696,265 H1184 A6,6 0 0 1 1190,271 V304 A6,6 0 0 1 1184,310 H696 A6,6 0 0 1 690,304 V271 A6,6 0 0 1 696,265 Z" />
+  <text x="705" y="293" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">民用监控设施的战时军事价值急剧上升</text>
+  
+  <path fill="#FFFFFF" stroke="#E0E8F0" stroke-width="1" d="M696,325 H1184 A6,6 0 0 1 1190,331 V364 A6,6 0 0 1 1184,370 H696 A6,6 0 0 1 690,364 V331 A6,6 0 0 1 696,325 Z" />
+  <text x="705" y="353" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">城市智慧化程度越高，战场透明化程度越高</text>
+  
+  <path fill="#FFFFFF" stroke="#E0E8F0" stroke-width="1" d="M696,385 H1184 A6,6 0 0 1 1190,391 V424 A6,6 0 0 1 1184,430 H696 A6,6 0 0 1 690,424 V391 A6,6 0 0 1 696,385 Z" />
+  <text x="705" y="413" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">密码管理 + 固件更新 + 网络隔离 = 必备防御</text>
+
+  
+  <path fill="#FFF8F0" stroke="#FFB347" stroke-opacity="0.5" stroke-width="1" d="M698,450 H1182 A8,8 0 0 1 1190,458 V522 A8,8 0 0 1 1182,530 H698 A8,8 0 0 1 690,522 V458 A8,8 0 0 1 698,450 Z" />
+  <text x="705" y="478" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#D47400">⚠ 防御要点</text>
+  <text x="705" y="500" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#666666">"城市安全"与"战场透明"仅一线之隔</text>
+  <text x="705" y="520" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#666666">—— 网络渗透是长期、系统性的，而非临时起意</text>
+
+  
+  <rect x="60" y="665" width="1160" height="1" fill="#E0E8F0" />
+  <text x="60" y="690" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：金融时报 · 路透社 2026年3月深度报道</text>
+  <text x="1220" y="690" text-anchor="end" font-family="Arial, sans-serif" font-size="14" fill="#0050B3">04</text>
+  
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3" />
+</svg>

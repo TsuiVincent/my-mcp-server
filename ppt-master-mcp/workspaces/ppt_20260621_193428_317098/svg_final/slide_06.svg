@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8" />
+      <stop offset="100%" stop-color="#0050B3" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF" />
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBar)" />
+  <path fill="#0050B3" d="M64,36 H106 A4,4 0 0 1 110,40 V82 A4,4 0 0 1 106,86 H64 A4,4 0 0 1 60,82 V40 A4,4 0 0 1 64,36 Z" />
+  <text x="85" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">03</text>
+  <text x="130" y="70" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">战争账单本质上就是数据账单</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#E0E8F0" stroke-width="1" />
+  <path fill="#F0F6FF" d="M68,120 H1212 A8,8 0 0 1 1220,128 V172 A8,8 0 0 1 1212,180 H68 A8,8 0 0 1 60,172 V128 A8,8 0 0 1 68,120 Z" />
+  <path fill="#00B4D8" d="M62,120 H62 A2,2 0 0 1 64,122 V178 A2,2 0 0 1 62,180 H62 A2,2 0 0 1 60,178 V122 A2,2 0 0 1 62,120 Z" />
+  <text x="80" y="148" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#333333">核心论点：高精度武器之所以昂贵，不是因为炸药贵，而是因为每一枚导弹都是一台会飞的计算机。</text>
+  <text x="80" y="170" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#666666">前两个月美军花费约250亿至290亿美元，日均约4至5亿美元</text>
+
+  
+  <path fill="#F0F6FF" d="M70,205 H410 A10,10 0 0 1 420,215 V305 A10,10 0 0 1 410,315 H70 A10,10 0 0 1 60,305 V215 A10,10 0 0 1 70,205 Z" />
+  <path fill="#C00000" d="M63,205 H417 A3,3 0 0 1 420,208 V208 A3,3 0 0 1 417,211 H63 A3,3 0 0 1 60,208 V208 A3,3 0 0 1 63,205 Z" />
+  <text x="240" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#C00000">$127亿</text>
+  <text x="240" y="265" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">首周未预算支出（CSIS修正值）</text>
+  <text x="240" y="285" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">日均约21亿美元</text>
+
+  <path fill="#F0F6FF" d="M470,205 H810 A10,10 0 0 1 820,215 V305 A10,10 0 0 1 810,315 H470 A10,10 0 0 1 460,305 V215 A10,10 0 0 1 470,205 Z" />
+  <path fill="#0050B3" d="M463,205 H817 A3,3 0 0 1 820,208 V208 A3,3 0 0 1 817,211 H463 A3,3 0 0 1 460,208 V208 A3,3 0 0 1 463,205 Z" />
+  <text x="640" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#0050B3">$230万</text>
+  <text x="640" y="265" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">JASSM最新型号单价</text>
+  <text x="640" y="285" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">战斧巡航导弹约$200万</text>
+
+  <path fill="#F0F6FF" d="M870,205 H1210 A10,10 0 0 1 1220,215 V305 A10,10 0 0 1 1210,315 H870 A10,10 0 0 1 860,305 V215 A10,10 0 0 1 870,205 Z" />
+  <path fill="#00B4D8" d="M863,205 H1217 A3,3 0 0 1 1220,208 V208 A3,3 0 0 1 1217,211 H863 A3,3 0 0 1 860,208 V208 A3,3 0 0 1 863,205 Z" />
+  <text x="1040" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#00B4D8">$7.5万</text>
+  <text x="1040" y="265" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">JDAM制导炸弹最低单价</text>
+  <text x="1040" y="285" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">GBU-38 500磅</text>
+
+  
+  <path fill="#FAFCFF" stroke="#E0E8F0" stroke-width="1" d="M70,340 H1210 A10,10 0 0 1 1220,350 V470 A10,10 0 0 1 1210,480 H70 A10,10 0 0 1 60,470 V350 A10,10 0 0 1 70,340 Z" />
+  <path fill="#0050B3" d="M70,340 H1210 A10,10 0 0 1 1220,350 V365 A10,10 0 0 1 1210,375 H70 A10,10 0 0 1 60,365 V350 A10,10 0 0 1 70,340 Z" />
+  <rect x="60" y="365" width="1160" height="10" fill="#0050B3" />
+  <text x="640" y="363" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">🔬 成本差异的核心：数据链复杂程度</text>
+
+  <path fill="#FFFFFF" stroke="#E0E8F0" stroke-width="1" d="M96,400 H584 A6,6 0 0 1 590,406 V454 A6,6 0 0 1 584,460 H96 A6,6 0 0 1 90,454 V406 A6,6 0 0 1 96,400 Z" />
+  <text x="340" y="425" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#C00000">初期：高数据链需求</text>
+  <text x="340" y="448" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#555555">惯性导航+卫星接收机+地形匹配+末端识别</text>
+
+  <path fill="#FFFFFF" stroke="#E0E8F0" stroke-width="1" d="M696,400 H1184 A6,6 0 0 1 1190,406 V454 A6,6 0 0 1 1184,460 H696 A6,6 0 0 1 690,454 V406 A6,6 0 0 1 696,400 Z" />
+  <text x="940" y="425" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#00B4D8">后期：低数据链需求</text>
+  <text x="940" y="448" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#555555">伊朗防空被削弱后，成本骤降的核心理由</text>
+
+  
+  <text x="640" y="438" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#0050B3">→</text>
+
+  
+  <path fill="#FFF8F0" stroke="#FFB347" stroke-opacity="0.3" stroke-width="1" d="M68,505 H1212 A8,8 0 0 1 1220,513 V557 A8,8 0 0 1 1212,565 H68 A8,8 0 0 1 60,557 V513 A8,8 0 0 1 68,505 Z" />
+  <text x="80" y="533" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#D47400">💡 核心洞察</text>
+  <text x="200" y="533" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">导弹价格中的80%以上用于制导系统（数据采集、处理、匹配），而非战斗部。数据，才是真正的"弹药"。</text>
+  <text x="80" y="555" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#999999">前六天消耗尤为剧烈，CSIS将其修正为约127亿美元（含装备损耗和基地损毁）</text>
+
+  <rect x="60" y="665" width="1160" height="1" fill="#E0E8F0" />
+  <text x="60" y="690" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：五角大楼通报 · CSIS分析报告</text>
+  <text x="1220" y="690" text-anchor="end" font-family="Arial, sans-serif" font-size="14" fill="#0050B3">06</text>
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3" />
+</svg>

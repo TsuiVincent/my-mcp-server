@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="tocBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8F4FD"/>
+      <stop offset="100%" stop-color="#F0F7FF"/>
+    </linearGradient>
+    <linearGradient id="numGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <!-- 背景 -->
+  <rect width="1280" height="720" fill="url(#tocBg)"/>
+  <!-- 左侧装饰区域 -->
+  <path d="M0,0 L120,0 L100,720 L0,720 Z" fill="#003366" fill-opacity="0.05"/>
+  <rect x="0" y="0" width="6" height="720" fill="url(#numGrad1)"/>
+  <!-- 顶部装饰线 -->
+  <rect x="0" y="0" width="1280" height="6" fill="url(#numGrad1)"/>
+  <!-- 标题区域 -->
+  <rect x="60" y="40" width="50" height="50" fill="#0050B3"/>
+  <text x="85" y="72" text-anchor="middle" font-family="Microsoft YaHei,sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF">目</text>
+  <text x="130" y="76" font-family="Microsoft YaHei,sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">录</text>
+  <text x="180" y="76" font-family="Microsoft YaHei,sans-serif" font-size="16" fill="#6B7280">CONTENTS</text>
+  <!-- 内容项 - 5个章节 -->
+  <!-- 第1章 -->
+  <rect x="100" y="140" width="500" height="90" fill="#FFFFFF" rx="8"/>
+  <rect x="100" y="140" width="8" height="90" fill="#00B4D8" rx="4"/>
+  <circle cx="140" cy="185" r="22" fill="url(#numGrad1)"/>
+  <text x="140" y="192" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">01</text>
+  <text x="180" y="180" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">民用监控系统已成为战略情报源</text>
+  <text x="180" y="208" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#6B7280">交通摄像头→全天候瞄准镜 · 8200部队渗透 · AI行为分析</text>
+
+  <!-- 第2章 -->
+  <rect x="100" y="250" width="500" height="90" fill="#FFFFFF" rx="8"/>
+  <rect x="100" y="250" width="8" height="90" fill="#00B4D8" rx="4"/>
+  <circle cx="140" cy="295" r="22" fill="url(#numGrad1)"/>
+  <text x="140" y="302" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">02</text>
+  <text x="180" y="290" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">网络阻断已成为开战的"第一枪"</text>
+  <text x="180" y="318" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#6B7280">伊朗互联网流量降至4% · 网络攻击与物理打击同步</text>
+
+  <!-- 第3章 -->
+  <rect x="100" y="360" width="500" height="90" fill="#FFFFFF" rx="8"/>
+  <rect x="100" y="360" width="8" height="90" fill="#00B4D8" rx="4"/>
+  <circle cx="140" cy="405" r="22" fill="url(#numGrad1)"/>
+  <text x="140" y="412" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">03</text>
+  <text x="180" y="400" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">战争账单本质上就是数据账单</text>
+  <text x="180" y="428" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#6B7280">导弹=会飞的计算机 · JASSM 230万/枚 · 拦截弹依赖数据流</text>
+
+  <!-- 第4章 -->
+  <rect x="100" y="470" width="500" height="90" fill="#FFFFFF" rx="8"/>
+  <rect x="100" y="470" width="8" height="90" fill="#00B4D8" rx="4"/>
+  <circle cx="140" cy="515" r="22" fill="url(#numGrad1)"/>
+  <text x="140" y="522" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">04</text>
+  <text x="180" y="510" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">算力节点已成为高价值战略目标</text>
+  <text x="180" y="538" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#6B7280">不打航母，专打数据中心 · AWS遭袭 · MQ-9被击落11架</text>
+
+  <!-- 第5章 -->
+  <rect x="100" y="580" width="500" height="90" fill="#FFFFFF" rx="8"/>
+  <rect x="100" y="580" width="8" height="90" fill="#00B4D8" rx="4"/>
+  <circle cx="140" cy="625" r="22" fill="url(#numGrad1)"/>
+  <text x="140" y="632" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">05</text>
+  <text x="180" y="620" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">没有绝对安全的通信手段</text>
+  <text x="180" y="648" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#6B7280">Starlink终端走私 · 伊朗反间谍行动 · 射频干扰</text>
+
+  <!-- 右侧浮标卡 -->
+  <rect x="680" y="200" width="500" height="300" fill="#FFFFFF" rx="12" stroke="#E5E7EB" stroke-width="1"/>
+  <rect x="680" y="200" width="500" height="60" fill="#0050B3" rx="12"/>
+  <rect x="680" y="248" width="500" height="12" fill="#0050B3"/>
+  <text x="930" y="238" text-anchor="middle" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">报告结构</text>
+  <text x="710" y="300" font-family="Microsoft YaHei,sans-serif" font-size="15" fill="#4A5568">本报告从 <tspan fill="#0050B3" font-weight="bold">五个维度</tspan> 分析本次冲突中</text>
+  <text x="710" y="325" font-family="Microsoft YaHei,sans-serif" font-size="15" fill="#4A5568">信息数据战的基本特征，并归纳</text>
+  <text x="710" y="350" font-family="Microsoft YaHei,sans-serif" font-size="15" fill="#4A5568"><tspan fill="#0050B3" font-weight="bold">三条总体判断</tspan>。</text>
+  <line x1="710" y1="380" x2="1150" y2="380" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="710" y="410" font-family="Microsoft YaHei,sans-serif" font-size="15" fill="#0050B3" font-weight="bold">核心观点</text>
+  <text x="710" y="440" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#6B7280">数据采集、传输、处理、算力</text>
+  <text x="710" y="465" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#6B7280">和算法，决定战争主动权</text>
+
+  <!-- 底部装饰线 -->
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3"/>
+</svg>

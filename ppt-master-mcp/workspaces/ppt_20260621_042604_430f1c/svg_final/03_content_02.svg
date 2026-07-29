@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bgGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5F8FC" />
+      <stop offset="100%" stop-color="#EDF2F7" />
+    </linearGradient>
+    <linearGradient id="topBarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8" />
+      <stop offset="100%" stop-color="#0050B3" />
+    </linearGradient>
+  </defs>
+
+  
+  <rect x="0" y="0" width="1280" height="720" fill="url(#bgGradLight)" />
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBarGrad)" />
+
+  
+  <path fill="#0050B3" d="M64,30 H106 A4,4 0 0 1 110,34 V76 A4,4 0 0 1 106,80 H64 A4,4 0 0 1 60,76 V34 A4,4 0 0 1 64,30 Z" />
+  <text x="85" y="62" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">02</text>
+  <text x="130" y="65" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">网络阻断已成为开战的"第一枪"</text>
+  <line x1="60" y1="95" x2="1220" y2="95" stroke="#0050B3" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="4 4" />
+
+  
+  <path fill="#FFF3E0" d="M66,110 H1214 A6,6 0 0 1 1220,116 V154 A6,6 0 0 1 1214,160 H66 A6,6 0 0 1 60,154 V116 A6,6 0 0 1 66,110 Z" />
+  <path fill="#E65100" d="M62,110 H62 A2,2 0 0 1 64,112 V158 A2,2 0 0 1 62,160 H62 A2,2 0 0 1 60,158 V112 A2,2 0 0 1 62,110 Z" />
+  <text x="640" y="141" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#1A2E44" text-anchor="middle">先切断对手的数据神经，再实施物理打击——网络战的窗口可能只有数小时，却足以决定战局走向</text>
+
+  
+  
+  <path fill="#FFFFFF" stroke="#E0E6ED" stroke-width="1" d="M68,180 H412 A8,8 0 0 1 420,188 V322 A8,8 0 0 1 412,330 H68 A8,8 0 0 1 60,322 V188 A8,8 0 0 1 68,180 Z" />
+  <rect x="60" y="180" width="360" height="4" fill="#C00000" />
+  <text x="240" y="215" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#C00000" text-anchor="middle">98%</text>
+  <text x="240" y="245" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333D4A" text-anchor="middle">伊朗全国互联网流量骤降</text>
+  <text x="240" y="270" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B7B8C" text-anchor="middle">前一周正常水平对比 · Cloudflare Radar</text>
+  <text x="240" y="295" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B7B8C" text-anchor="middle">最低降至正常水平的约4%</text>
+
+  <path fill="#FFFFFF" stroke="#E0E6ED" stroke-width="1" d="M468,180 H812 A8,8 0 0 1 820,188 V322 A8,8 0 0 1 812,330 H468 A8,8 0 0 1 460,322 V188 A8,8 0 0 1 468,180 Z" />
+  <rect x="460" y="180" width="360" height="4" fill="#C00000" />
+  <text x="640" y="215" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#C00000" text-anchor="middle">7:00 UTC</text>
+  <text x="640" y="245" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333D4A" text-anchor="middle">2026.2.28 开战时刻</text>
+  <text x="640" y="270" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B7B8C" text-anchor="middle">IRNA等主要新闻网站遭入侵下线</text>
+  <text x="640" y="295" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B7B8C" text-anchor="middle">祈祷应用被劫持推送心理战信息</text>
+
+  <path fill="#FFFFFF" stroke="#E0E6ED" stroke-width="1" d="M868,180 H1212 A8,8 0 0 1 1220,188 V322 A8,8 0 0 1 1212,330 H868 A8,8 0 0 1 860,322 V188 A8,8 0 0 1 868,180 Z" />
+  <rect x="860" y="180" width="360" height="4" fill="#C00000" />
+  <text x="1040" y="215" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#C00000" text-anchor="middle">双重</text>
+  <text x="1040" y="245" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333D4A" text-anchor="middle">伊朗主动切网 + 美以网络攻击</text>
+  <text x="1040" y="270" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B7B8C" text-anchor="middle">多重因素叠加导致断网</text>
+  <text x="1040" y="295" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B7B8C" text-anchor="middle">德黑兰、法尔斯等省份接近归零</text>
+
+  
+  <path fill="#FFFFFF" stroke="#E0E6ED" stroke-width="1" d="M68,355 H1212 A8,8 0 0 1 1220,363 V547 A8,8 0 0 1 1212,555 H68 A8,8 0 0 1 60,547 V363 A8,8 0 0 1 68,355 Z" />
+  <path fill="#0050B3" d="M64,355 H64 A4,4 0 0 1 68,359 V551 A4,4 0 0 1 64,555 H64 A4,4 0 0 1 60,551 V359 A4,4 0 0 1 64,355 Z" />
+  <text x="90" y="390" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#1A2E44">网络战的多维打击体系</text>
+
+  <text font-family="Microsoft YaHei, sans-serif" fill="#333D4A" font-size="15" x="90" y="425"><tspan>❶ <tspan font-weight="bold">物理层断网</tspan>：伊朗当局主动切断全国互联网，阻断外部侦察和内部协调</tspan>
+    </text><text font-family="Microsoft YaHei, sans-serif" fill="#333D4A" font-size="15" x="90" y="453"><tspan>❷ <tspan font-weight="bold">网络层攻击</tspan>：美以网络攻击与军事打击同步，入侵IRNA等主要新闻网站</tspan>
+    </text><text font-family="Microsoft YaHei, sans-serif" fill="#333D4A" font-size="15" x="90" y="481"><tspan>❸ <tspan font-weight="bold">心理层作战</tspan>：劫持BadeSaba祈祷应用推送心理战信息，瓦解民众意志</tspan>
+    </text><text font-family="Microsoft YaHei, sans-serif" fill="#333D4A" font-size="15" x="90" y="509"><tspan>❹ <tspan font-weight="bold">信息层封锁</tspan>：伊朗官方媒体系统瘫痪，信息发布渠道被全面压制</tspan>
+  </text><path fill="#0050B3" fill-opacity="0.08" d="M66,575 H1214 A6,6 0 0 1 1220,581 V614 A6,6 0 0 1 1214,620 H66 A6,6 0 0 1 60,614 V581 A6,6 0 0 1 66,575 Z" />
+  <text x="640" y="604" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#0050B3" text-anchor="middle">💡 关键信息基础设施的供应链安全和主动防御能力，已与航母、战斗机同等重要</text>
+
+  
+  <text x="60" y="700" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：NetBlocks、Cloudflare Radar</text>
+  <text x="1220" y="700" font-family="Arial, sans-serif" font-size="14" fill="#999999" text-anchor="end">04</text>
+</svg>

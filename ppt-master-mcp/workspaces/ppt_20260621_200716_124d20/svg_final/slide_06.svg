@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8B0000" />
+      <stop offset="100%" stop-color="#003366" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF" />
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBar)" />
+  <rect x="60" y="30" width="50" height="50" fill="#8B0000" />
+  <text x="85" y="62" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="22" font-weight="bold">02</text>
+  <text x="130" y="62" fill="#1A1A1A" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold">伊朗全国互联网遭遇断崖式断网</text>
+  <rect x="60" y="100" width="1160" height="50" fill="#F2F2F2" />
+  <rect x="60" y="100" width="6" height="50" fill="#8B0000" />
+  <text x="80" y="131" fill="#333333" font-family="Microsoft YaHei, sans-serif" font-size="16">战争在数字空间与物理空间几乎同步打响——先切断数据神经，再实施物理打击</text>
+  
+  <path fill="#FFF5F5" stroke="#E0E0E0" stroke-width="1" d="M68,180 H332 A8,8 0 0 1 340,188 V312 A8,8 0 0 1 332,320 H68 A8,8 0 0 1 60,312 V188 A8,8 0 0 1 68,180 Z" />
+  <text x="200" y="240" text-anchor="middle" fill="#8B0000" font-family="Arial, sans-serif" font-size="48" font-weight="bold">4%</text>
+  <text x="200" y="270" text-anchor="middle" fill="#666666" font-family="Microsoft YaHei, sans-serif" font-size="15">最低降至正常水平的4%</text>
+  <text x="200" y="295" text-anchor="middle" fill="#999999" font-family="Microsoft YaHei, sans-serif" font-size="12">来源：NetBlocks</text>
+  <path fill="#F0F4FF" stroke="#E0E0E0" stroke-width="1" d="M378,180 H642 A8,8 0 0 1 650,188 V312 A8,8 0 0 1 642,320 H378 A8,8 0 0 1 370,312 V188 A8,8 0 0 1 378,180 Z" />
+  <text x="510" y="240" text-anchor="middle" fill="#003366" font-family="Arial, sans-serif" font-size="48" font-weight="bold">98%</text>
+  <text x="510" y="270" text-anchor="middle" fill="#666666" font-family="Microsoft YaHei, sans-serif" font-size="15">较前一周下降约98%</text>
+  <text x="510" y="295" text-anchor="middle" fill="#999999" font-family="Microsoft YaHei, sans-serif" font-size="12">来源：Cloudflare Radar</text>
+  <path fill="#FFF8F0" stroke="#C9A227" stroke-width="1" d="M688,180 H952 A8,8 0 0 1 960,188 V312 A8,8 0 0 1 952,320 H688 A8,8 0 0 1 680,312 V188 A8,8 0 0 1 688,180 Z" />
+  <text x="820" y="240" text-anchor="middle" fill="#C9A227" font-family="Arial, sans-serif" font-size="36" font-weight="bold">≈归零</text>
+  <text x="820" y="270" text-anchor="middle" fill="#666666" font-family="Microsoft YaHei, sans-serif" font-size="15">德黑兰等主要省份接近归零</text>
+  <text x="820" y="295" text-anchor="middle" fill="#999999" font-family="Microsoft YaHei, sans-serif" font-size="12">来源：Cloudflare Radar</text>
+  
+  <path fill="#F9F9F9" stroke="#E0E0E0" stroke-width="1" d="M68,350 H1212 A8,8 0 0 1 1220,358 V472 A8,8 0 0 1 1212,480 H68 A8,8 0 0 1 60,472 V358 A8,8 0 0 1 68,350 Z" />
+  <text x="80" y="380" fill="#8B0000" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold">🔍 三因素叠加导致断网</text>
+  <path fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" d="M86,400 H414 A6,6 0 0 1 420,406 V459 A6,6 0 0 1 414,465 H86 A6,6 0 0 1 80,459 V406 A6,6 0 0 1 86,400 Z" />
+  <text x="250" y="425" text-anchor="middle" fill="#8B0000" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold">伊朗当局主动切网</text>
+  <text x="250" y="448" text-anchor="middle" fill="#666666" font-family="Microsoft YaHei, sans-serif" font-size="12">阻断外部侦察和内部协调</text>
+  <path fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" d="M446,400 H774 A6,6 0 0 1 780,406 V459 A6,6 0 0 1 774,465 H446 A6,6 0 0 1 440,459 V406 A6,6 0 0 1 446,400 Z" />
+  <text x="610" y="425" text-anchor="middle" fill="#003366" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold">美以网络空间攻击</text>
+  <text x="610" y="448" text-anchor="middle" fill="#666666" font-family="Microsoft YaHei, sans-serif" font-size="12">与军事打击同步展开</text>
+  <path fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" d="M806,400 H1134 A6,6 0 0 1 1140,406 V459 A6,6 0 0 1 1134,465 H806 A6,6 0 0 1 800,459 V406 A6,6 0 0 1 806,400 Z" />
+  <text x="970" y="425" text-anchor="middle" fill="#8B0000" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold">新闻媒体遭入侵</text>
+  <text x="970" y="448" text-anchor="middle" fill="#666666" font-family="Microsoft YaHei, sans-serif" font-size="12">IRNA、塔斯尼姆通讯社等下线</text>
+  
+  <path fill="#F2F2F2" d="M68,510 H1212 A8,8 0 0 1 1220,518 V552 A8,8 0 0 1 1212,560 H68 A8,8 0 0 1 60,552 V518 A8,8 0 0 1 68,510 Z" />
+  <text x="640" y="541" text-anchor="middle" fill="#8B0000" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold">结论：网络战的窗口可能只有数小时，但这数小时足以决定整场战局的走向</text>
+  
+  <rect x="0" y="716" width="1280" height="4" fill="#8B0000" />
+  <text x="60" y="700" fill="#999999" font-family="Microsoft YaHei, sans-serif" font-size="12">来源：NetBlocks / Cloudflare Radar</text>
+  <text x="1220" y="700" text-anchor="end" fill="#999999" font-family="Arial, sans-serif" font-size="12">06</text>
+</svg>

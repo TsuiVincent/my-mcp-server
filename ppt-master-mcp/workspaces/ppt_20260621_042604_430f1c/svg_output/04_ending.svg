@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bgGradEnd" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#003366"/>
+      <stop offset="50%" stop-color="#001F4D"/>
+      <stop offset="100%" stop-color="#000D1A"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+    <pattern id="gridEnd" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#FFFFFF" stroke-opacity="0.02" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1280" height="720" fill="url(#bgGradEnd)"/>
+  <rect x="0" y="0" width="1280" height="720" fill="url(#gridEnd)"/>
+
+  <!-- Top decoration -->
+  <rect x="0" y="0" width="1280" height="4" fill="#00B4D8"/>
+
+  <!-- Wave curve decoration -->
+  <path d="M0,680 Q200,640 400,670 T800,650 T1280,670 L1280,720 L0,720 Z" fill="#00B4D8" fill-opacity="0.06"/>
+
+  <!-- === 第五章：通信安全（左侧） === -->
+  <text x="640" y="60" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="bold" fill="#FFFFFF" text-anchor="middle">没有绝对安全的通信手段</text>
+  <line x1="540" y1="75" x2="740" y2="75" stroke="#00B4D8" stroke-width="2"/>
+
+  <rect x="60" y="95" width="560" height="200" fill="#FFFFFF" fill-opacity="0.06" rx="8" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1"/>
+  <rect x="60" y="95" width="4" height="200" fill="#00B4D8" rx="2"/>
+  <text x="80" y="130" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#90CAF9">星链渗透 vs 伊朗反制</text>
+  <text x="80" y="165" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#CFD8DC">
+    <tspan x="80" dy="0">● SpaceX向美军出售Starshield军事版终端</tspan>
+    <tspan x="80" dy="24">● 约6000台Starlink终端走私入境伊朗</tspan>
+    <tspan x="80" dy="24">● 伊朗反间谍行动没收数百台终端</tspan>
+    <tspan x="80" dy="24">● 部署射频干扰系统使部分终端完全失效</tspan>
+  </text>
+
+  <!-- Divider -->
+  <line x1="640" y1="95" x2="640" y2="295" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- Assessment on right -->
+  <rect x="660" y="95" width="560" height="200" fill="#FFFFFF" fill-opacity="0.06" rx="8" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1"/>
+  <rect x="660" y="95" width="4" height="200" fill="#00B4D8" rx="2"/>
+  <text x="680" y="130" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#90CAF9">数据对抗时代的本质</text>
+  <text x="680" y="165" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#CFD8DC">
+    <tspan x="680" dy="0">● 进攻方利用卫星网络追踪目标</tspan>
+    <tspan x="680" dy="24">● 防御方利用信号特征反向定位</tspan>
+    <tspan x="680" dy="24">● 数据内容可以加密</tspan>
+    <tspan x="680" dy="24">● 但"正在通信"这一事实无法隐藏</tspan>
+  </text>
+
+  <!-- === 总结：三条判断 === -->
+  <line x1="60" y1="320" x2="1220" y2="320" stroke="#00B4D8" stroke-opacity="0.2" stroke-width="1"/>
+
+  <text x="640" y="360" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">三条总体判断</text>
+
+  <!-- Judgment 1 -->
+  <rect x="60" y="390" width="370" height="130" fill="#FFFFFF" fill-opacity="0.05" rx="8" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1"/>
+  <rect x="60" y="390" width="370" height="4" fill="#00B4D8"/>
+  <text x="245" y="425" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#00B4D8" text-anchor="middle">01</text>
+  <text x="245" y="455" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">从火力密度转向数据定力</text>
+  <text x="245" y="485" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">谁掌握数据采集、传输、算力和算法</text>
+  <text x="245" y="505" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">谁就掌握主动权</text>
+
+  <!-- Judgment 2 -->
+  <rect x="455" y="390" width="370" height="130" fill="#FFFFFF" fill-opacity="0.05" rx="8" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1"/>
+  <rect x="455" y="390" width="370" height="4" fill="#00B4D8"/>
+  <text x="640" y="425" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#00B4D8" text-anchor="middle">02</text>
+  <text x="640" y="455" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">民用基础设施即战场延伸</text>
+  <text x="640" y="485" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">交通摄像头、云数据中心、低轨卫星</text>
+  <text x="640" y="505" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">战时瞬间转化为情报来源与打击目标</text>
+
+  <!-- Judgment 3 -->
+  <rect x="850" y="390" width="370" height="130" fill="#FFFFFF" fill-opacity="0.05" rx="8" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1"/>
+  <rect x="850" y="390" width="370" height="4" fill="#00B4D8"/>
+  <text x="1035" y="425" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#00B4D8" text-anchor="middle">03</text>
+  <text x="1035" y="455" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">数据战没有绝对优势</text>
+  <text x="1035" y="485" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">弱势一方也能找到强者的数据节点</text>
+  <text x="1035" y="505" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">实施致命非对称打击</text>
+
+  <!-- Final warning -->
+  <rect x="180" y="545" width="920" height="80" fill="#00B4D8" fill-opacity="0.08" rx="8"/>
+  <text x="640" y="580" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#90CAF9" text-anchor="middle">下一次战争的第一声警报，可能不是防空雷达的蜂鸣，而是数据中心的断电报警</text>
+  <text x="640" y="610" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#90CAF9" text-anchor="middle">第一个倒下的，可能不是士兵，而是一根连接国家与外界的海底光缆</text>
+
+  <!-- Bottom -->
+  <rect x="0" y="694" width="1280" height="26" fill="#003366" fill-opacity="0.5"/>
+  <rect x="0" y="690" width="1280" height="4" fill="#0050B3"/>
+  <text x="640" y="712" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#78909C" text-anchor="middle">2026年美以对伊军事冲突中信息数据战分析报告 · 仅供内部参阅</text>
+</svg>

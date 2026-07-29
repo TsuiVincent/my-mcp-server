@@ -1,0 +1,8 @@
+__pycache__
+*.pyc
+.idea
+.env.example
+workspaces
+*.pptx
+*.svg
+preview.html

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="70" fill="#003366"/>
+  <text x="640" y="260" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="48" font-weight="bold" fill="#003366">感谢阅读</text>
+  <text x="640" y="310" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" fill="#666666">Information is the New Ammunition</text>
+  <line x1="590" y1="340" x2="690" y2="340" stroke="#0066CC" stroke-width="2"/>
+  <circle cx="640" cy="340" r="4" fill="#0066CC"/>
+  <rect x="380" y="370" width="520" height="120" fill="#F5F7FA" rx="8" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="640" y="405" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#333333">本报告基于公开来源信息整理分析</text>
+  <text x="640" y="435" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">主要信息来源：金融时报、路透社、NetBlocks、Cloudflare Radar、</text>
+  <text x="640" y="460" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">CSIS、AWS官方状态公告、SpaceX公开信息、伊朗情报部公告</text>
+  <text x="640" y="515" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#003366">内部资料 · 注意保密</text>
+  <rect x="0" y="665" width="1280" height="55" fill="#F0F2F5"/>
+  <text x="640" y="698" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#999999">2026年6月 · 分析研究室</text>
+  <text x="1240" y="698" font-family="Arial, sans-serif" font-size="14" fill="#999999" text-anchor="end">13</text>
+</svg>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT 预览 - ppt_20260621_195559_7f854a</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#1a1a2e; color:#eee; font-family:"PingFang SC","Microsoft YaHei",sans-serif; }
+.toolbar { position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(0,0,0,0.85); backdrop-filter:blur(10px);
+  padding:12px 24px; display:flex; align-items:center; gap:16px;
+  border-bottom:1px solid rgba(255,255,255,0.1); }
+.toolbar select { padding:6px 12px; border-radius:6px; border:1px solid #444;
+  background:#2a2a3e; color:#eee; font-size:14px; cursor:pointer; }
+.toolbar button { padding:6px 16px; border-radius:6px; border:none; cursor:pointer;
+  font-size:13px; transition:all .2s; }
+.btn-prev,.btn-next { background:#3a3a5e; color:#eee; }
+.btn-prev:hover,.btn-next:hover { background:#5a5a7e; }
+.btn-export { background:#e94560; color:#fff; }
+.slide-nav { color:#aaa; font-size:14px; }
+.container { padding-top:70px; display:flex; flex-direction:column; align-items:center; gap:32px;
+  padding-bottom:60px; }
+.slide { width:960px; background:#fff; border-radius:8px; overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4); transition:transform .2s; }
+.slide-label { padding:8px 16px; background:#f0f0f0; color:#333; font-size:13px;
+  text-align:center; border-bottom:1px solid #ddd; }
+.slide svg { width:100%; height:auto; display:block; }
+.slide.hidden { display:none; }
+.toolbar .current { font-weight:bold; color:#e94560; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <span class="slide-nav">PPT 预览</span>
+  <select id="slideSelect"></select>
+  <button class="btn-prev" onclick="prevSlide()">◀ 上一页</button>
+  <button class="btn-next" onclick="nextSlide()">下一页 ▶</button>
+  <span class="slide-nav" id="pageInfo"></span>
+  <span style="flex:1"></span>
+  <span style="color:#aaa;font-size:12px;">共 8 页</span>
+</div>
+<div class="container">
+  <div class="slide" id="slide-1">
+  <div class="slide-label">第 1 页 / 共 8 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#001F4D"/>
+      <stop offset="50%" stop-color="#003580"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#FFFFFF" stroke-opacity="0.05" stroke-width="1">
+    <line x1="0" y1="80" x2="1280" y2="80"/><line x1="0" y1="160" x2="1280" y2="160"/>
+    <line x1="0" y1="240" x2="1280" y2="240"/><line x1="0" y1="320" x2="1280" y2="320"/>
+    <line x1="0" y1="400" x2="1280" y2="400"/><line x1="0" y1="480" x2="1280" y2="480"/>
+    <line x1="0" y1="560" x2="1280" y2="560"/><line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="160" y1="0" x2="160" y2="720"/><line x1="320" y1="0" x2="320" y2="720"/>
+    <line x1="480" y1="0" x2="480" y2="720"/><line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="800" y1="0" x2="800" y2="720"/><line x1="960" y1="0" x2="960" y2="720"/>
+    <line x1="1120" y1="0" x2="1120" y2="720"/>
+  </g>
+  <rect x="0" y="0" width="8" height="720" fill="#00B4D8"/>
+  <circle cx="1100" cy="120" r="180" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="2"/>
+  <circle cx="1100" cy="120" r="120" fill="none" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="1"/>
+  <circle cx="1100" cy="120" r="60" fill="none" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="1"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#accentGrad)"/>
+  <rect x="0" y="714" width="1280" height="6" fill="#0050B3"/>
+  <text x="640" y="280" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="44" font-weight="bold" fill="#FFFFFF">关于2026年美以对伊军事冲突中</text>
+  <text x="640" y="340" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="44" font-weight="bold" fill="#FFFFFF">信息数据战的分析报告</text>
+  <rect x="540" y="370" width="200" height="3" fill="#00B4D8"/>
+  <circle cx="640" cy="371" r="4" fill="#FFFFFF"/>
+  <text x="640" y="420" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="22" fill="#A0C4FF">供内部参阅</text>
+  <text x="640" y="600" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#A0C4FF">2026年6月</text>
+</svg>
+</div><div class="slide" id="slide-2">
+  <div class="slide-label">第 2 页 / 共 8 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="tocBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8F4FD"/>
+      <stop offset="100%" stop-color="#F0F8FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#tocBg)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#00B4D8"/>
+  <rect x="0" y="714" width="1280" height="6" fill="#0050B3"/>
+  <!-- Left decorative trapezoid -->
+  <polygon points="0,0 50,0 50,720 0,720" fill="#0050B3" fill-opacity="0.1"/>
+  <polygon points="0,0 30,0 30,720 0,720" fill="#0050B3" fill-opacity="0.2"/>
+  <!-- Title -->
+  <text x="80" y="75" font-family="Microsoft YaHei, sans-serif" font-size="32" font-weight="bold" fill="#003580">目 录</text>
+  <text x="80" y="100" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#6B8DB5">CONTENTS</text>
+  <rect x="80" y="110" width="60" height="3" fill="#00B4D8"/>
+  <!-- TOC Items - left column -->
+  <!-- Item 1 -->
+  <circle cx="140" cy="200" r="24" fill="#0050B3"/>
+  <text x="140" y="207" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">1</text>
+  <line x1="164" y1="200" x2="540" y2="200" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="206" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">民用监控系统已成为战略情报源</text>
+  <!-- Item 2 -->
+  <circle cx="140" cy="290" r="24" fill="#0050B3"/>
+  <text x="140" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">2</text>
+  <line x1="164" y1="290" x2="540" y2="290" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="296" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">网络阻断已成为开战的"第一枪"</text>
+  <!-- Item 3 -->
+  <circle cx="140" cy="380" r="24" fill="#0050B3"/>
+  <text x="140" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">3</text>
+  <line x1="164" y1="380" x2="540" y2="380" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="386" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">战争账单本质上就是数据账单</text>
+  <!-- Item 4 -->
+  <circle cx="140" cy="470" r="24" fill="#0050B3"/>
+  <text x="140" y="477" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">4</text>
+  <line x1="164" y1="470" x2="540" y2="470" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="476" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">算力节点已成为高价值战略目标</text>
+  <!-- Item 5 -->
+  <circle cx="140" cy="560" r="24" fill="#0050B3"/>
+  <text x="140" y="567" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">5</text>
+  <line x1="164" y1="560" x2="540" y2="560" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="566" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">没有绝对安全的通信手段</text>
+  <!-- Item 6 -->
+  <circle cx="140" cy="640" r="24" fill="#C41E3A"/>
+  <text x="140" y="647" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">★</text>
+  <line x1="164" y1="640" x2="540" y2="640" stroke="#C41E3A" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="646" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#C41E3A">总结：三条总体判断</text>
+  <!-- Right side decorative card -->
+  <rect x="660" y="175" width="520" height="490" rx="12" fill="#FFFFFF" fill-opacity="0.6" stroke="#00B4D8" stroke-width="1"/>
+  <rect x="660" y="175" width="520" height="6" fill="url(#tocBg)" rx="3"/>
+  <text x="920" y="240" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="bold" fill="#003580">核心观点</text>
+  <rect x="820" y="255" width="200" height="3" fill="#00B4D8"/>
+  <text x="700" y="300" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">
+    <tspan x="700" dy="0">现代战争的核心已从火力密度</tspan>
+    <tspan x="700" dy="28">转向数据定力</tspan>
+  </text>
+  <text x="700" y="380" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">
+    <tspan x="700" dy="0">民用基础设施即战场延伸</tspan>
+    <tspan x="700" dy="28">——民用与军用界限已经消失</tspan>
+  </text>
+  <text x="700" y="460" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">
+    <tspan x="700" dy="0">数据战没有单方面的绝对优势</tspan>
+    <tspan x="700" dy="28">——弱势一方也能找到数据节点</tspan>
+  </text>
+  <text x="700" y="540" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">
+    <tspan x="700" dy="0">下一次战争第一声警报</tspan>
+    <tspan x="700" dy="28">可能是数据中心的断电报警</tspan>
+  </text>
+</svg>
+</div><div class="slide" id="slide-3">
+  <div class="slide-label">第 3 页 / 共 8 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="contentBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5FAFF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#contentBg)"/>
+  <!-- Top bar -->
+  <rect x="0" y="0" width="1280" height="6" fill="url(#numGrad)"/>
+  <!-- Title Bar with number block -->
+  <rect x="60" y="30" width="50" height="50" fill="#0050B3"/>
+  <text x="85" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">1</text>
+  <text x="130" y="62" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="bold" fill="#1A1A1A">民用监控系统已成为战略情报源</text>
+  <!-- Dashed divider -->
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#A0C4E8" stroke-width="1" stroke-dasharray="6 4"/>
+  <!-- Content cards -->
+  <!-- Card 1 -->
+  <rect x="60" y="130" width="1160" height="100" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="60" y="130" width="6" height="100" fill="#00B4D8" rx="3"/>
+  <text x="86" y="162" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">情报来源：民用监控系统的战略化利用</text>
+  <text x="86" y="190" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">
+    <tspan x="86" dy="0">• 以色列8200部队与摩萨德多年渗透伊朗民用交通摄像头、市政传感器</tspan>
+    <tspan x="86" dy="24">• 接管设备控制权，将实时视频流加密回传至以色列服务器</tspan>
+  </text>
+  <!-- Card 2 -->
+  <rect x="60" y="250" width="1160" height="100" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="60" y="250" width="6" height="100" fill="#00B4D8" rx="3"/>
+  <text x="86" y="282" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">AI行为模式分析</text>
+  <text x="86" y="310" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">
+    <tspan x="86" dy="0">• AI算法对海量视频数据进行行为模式分析</tspan>
+    <tspan x="86" dy="24">• 识别护卫车队路线、统计人员车辆出入频率、推断车辆隶属关系</tspan>
+  </text>
+  <!-- Card 3 -->
+  <rect x="60" y="370" width="1160" height="100" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="60" y="370" width="6" height="100" fill="#00B4D8" rx="3"/>
+  <text x="86" y="402" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">开战首日精确打击</text>
+  <text x="86" y="430" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">
+    <tspan x="86" dy="0">• 开战当天AI系统直接输出高精度目标坐标</tspan>
+    <tspan x="86" dy="24">• 以军F-15战机7:30起飞，9:40"蓝麻雀"导弹命中目标</tspan>
+  </text>
+  <!-- Conclusion box -->
+  <rect x="60" y="500" width="1160" height="80" rx="8" fill="#E8F4FD" stroke="#00B4D8" stroke-width="1"/>
+  <text x="640" y="535" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#C41E3A">结论</text>
+  <text x="640" y="562" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#003580">城市智慧化程度越高，战场透明化程度也越高。民用监控设施的战时军事价值急剧上升。</text>
+  <!-- Footer -->
+  <line x1="60" y1="660" x2="1220" y2="660" stroke="#D0E4F5" stroke-width="1"/>
+  <text x="60" y="695" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：路透社、金融时报、多名前情报官员</text>
+  <text x="1220" y="695" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#999999">03</text>
+</svg>
+</div><div class="slide" id="slide-4">
+  <div class="slide-label">第 4 页 / 共 8 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="contentBg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5FAFF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="numGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#contentBg2)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#numGrad2)"/>
+  <rect x="60" y="30" width="50" height="50" fill="#0050B3"/>
+  <text x="85" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">2</text>
+  <text x="130" y="62" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="bold" fill="#1A1A1A">网络阻断已成为开战的"第一枪"</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#A0C4E8" stroke-width="1" stroke-dasharray="6 4"/>
+  <!-- Data highlight bar -->
+  <rect x="60" y="120" width="1160" height="60" rx="8" fill="#001F4D"/>
+  <text x="640" y="155" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">开战当天伊朗全国互联网流量暴跌至正常水平的 <tspan fill="#00B4D8">约4%</tspan></text>
+  <!-- Card 1 -->
+  <rect x="60" y="200" width="570" height="140" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="60" y="200" width="6" height="140" fill="#00B4D8" rx="3"/>
+  <text x="86" y="232" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">多重打击同步展开</text>
+  <text x="86" y="260" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">
+    <tspan x="86" dy="0">• NetBlocks：全国流量最低降至正常水平4%</tspan>
+    <tspan x="86" dy="22">• Cloudflare Radar：较前一周下降约98%</tspan>
+    <tspan x="86" dy="22">• IODA（乔治亚理工）：多维度连通性同步崩溃</tspan>
+  </text>
+  <!-- Card 2 -->
+  <rect x="650" y="200" width="570" height="140" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="650" y="200" width="6" height="140" fill="#00B4D8" rx="3"/>
+  <text x="676" y="232" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">网络战与心理战</text>
+  <text x="676" y="260" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">
+    <tspan x="676" dy="0">• 伊朗通讯社IRNA、塔斯尼姆社遭入侵或下线</tspan>
+    <tspan x="676" dy="22">• BadeSaba祈祷App被劫持推送心理战信息</tspan>
+    <tspan x="676" dy="22">• 对外信息输出和内部指挥带宽几乎丧失</tspan>
+  </text>
+  <!-- Conclusion -->
+  <rect x="60" y="370" width="1160" height="80" rx="8" fill="#E8F4FD" stroke="#00B4D8" stroke-width="1"/>
+  <text x="640" y="405" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#C41E3A">核心启示</text>
+  <text x="640" y="432" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#003580">网络战的窗口可能只有数小时，但这数小时足以决定整场战局的走向。关键信息基础设施的供应链安全与主动防御能力，已与航母、战斗机同等重要。</text>
+  <!-- Data source box -->
+  <rect x="60" y="480" width="1160" height="50" rx="6" fill="#F0F6FF" stroke="#D0E4F5" stroke-width="1"/>
+  <text x="640" y="510" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#666666">数据来源：NetBlocks、Cloudflare Radar、IODA（乔治亚理工学院）、lukaszolejnik.com</text>
+  <!-- Footer -->
+  <line x1="60" y1="660" x2="1220" y2="660" stroke="#D0E4F5" stroke-width="1"/>
+  <text x="60" y="695" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">国际互联网监测组织 · 独立开源数据</text>
+  <text x="1220" y="695" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#999999">04</text>
+</svg>
+</div><div class="slide" id="slide-5">
+  <div class="slide-label">第 5 页 / 共 8 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5FAFF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg3)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#grad3)"/>
+  <rect x="60" y="30" width="50" height="50" fill="#0050B3"/>
+  <text x="85" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">3</text>
+  <text x="130" y="62" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="bold" fill="#1A1A1A">战争账单本质上就是数据账单</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#A0C4E8" stroke-width="1" stroke-dasharray="6 4"/>
+  <!-- Top highlight -->
+  <rect x="60" y="120" width="1160" height="60" rx="8" fill="#001F4D"/>
+  <text x="640" y="146" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">冲突前两个月美军花费约 <tspan fill="#00B4D8">250亿至290亿美元</tspan>，日均约 <tspan fill="#00B4D8">4至5亿美元</tspan></text>
+  <text x="640" y="168" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#8AB4E8">第一周未预算支出超113亿美元（CSIS修正为约127亿美元），日均约21亿美元</text>
+  <!-- Three data cards -->
+  <rect x="60" y="200" width="370" height="150" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="60" y="200" width="370" height="5" fill="#C41E3A" rx="3"/>
+  <text x="640" y="348" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="36" font-weight="bold" fill="#C41E3A">---</text>
+  <text x="245" y="248" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#C41E3A">战斧巡航导弹</text>
+  <text x="245" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#003580">约200万$</text>
+  <text x="245" y="310" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#666666">每枚=惯性导航+卫星+地形匹配+目标识别</text>
+
+  <rect x="455" y="200" width="370" height="150" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="455" y="200" width="370" height="5" fill="#C41E3A" rx="3"/>
+  <text x="640" y="248" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#C41E3A">JASSM防区外导弹</text>
+  <text x="640" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#003580">约230万$</text>
+  <text x="640" y="310" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#666666">需卫星数据链实时更新目标坐标</text>
+
+  <rect x="850" y="200" width="370" height="150" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="850" y="200" width="370" height="5" fill="#00B4D8" rx="3"/>
+  <text x="1035" y="248" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#00B4D8">JDAM制导炸弹</text>
+  <text x="1035" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#003580">7.5-10.7万$</text>
+  <text x="1035" y="310" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#666666">后期使用，数据链需求大幅降低</text>
+
+  <!-- Insight bar -->
+  <rect x="60" y="380" width="560" height="90" rx="8" fill="#E8F4FD" stroke="#00B4D8" stroke-width="1"/>
+  <text x="340" y="410" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#003580">弹药成本 = 数据链成本</text>
+  <text x="340" y="440" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">采购的不是普通弹药，而是数据终端</text>
+  <text x="340" y="460" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">若对手干扰数据链路，昂贵弹药迅速贬值</text>
+
+  <!-- THAAD losses -->
+  <rect x="640" y="380" width="580" height="90" rx="8" fill="#FFF5F5" stroke="#C41E3A" stroke-width="1"/>
+  <text x="930" y="410" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#C41E3A">防空拦截弹消耗（CSIS数据）</text>
+  <text x="930" y="440" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">THAAD消耗至少50%（约190-290枚）</text>
+  <text x="930" y="460" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">补充周期：SM-3需64个月，THAAD需53个月</text>
+
+  <!-- Footer -->
+  <line x1="60" y1="660" x2="1220" y2="660" stroke="#D0E4F5" stroke-width="1"/>
+  <text x="60" y="695" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：五角大楼、宾夕法尼亚大学沃顿商学院、CSIS、FlightGlobal</text>
+  <text x="1220" y="695" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#999999">05</text>
+</svg>
+</div><div class="slide" id="slide-6">
+  <div class="slide-label">第 6 页 / 共 8 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5FAFF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg4)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#grad4)"/>
+  <rect x="60" y="30" width="50" height="50" fill="#0050B3"/>
+  <text x="85" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">4</text>
+  <text x="130" y="62" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="bold" fill="#1A1A1A">算力节点已成为高价值战略目标</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#A0C4E8" stroke-width="1" stroke-dasharray="6 4"/>
+  <!-- Key statement -->
+  <rect x="60" y="120" width="1160" height="55" rx="8" fill="#001F4D"/>
+  <text x="640" y="153" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" font-weight="bold" fill="#FFFFFF">伊朗非对称反击路线：<tspan fill="#00B4D8">不打航母，专打数据中心</tspan></text>
+  <!-- Two column layout -->
+  <rect x="60" y="195" width="760" height="200" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="60" y="195" width="6" height="200" fill="#C41E3A" rx="3"/>
+  <text x="86" y="227" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#C41E3A">AWS数据中心遭袭（2026.3.1-3.2）</text>
+  <text x="86" y="255" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">
+    <tspan x="86" dy="0">• 伊朗无人机袭击阿联酋ME-CENTRAL-1和巴林ME-SOUTH-1可用区</tspan>
+    <tspan x="86" dy="22">• AWS官方确认：建筑结构损坏、电力中断、消防系统误启损毁服务器</tspan>
+    <tspan x="86" dy="22">• EC2、S3、DynamoDB等核心服务严重降级</tspan>
+    <tspan x="86" dy="22">• 学术界直接引用为"云主权"危机案例</tspan>
+  </text>
+  <!-- Right info box -->
+  <rect x="840" y="195" width="380" height="200" rx="8" fill="#FFF5F5" stroke="#C41E3A" stroke-width="1"/>
+  <text x="1030" y="227" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#C41E3A">MQ-9"死神"无人机损失</text>
+  <line x1="860" y1="240" x2="1200" y2="240" stroke="#C41E3A" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="1030" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#003580">≥11架</text>
+  <text x="1030" y="305" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">3月多日被AD-08 Majid击落</text>
+  <text x="1030" y="335" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">每架成本约3000-3500万美元</text>
+  <text x="1030" y="365" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#C41E3A">侦察-打击链条断裂</text>
+
+  <!-- Analysis box -->
+  <rect x="60" y="420" width="1160" height="100" rx="8" fill="#E8F4FD" stroke="#00B4D8" stroke-width="1"/>
+  <text x="640" y="455" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">战略启示</text>
+  <text x="640" y="485" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">云不是无形的，它是一栋栋可以被导弹命中的混凝土建筑。摧毁一个算力节点，可能比摧毁十个军事基地更具战略效果。</text>
+  <text x="640" y="510" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">保护数据中心已不是商业问题，而是国防问题。</text>
+
+  <!-- Footer -->
+  <line x1="60" y1="660" x2="1220" y2="660" stroke="#D0E4F5" stroke-width="1"/>
+  <text x="60" y="695" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：AWS官方确认、arXiv.org、Aviation Safety Network</text>
+  <text x="1220" y="695" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#999999">06</text>
+</svg>
+</div><div class="slide" id="slide-7">
+  <div class="slide-label">第 7 页 / 共 8 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5FAFF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg5)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#grad5)"/>
+  <rect x="60" y="30" width="50" height="50" fill="#0050B3"/>
+  <text x="85" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">5</text>
+  <text x="130" y="62" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="bold" fill="#1A1A1A">没有绝对安全的通信手段</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#A0C4E8" stroke-width="1" stroke-dasharray="6 4"/>
+  <!-- Highlight -->
+  <rect x="60" y="120" width="1160" height="55" rx="8" fill="#001F4D"/>
+  <text x="640" y="153" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" font-weight="bold" fill="#FFFFFF">你以为自己是猎人，但你也可能变成猎物</text>
+  <!-- Card 1 -->
+  <rect x="60" y="195" width="760" height="180" rx="8" fill="#FFFFFF" stroke="#D0E4F5" stroke-width="1"/>
+  <rect x="60" y="195" width="6" height="180" fill="#00B4D8" rx="3"/>
+  <text x="86" y="227" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">星链终端渗透与反渗透</text>
+  <text x="86" y="255" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">
+    <tspan x="86" dy="0">• Starshield军事版终端部署于十多个无人机系统</tspan>
+    <tspan x="86" dy="22">• 美国利用"互联网自由倡议"将约6000台Starlink终端走私入境伊朗</tspan>
+    <tspan x="86" dy="22">• 累计估计有3万至5万台Starlink终端自2022年以来被走私进伊朗</tspan>
+    <tspan x="86" dy="22">• 伊朗情报部全国性反间谍行动，没收数百台终端</tspan>
+  </text>
+  <!-- Side stats -->
+  <rect x="840" y="195" width="380" height="180" rx="8" fill="#FFF5F5" stroke="#C41E3A" stroke-width="1"/>
+  <text x="1030" y="227" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#C41E3A">伊朗反制行动</text>
+  <line x1="860" y1="240" x2="1200" y2="240" stroke="#C41E3A" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="1030" y="275" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">3月19日：锡斯坦被捕13人</text>
+  <text x="1030" y="300" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">没收5台Starlink+枪支监视设备</text>
+  <text x="1030" y="330" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">3月25日：德黑兰被捕39人</text>
+  <text x="1030" y="355" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">没收7台Starlink+49枚自制炸弹</text>
+  <!-- Conclusion card -->
+  <rect x="60" y="400" width="1160" height="90" rx="8" fill="#E8F4FD" stroke="#00B4D8" stroke-width="1"/>
+  <text x="640" y="435" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#003580">非对称对抗的典型逻辑</text>
+  <text x="640" y="462" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">进攻方可以利用卫星网络追踪目标，防御方同样可以利用信号特征反向定位并没收设备</text>
+  <text x="640" y="482" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#444444">数据内容可以加密，但"正在通信"这一事实无法隐藏</text>
+  <!-- Footer -->
+  <line x1="60" y1="660" x2="1220" y2="660" stroke="#D0E4F5" stroke-width="1"/>
+  <text x="60" y="695" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：路透社调查、五角大楼文件、Iran International、Military.com</text>
+  <text x="1220" y="695" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#999999">07</text>
+</svg>
+</div><div class="slide" id="slide-8">
+  <div class="slide-label">第 8 页 / 共 8 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="endBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#001F4D"/>
+      <stop offset="50%" stop-color="#003580"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#endBg)"/>
+  <!-- Grid -->
+  <g stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1">
+    <line x1="0" y1="80" x2="1280" y2="80"/><line x1="0" y1="160" x2="1280" y2="160"/>
+    <line x1="0" y1="240" x2="1280" y2="240"/><line x1="0" y1="320" x2="1280" y2="320"/>
+    <line x1="0" y1="400" x2="1280" y2="400"/><line x1="0" y1="480" x2="1280" y2="480"/>
+    <line x1="0" y1="560" x2="1280" y2="560"/><line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="160" y1="0" x2="160" y2="720"/><line x1="320" y1="0" x2="320" y2="720"/>
+    <line x1="480" y1="0" x2="480" y2="720"/><line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="800" y1="0" x2="800" y2="720"/><line x1="960" y1="0" x2="960" y2="720"/>
+    <line x1="1120" y1="0" x2="1120" y2="720"/>
+  </g>
+  <!-- Wave curve decoration -->
+  <path d="M0,600 Q160,560 320,590 T640,570 T960,590 T1280,570 L1280,720 L0,720 Z" fill="#00B4D8" fill-opacity="0.06"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#00B4D8"/>
+  <rect x="0" y="714" width="1280" height="6" fill="#0050B3"/>
+  <!-- Title -->
+  <text x="640" y="100" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="36" font-weight="bold" fill="#FFFFFF">三条总体判断</text>
+  <rect x="540" y="115" width="200" height="3" fill="#00B4D8"/>
+  <!-- Three conclusion cards -->
+  <!-- Card 1 -->
+  <rect x="80" y="150" width="1120" height="130" rx="10" fill="#FFFFFF" fill-opacity="0.08" stroke="#00B4D8" stroke-width="1"/>
+  <rect x="80" y="150" width="8" height="130" fill="#00B4D8" rx="4"/>
+  <text x="116" y="200" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#00B4D8">判断一 · 从火力密度转向数据定力</text>
+  <text x="116" y="235" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#C8DFF0">
+    <tspan x="116" dy="0">谁掌握数据采集、传输、算力和算法，谁就掌握主动权。</tspan>
+    <tspan x="116" dy="24">从德黑兰的摄像头到星链终端，从网络骨干网到数据中心，数据流贯穿战争全周期。</tspan>
+  </text>
+  <!-- Card 2 -->
+  <rect x="80" y="300" width="1120" height="130" rx="10" fill="#FFFFFF" fill-opacity="0.08" stroke="#00B4D8" stroke-width="1"/>
+  <rect x="80" y="300" width="8" height="130" fill="#00B4D8" rx="4"/>
+  <text x="116" y="350" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#00B4D8">判断二 · 民用基础设施即战场延伸</text>
+  <text x="116" y="385" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#C8DFF0">
+    <tspan x="116" dy="0">交通摄像头、云数据中心、低轨卫星互联网、手机应用程序——这些日常数字服务，</tspan>
+    <tspan x="116" dy="24">在战时瞬间转化为情报来源、打击目标和攻防工具。民用与军用之间的界限已经消失。</tspan>
+  </text>
+  <!-- Card 3 -->
+  <rect x="80" y="450" width="1120" height="130" rx="10" fill="#FFFFFF" fill-opacity="0.08" stroke="#00B4D8" stroke-width="1"/>
+  <rect x="80" y="450" width="8" height="130" fill="#00B4D8" rx="4"/>
+  <text x="116" y="500" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#00B4D8">判断三 · 数据战没有单方面的绝对优势</text>
+  <text x="116" y="535" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#C8DFF0">
+    <tspan x="116" dy="0">伊朗以非对称手段打击数据中心、击落无人机、没收星链终端，</tspan>
+    <tspan x="116" dy="24">说明即使是技术弱势一方，也能找到强者的数据节点实施致命打击。</tspan>
+  </text>
+  <!-- Closing quote -->
+  <text x="640" y="640" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#8AB4E8">下一次战争的第一声警报，可能不是防空雷达的蜂鸣，而是数据中心的断电报警</text>
+  <!-- Page number -->
+  <text x="1220" y="695" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#6B8DB5">08</text>
+</svg>
+</div>
+</div>
+<script>
+let current = 1;
+const total = 8;
+const select = document.getElementById('slideSelect');
+for (let i=1; i<=total; i++) select.add(new Option('第 '+i+' 页', i));
+function showSlide(n) {
+  current = ((n-1+total)%total)+1;
+  document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('hidden', i+1!==current));
+  select.value = current;
+  document.getElementById('pageInfo').textContent = current+' / '+total;
+}
+select.onchange = ()=>showSlide(parseInt(select.value));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') prevSlide();
+  if (e.key === 'ArrowRight') nextSlide();
+});
+function prevSlide(){ showSlide(current-1); }
+function nextSlide(){ showSlide(current+1); }
+showSlide(1);
+</script>
+</body>
+</html>

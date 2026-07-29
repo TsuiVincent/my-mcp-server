@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="barGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+    <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0050B3"/>
+      <stop offset="100%" stop-color="#003366"/>
+    </linearGradient>
+    <linearGradient id="card1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F0F6FF"/>
+      <stop offset="100%" stop-color="#E0ECFA"/>
+    </linearGradient>
+    <linearGradient id="card2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF8F0"/>
+      <stop offset="100%" stop-color="#FFF0E0"/>
+    </linearGradient>
+    <linearGradient id="card3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F5F0FF"/>
+      <stop offset="100%" stop-color="#EBE5F8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#barGrad)"/>
+  <rect x="0" y="0" width="6" height="720" fill="url(#barGrad)"/>
+
+  <!-- Title area (centered) -->
+  <text x="640" y="80" font-family="Microsoft YaHei, sans-serif" font-size="36" font-weight="bold" fill="#0050B3" text-anchor="middle">总结：三条总体判断</text>
+  <line x1="540" y1="100" x2="740" y2="100" stroke="#00B4D8" stroke-width="2"/>
+  <circle cx="750" cy="100" r="3" fill="#00B4D8"/>
+  <circle cx="760" cy="100" r="2" fill="#00B4D8" fill-opacity="0.6"/>
+
+  <!-- Judgment 1 -->
+  <rect x="60" y="140" width="370" height="380" fill="url(#card1)" rx="12" stroke="#B0D4F1" stroke-width="1.5"/>
+  <circle cx="245" cy="195" r="35" fill="#0050B3"/>
+  <text x="245" y="205" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="245" y="250" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#0050B3" text-anchor="middle">从火力密度</text>
+  <text x="245" y="280" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#0050B3" text-anchor="middle">转向数据定力</text>
+  <line x1="120" y1="305" x2="370" y2="305" stroke="#B0D4F1" stroke-width="1"/>
+  <text x="245" y="340" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333" text-anchor="middle">谁掌握数据采集、</text>
+  <text x="245" y="368" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333" text-anchor="middle">传输、算力和算法，</text>
+  <text x="245" y="396" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333" text-anchor="middle">谁就掌握主动权。</text>
+  <rect x="80" y="420" width="330" height="80" fill="#FFFFFF" rx="6" stroke="#D0E4F7" stroke-width="1"/>
+  <text x="245" y="446" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="middle">从德黑兰的摄像头到星链终端</text>
+  <text x="245" y="470" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="middle">从网络骨干网到数据中心</text>
+  <text x="245" y="494" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="middle">数据流贯穿战争全周期</text>
+
+  <!-- Judgment 2 -->
+  <rect x="455" y="140" width="370" height="380" fill="url(#card2)" rx="12" stroke="#F0C48A" stroke-width="1.5"/>
+  <circle cx="640" cy="195" r="35" fill="#C41E3A"/>
+  <text x="640" y="205" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="640" y="250" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#C41E3A" text-anchor="middle">民用基础设施</text>
+  <text x="640" y="280" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#C41E3A" text-anchor="middle">即战场延伸</text>
+  <line x1="515" y1="305" x2="765" y2="305" stroke="#F0C48A" stroke-width="1"/>
+  <text x="640" y="340" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333" text-anchor="middle">交通摄像头、云数据中心、</text>
+  <text x="640" y="368" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333" text-anchor="middle">低轨卫星互联网、手机应用</text>
+  <text x="640" y="396" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333" text-anchor="middle">在战时瞬间转化为攻防工具</text>
+  <rect x="475" y="420" width="330" height="80" fill="#FFFFFF" rx="6" stroke="#F0C48A" stroke-width="1"/>
+  <text x="640" y="446" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="middle">日常数字服务在战时</text>
+  <text x="640" y="470" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="middle">转化为情报来源和打击目标</text>
+  <text x="640" y="494" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#C41E3A" text-anchor="middle">民用与军用界限已经消失</text>
+
+  <!-- Judgment 3 -->
+  <rect x="850" y="140" width="370" height="380" fill="url(#card3)" rx="12" stroke="#C0B0E8" stroke-width="1.5"/>
+  <circle cx="1035" cy="195" r="35" fill="#6B4FA0"/>
+  <text x="1035" y="205" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="1035" y="250" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#6B4FA0" text-anchor="middle">数据战没有</text>
+  <text x="1035" y="280" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#6B4FA0" text-anchor="middle">单方面绝对优势</text>
+  <line x1="910" y1="305" x2="1160" y2="305" stroke="#C0B0E8" stroke-width="1"/>
+  <text x="1035" y="340" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333" text-anchor="middle">伊朗以非对称手段</text>
+  <text x="1035" y="368" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333" text-anchor="middle">打击数据中心、击落无人机</text>
+  <text x="1035" y="396" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333" text-anchor="middle">没收星链终端</text>
+  <rect x="870" y="420" width="330" height="80" fill="#FFFFFF" rx="6" stroke="#C0B0E8" stroke-width="1"/>
+  <text x="1035" y="446" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="middle">保护自身数据同时</text>
+  <text x="1035" y="470" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="middle">破坏对手数据的一方</text>
+  <text x="1035" y="494" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B4FA0" text-anchor="middle">才能赢得未来战争</text>
+
+  <!-- Footer quote -->
+  <rect x="60" y="550" width="1160" height="60" fill="#001F4D" rx="8"/>
+  <text x="640" y="578" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">下一次战争的第一声警报，可能不是防空雷达的蜂鸣，而是数据中心的断电报警</text>
+  <text x="640" y="598" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#8CB8DF" text-anchor="middle">在算法面前，没有谁是无法被分析的。</text>
+
+  <rect x="0" y="680" width="1280" height="40" fill="#F8FBFF"/>
+  <text x="60" y="705" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">总结</text>
+  <text x="1220" y="705" font-family="Arial, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="end">08</text>
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3"/>
+</svg>

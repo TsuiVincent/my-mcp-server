@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <!-- White background -->
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <!-- Dark blue header -->
+  <rect x="0" y="0" width="1280" height="70" fill="#003366"/>
+  <!-- Red left vertical bar -->
+  <rect x="0" y="0" width="6" height="720" fill="#CC0000"/>
+  <!-- Page title in header -->
+  <text x="50" y="45" fill="#FFFFFF" font-size="20" font-weight="bold" font-family="Microsoft YaHei, sans-serif">一、民用监控系统已成为战略情报源</text>
+  <!-- Key message bar -->
+  <rect x="6" y="70" width="1274" height="50" fill="#F0F4F8"/>
+  <rect x="6" y="70" width="6" height="50" fill="#0066CC"/>
+  <text x="30" y="100" fill="#333333" font-size="15" font-family="Microsoft YaHei, sans-serif">核心观点：城市里的交通摄像头在战时可以变成对手的全天候瞄准镜</text>
+  <!-- Content area - left column: Key facts -->
+  <rect x="40" y="145" width="580" height="180" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" rx="8"/>
+  <rect x="40" y="145" width="580" height="32" fill="#003366" rx="8"/>
+  <rect x="40" y="169" width="580" height="8" fill="#003366"/>
+  <text x="60" y="166" fill="#FFFFFF" font-size="14" font-weight="bold" font-family="Microsoft YaHei, sans-serif">以军精准打击的关键情报来源</text>
+  <text x="60" y="205" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">• 2026年2月28日开战当天，以色列空军对德黑兰</text>
+  <text x="70" y="225" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">多个目标实施精确打击</text>
+  <text x="60" y="250" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">• 打击坐标来源：8200部队与摩萨德联合行动</text>
+  <text x="60" y="275" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">• 引用来源：《金融时报》披露</text>
+  <text x="60" y="300" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">• 覆盖目标：高级军官住所、秘密指挥点、关键设施</text>
+  <!-- Content area - right column: Methods -->
+  <rect x="660" y="145" width="580" height="180" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" rx="8"/>
+  <rect x="660" y="145" width="580" height="32" fill="#CC0000" rx="8"/>
+  <rect x="660" y="169" width="580" height="8" fill="#CC0000"/>
+  <text x="680" y="166" fill="#FFFFFF" font-size="14" font-weight="bold" font-family="Microsoft YaHei, sans-serif">全面的网络渗透与AI分析</text>
+  <text x="680" y="205" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">• 渗透目标：交通监控摄像头、市政传感器等</text>
+  <text x="680" y="230" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">• 操作方式：长期系统性地接管设备控制权</text>
+  <text x="680" y="255" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">• 数据链条：实时视频流 → 加密回传 → AI分析</text>
+  <text x="680" y="280" fill="#333333" font-size="14" font-family="Microsoft YaHei, sans-serif">• 引用来源：路透社2026年3月深度报道</text>
+  <!-- Conclusion box -->
+  <rect x="40" y="360" width="1200" height="90" fill="#FFF3E0" stroke="#FFB74D" stroke-width="1" rx="8"/>
+  <rect x="40" y="360" width="6" height="90" fill="#FF6B35" rx="2"/>
+  <text x="65" y="388" fill="#E65100" font-size="15" font-weight="bold" font-family="Microsoft YaHei, sans-serif">⚠ 核心启示</text>
+  <text x="65" y="415" fill="#333333" font-size="15" font-family="Microsoft YaHei, sans-serif">民用监控设施的战时军事价值急剧上升。<tspan fill="#CC0000" font-weight="bold">城市智慧化程度越高，战场透明化程度也越高。</tspan></text>
+  <!-- Highlight data cards -->
+  <rect x="40" y="480" width="280" height="80" fill="#E8F5E9" rx="8"/>
+  <text x="180" y="510" text-anchor="middle" fill="#2E7D32" font-size="14" font-family="Microsoft YaHei, sans-serif">渗透方式</text>
+  <text x="180" y="540" text-anchor="middle" fill="#1A1A1A" font-size="16" font-weight="bold" font-family="Microsoft YaHei, sans-serif">远程接管设备控制权</text>
+  <rect x="360" y="480" width="280" height="80" fill="#E3F2FD" rx="8"/>
+  <text x="500" y="510" text-anchor="middle" fill="#1565C0" font-size="14" font-family="Microsoft YaHei, sans-serif">分析手段</text>
+  <text x="500" y="540" text-anchor="middle" fill="#1A1A1A" font-size="16" font-weight="bold" font-family="Microsoft YaHei, sans-serif">AI行为模式分析算法</text>
+  <rect x="680" y="480" width="280" height="80" fill="#FCE4EC" rx="8"/>
+  <text x="820" y="510" text-anchor="middle" fill="#C62828" font-size="14" font-family="Microsoft YaHei, sans-serif">目标类型</text>
+  <text x="820" y="540" text-anchor="middle" fill="#1A1A1A" font-size="16" font-weight="bold" font-family="Microsoft YaHei, sans-serif">民用基础设施全方位覆盖</text>
+  <!-- Footer -->
+  <rect x="0" y="660" width="1280" height="60" fill="#F5F5F5"/>
+  <text x="60" y="695" fill="#999999" font-size="12" font-family="Microsoft YaHei, sans-serif">来源：金融时报、路透社</text>
+  <text x="640" y="695" text-anchor="middle" fill="#999999" font-size="12" font-family="Microsoft YaHei, sans-serif">第一章 · 民用监控系统</text>
+  <text x="1240" y="695" text-anchor="end" fill="#999999" font-size="12" font-family="Microsoft YaHei, sans-serif">04 / 13</text>
+</svg>

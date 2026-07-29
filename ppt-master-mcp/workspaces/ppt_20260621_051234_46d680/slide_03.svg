@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="barGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+    <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0050B3"/>
+      <stop offset="100%" stop-color="#003366"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+
+  <!-- Top decoration line -->
+  <rect x="0" y="0" width="1280" height="6" fill="url(#barGrad)"/>
+
+  <!-- Left accent bar -->
+  <rect x="0" y="0" width="6" height="720" fill="url(#barGrad)"/>
+
+  <!-- Number block -->
+  <rect x="60" y="30" width="50" height="50" fill="url(#numGrad)" rx="4"/>
+  <text x="85" y="62" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF" text-anchor="middle">1</text>
+
+  <!-- Title -->
+  <text x="130" y="62" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="bold" fill="#1A1A1A">民用监控系统已成为战略情报源</text>
+
+  <!-- Dashed divider -->
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#D0E4F7" stroke-width="1" stroke-dasharray="6 4"/>
+
+  <!-- Key message bar -->
+  <rect x="60" y="120" width="1160" height="48" fill="#F0F6FF" rx="4"/>
+  <rect x="60" y="120" width="4" height="48" fill="#00B4D8" rx="2"/>
+  <text x="80" y="150" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#004080">城市里的交通摄像头，原本用于治安管理，但在战时可以变成对手的全天候瞄准镜。</text>
+
+  <!-- Main content area - left card -->
+  <rect x="60" y="188" width="570" height="220" fill="#F8FBFF" rx="8" stroke="#D0E4F7" stroke-width="1"/>
+  <rect x="60" y="188" width="4" height="220" fill="#0050B3" rx="2"/>
+  <text x="80" y="218" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#0050B3">以色列8200部队与摩萨德联合行动</text>
+  <text x="80" y="248" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 长期渗透伊朗交通监控摄像头、市政传感器</text>
+  <text x="80" y="274" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 接管设备控制权，加密回传实时视频流</text>
+  <text x="80" y="300" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• AI算法分析：护卫车队路线、人员出入频率</text>
+  <text x="80" y="326" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 车牌轨迹推断机构内部车辆隶属关系</text>
+  <text x="80" y="360" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">来源：路透社2026年3月深度报道、《金融时报》</text>
+
+  <!-- Right card - data highlight -->
+  <rect x="650" y="188" width="570" height="220" fill="#F0F6FF" rx="8" stroke="#D0E4F7" stroke-width="1"/>
+
+  <!-- Highlight box -->
+  <rect x="670" y="208" width="530" height="80" fill="#FFFFFF" rx="6" stroke="#00B4D8" stroke-width="1"/>
+  <text x="935" y="238" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="bold" fill="#C41E3A" text-anchor="middle">开战首日精确打击</text>
+  <text x="935" y="270" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333" text-anchor="middle">AI系统根据多年数据直接输出高精度目标坐标</text>
+
+  <text x="670" y="315" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 打击目标：高级军官住所、革命卫队指挥点</text>
+  <text x="670" y="341" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• F-15 7:30起飞 → 9:40"蓝麻雀"导弹命中</text>
+  <text x="670" y="367" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 未依赖当日临时情报，数据流完成主要情报</text>
+  <text x="670" y="395" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">来源：多名前情报官员向媒体确认</text>
+
+  <!-- Conclusion bar -->
+  <rect x="60" y="428" width="1160" height="56" fill="#FFF8F0" rx="6" stroke="#F0C48A" stroke-width="1"/>
+  <rect x="60" y="428" width="4" height="56" fill="#C41E3A" rx="2"/>
+  <text x="80" y="450" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#C41E3A">结论：</text>
+  <text x="145" y="450" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">城市智慧化程度越高，战场透明化程度也越高。密码管理、固件更新、网络隔离是防御底线。</text>
+  <text x="145" y="472" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B9FCA">"城市安全"与"战场透明"仅一线之隔</text>
+
+  <!-- Footer -->
+  <rect x="0" y="680" width="1280" height="40" fill="#F8FBFF"/>
+  <text x="60" y="705" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">一、民用监控系统</text>
+  <text x="640" y="705" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="middle">《金融时报》·路透社·前情报官员</text>
+  <text x="1220" y="705" font-family="Arial, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="end">03</text>
+
+  <!-- Bottom decoration -->
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3"/>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF" />
+  <rect x="0" y="0" width="1280" height="70" fill="#003366" />
+  <rect x="40" y="0" width="6" height="70" fill="#CC0000" />
+  <text x="60" y="46" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" fill="#FFFFFF">目 录</text>
+  <text x="640" y="130" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="bold" fill="#003366">报告内容概览</text>
+  <line x1="580" y1="145" x2="700" y2="145" stroke="#0066CC" stroke-width="2" />
+  <path fill="#F0F4FA" d="M68,175 H572 A8,8 0 0 1 580,183 V277 A8,8 0 0 1 572,285 H68 A8,8 0 0 1 60,277 V183 A8,8 0 0 1 68,175 Z" />
+  <path fill="#CC0000" d="M63,175 H63 A3,3 0 0 1 66,178 V282 A3,3 0 0 1 63,285 H63 A3,3 0 0 1 60,282 V178 A3,3 0 0 1 63,175 Z" />
+  <text x="90" y="215" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" fill="#003366">一</text>
+  <text x="130" y="215" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">民用监控系统已成为战略情报源</text>
+  <text x="130" y="245" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">交通摄像头 → 全天候瞄准镜 · 8200部队与摩萨德联合行动 · AI行为模式分析</text>
+  <text x="130" y="270" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#0066CC">结论：城市智慧化程度越高，战场透明化程度也越高</text>
+  <path fill="#F0F4FA" d="M708,175 H1212 A8,8 0 0 1 1220,183 V277 A8,8 0 0 1 1212,285 H708 A8,8 0 0 1 700,277 V183 A8,8 0 0 1 708,175 Z" />
+  <path fill="#CC0000" d="M703,175 H703 A3,3 0 0 1 706,178 V282 A3,3 0 0 1 703,285 H703 A3,3 0 0 1 700,282 V178 A3,3 0 0 1 703,175 Z" />
+  <text x="730" y="215" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" fill="#003366">二</text>
+  <text x="770" y="215" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">网络阻断已成为开战的"第一枪"</text>
+  <text x="770" y="245" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">伊朗全国流量降至4% · 通讯社遭入侵 · BadeSaba应用被劫持</text>
+  <text x="770" y="270" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#0066CC">结论：网络战的窗口只有数小时，足以决定战局走向</text>
+  <path fill="#F0F4FA" d="M68,305 H572 A8,8 0 0 1 580,313 V407 A8,8 0 0 1 572,415 H68 A8,8 0 0 1 60,407 V313 A8,8 0 0 1 68,305 Z" />
+  <path fill="#CC0000" d="M63,305 H63 A3,3 0 0 1 66,308 V412 A3,3 0 0 1 63,415 H63 A3,3 0 0 1 60,412 V308 A3,3 0 0 1 63,305 Z" />
+  <text x="90" y="345" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" fill="#003366">三</text>
+  <text x="130" y="345" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">战争账单本质上就是数据账单</text>
+  <text x="130" y="375" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">前两个月花费250亿-290亿美元 · THAAD消耗50% · Patriot消耗42%-50%</text>
+  <text x="130" y="400" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#0066CC">结论：战争烧钱，本质上是烧数据</text>
+  <path fill="#F0F4FA" d="M708,305 H1212 A8,8 0 0 1 1220,313 V407 A8,8 0 0 1 1212,415 H708 A8,8 0 0 1 700,407 V313 A8,8 0 0 1 708,305 Z" />
+  <path fill="#CC0000" d="M703,305 H703 A3,3 0 0 1 706,308 V412 A3,3 0 0 1 703,415 H703 A3,3 0 0 1 700,412 V308 A3,3 0 0 1 703,305 Z" />
+  <text x="730" y="345" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" fill="#003366">四</text>
+  <text x="770" y="345" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">算力节点已成为高价值战略目标</text>
+  <text x="770" y="375" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">伊朗无人机袭击AWS数据中心 · 击落11架MQ-9"死神"无人机</text>
+  <text x="770" y="400" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#0066CC">结论：保护数据中心已不仅是商业问题，而是国防问题</text>
+  <path fill="#F0F4FA" d="M68,435 H572 A8,8 0 0 1 580,443 V537 A8,8 0 0 1 572,545 H68 A8,8 0 0 1 60,537 V443 A8,8 0 0 1 68,435 Z" />
+  <path fill="#CC0000" d="M63,435 H63 A3,3 0 0 1 66,438 V542 A3,3 0 0 1 63,545 H63 A3,3 0 0 1 60,542 V438 A3,3 0 0 1 63,435 Z" />
+  <text x="90" y="475" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" fill="#003366">五</text>
+  <text x="130" y="475" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">没有绝对安全的通信手段</text>
+  <text x="130" y="505" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">Starshield部署+6000台走私终端 · 伊朗反间谍没收数百台 · 射频干扰</text>
+  <text x="130" y="530" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#0066CC">结论：数据可以加密，但"正在通信"这一事实无法隐藏</text>
+  <path fill="#F0F4FA" d="M708,435 H1212 A8,8 0 0 1 1220,443 V537 A8,8 0 0 1 1212,545 H708 A8,8 0 0 1 700,537 V443 A8,8 0 0 1 708,435 Z" />
+  <path fill="#CC0000" d="M703,435 H703 A3,3 0 0 1 706,438 V542 A3,3 0 0 1 703,545 H703 A3,3 0 0 1 700,542 V438 A3,3 0 0 1 703,435 Z" />
+  <text x="730" y="475" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" fill="#003366">总</text>
+  <text x="770" y="475" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#1A1A1A">总结与核心结论</text>
+  <text x="770" y="505" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">从火力密度转向数据定力 · 民用基础设施即战场延伸</text>
+  <text x="770" y="530" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#0066CC">下一次战争的警报不是雷达蜂鸣，而是数据中心的断电报警</text>
+  <rect x="0" y="665" width="1280" height="55" fill="#F0F2F5" />
+  <rect x="40" y="665" width="6" height="55" fill="#CC0000" />
+  <text x="60" y="698" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">内部资料</text>
+  <text x="1240" y="698" font-family="Arial, sans-serif" font-size="14" fill="#999999" text-anchor="end">1</text>
+</svg>

@@ -1,0 +1,201 @@
+version: "3.8"
+
+services:
+  # ============================================================
+  # Server 1: 文件操作 + 远程传输 + 智能填表 + Word 高级操作
+  # ============================================================
+  mcp-file-doc:
+    build: ./mcp-file-doc
+    container_name: mcp-file-doc
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    environment:
+      - TZ=Asia/Shanghai
+      - HOST_DOWNLOADS=/mnt/host/downloads
+      - HOST_DESKTOP=/mnt/host/desktop
+      - HOST_DOCUMENTS=/mnt/host/documents
+    volumes:
+      - file_doc_data:/data
+      - ${USERPROFILE:-~}/Downloads:/mnt/host/downloads
+      - ${USERPROFILE:-~}/Desktop:/mnt/host/desktop
+      - ${USERPROFILE:-~}/Documents:/mnt/host/documents
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 2: Markitdown 格式转换
+  # ============================================================
+  mcp-markitdown:
+    build: ./mcp-markitdown
+    container_name: mcp-markitdown
+    restart: unless-stopped
+    ports:
+      - "8007:8007"
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 3: 浏览器自动化 (Playwright)
+  # ============================================================
+  mcp-browser-playwright:
+    build: ./mcp-browser-playwright
+    container_name: mcp-browser-playwright
+    restart: unless-stopped
+    ports:
+      - "8008:8008"
+    environment:
+      - TZ=Asia/Shanghai
+    shm_size: "2gb"          # Chromium 需要较大共享内存
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 4: Sequential Thinking 结构化推理
+  # ============================================================
+  mcp-sequential-thinking:
+    build: ./mcp-sequential-thinking
+    container_name: mcp-sequential-thinking
+    restart: unless-stopped
+    ports:
+      - "8009:8009"
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 5: 数据查询与分析
+  # ============================================================
+  mcp-data-platform:
+    build: ./mcp-data-platform
+    container_name: mcp-data-platform
+    restart: unless-stopped
+    ports:
+      - "8003:8003"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - data_platform_data:/data/mcp-user-data
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 6: 时间日期服务（从 mcp-fetch-intranet 拆分）
+  # ============================================================
+  mcp-datetime:
+    build: ./mcp-datetime
+    container_name: mcp-datetime
+    restart: unless-stopped
+    ports:
+      - "8010:8010"
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 7: 运维与监控
+  # ============================================================
+  mcp-ops-monitor:
+    build: ./mcp-ops-monitor
+    container_name: mcp-ops-monitor
+    restart: unless-stopped
+    ports:
+      - "8004:8004"
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    pid: "host"
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 8: 内网抓取与API网关
+  # ============================================================
+  mcp-fetch-intranet:
+    build: ./mcp-fetch-intranet
+    container_name: mcp-fetch-intranet
+    restart: unless-stopped
+    ports:
+      - "8005:8005"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - fetch_intranet_data:/data/mcp-user-data
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 9: PPT Master AI PPT 生成
+  # ============================================================
+  ppt-master-mcp:
+    build: ./ppt-master-mcp
+    container_name: ppt-master-mcp
+    restart: unless-stopped
+    ports:
+      - "8011:8011"
+    environment:
+      - TZ=Asia/Shanghai
+      - PPT_IMAGE_GEN_ENABLED=${PPT_IMAGE_GEN_ENABLED:-true}
+    volumes:
+      - ppt_master_data:/app/workspaces
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 10: Excel / CSV / PDF 操作
+  # ============================================================
+  mcp-spreadsheet-pdf:
+    build: ./mcp-spreadsheet-pdf
+    container_name: mcp-spreadsheet-pdf
+    restart: unless-stopped
+    ports:
+      - "8012:8012"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - spreadsheet_pdf_data:/data
+      - ${USERPROFILE:-~}/Downloads:/mnt/host/downloads
+      - ${USERPROFILE:-~}/Desktop:/mnt/host/desktop
+      - ${USERPROFILE:-~}/Documents:/mnt/host/documents
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 11: Draw.io AI 图表生成与预览
+  # ============================================================
+  mcp-drawio:
+    build: ./mcp-drawio
+    container_name: mcp-drawio
+    restart: unless-stopped
+    ports:
+      - "8020:8020"
+      - "6002:6002"
+    environment:
+      - TZ=Asia/Shanghai
+      - DRAWIO_PREVIEW_BASE=http://localhost:6002
+    volumes:
+      - drawio_data:/data
+    networks:
+      - mcp-network
+
+# ============================================================
+# 共享网络
+# ============================================================
+networks:
+  mcp-network:
+    driver: bridge
+
+# ============================================================
+# 持久化卷
+# ============================================================
+volumes:
+  file_doc_data:          # mcp-file-doc 文件数据
+  data_platform_data:    # mcp-data-platform 用户数据
+  fetch_intranet_data:   # mcp-fetch-intranet 配置数据
+  ppt_master_data:       # ppt-master-mcp PPT 项目工作区
+  spreadsheet_pdf_data:  # mcp-spreadsheet-pdf 文档数据
+  drawio_data:           # mcp-drawio 图表数据

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="chBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0C1E3F"/>
+      <stop offset="50%" stop-color="#152D5A"/>
+      <stop offset="100%" stop-color="#1A3D6D"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="50%" y1="50%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0050B3" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="1280" height="720" fill="url(#chBg)"/>
+  <!-- Radial glow -->
+  <circle cx="640" cy="360" r="400" fill="url(#glowGrad)"/>
+  <!-- Top decoration line -->
+  <rect x="0" y="0" width="1280" height="6" fill="#00B4D8"/>
+  <!-- Large background number -->
+  <text x="640" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="220" font-weight="bold" fill="#FFFFFF" fill-opacity="0.06">01</text>
+  <!-- Left accent bar -->
+  <rect x="100" y="200" width="6" height="160" fill="#00B4D8"/>
+  <!-- Chapter number -->
+  <text x="140" y="260" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#00B4D8" letter-spacing="4">第一章</text>
+  <!-- Chapter title -->
+  <text x="140" y="320" font-family="Microsoft YaHei, sans-serif" font-size="44" font-weight="bold" fill="#FFFFFF">信息数据战的五个维度</text>
+  <!-- Subtitle -->
+  <text x="140" y="360" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#8AB4F8">从数据采集、传输、算力到攻防博弈的多维分析框架</text>
+  <!-- Decorative line -->
+  <rect x="140" y="385" width="120" height="3" fill="#00B4D8"/>
+  <!-- Decorative geometric elements -->
+  <circle cx="1100" cy="150" r="80" fill="#FFFFFF" fill-opacity="0.03"/>
+  <circle cx="1150" cy="180" r="50" fill="#00B4D8" fill-opacity="0.04"/>
+  <line x1="900" y1="500" x2="1200" y2="600" stroke="#00B4D8" stroke-opacity="0.06" stroke-width="1"/>
+  <line x1="950" y1="510" x2="1250" y2="610" stroke="#00B4D8" stroke-opacity="0.04" stroke-width="1"/>
+  <!-- Bottom decoration -->
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1628"/>
+      <stop offset="100%" style="stop-color:#1a2a4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="80" y="200" width="8" height="120" fill="#4fc3f7" rx="4"/>
+  <text x="120" y="260" fill="#ffffff" font-size="48" font-family="Microsoft YaHei,sans-serif" font-weight="bold">关于2026年美以对伊军事冲突中</text>
+  <text x="120" y="320" fill="#ffffff" font-size="48" font-family="Microsoft YaHei,sans-serif" font-weight="bold">信息数据战的分析报告</text>
+  <text x="120" y="400" fill="#90caf9" font-size="22" font-family="Microsoft YaHei,sans-serif">内部参阅 · 2026年6月</text>
+  <line x1="120" y1="440" x2="480" y2="440" stroke="#4fc3f7" stroke-width="2" opacity="0.5"/>
+  <text x="120" y="500" fill="#78909c" font-size="16" font-family="Microsoft YaHei,sans-serif">基于公开来源情报的五个维度分析</text>
+</svg>

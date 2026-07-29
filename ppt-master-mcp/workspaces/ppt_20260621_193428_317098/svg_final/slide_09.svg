@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8" />
+      <stop offset="100%" stop-color="#0050B3" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF" />
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBar)" />
+  <path fill="#0050B3" d="M64,36 H106 A4,4 0 0 1 110,40 V82 A4,4 0 0 1 106,86 H64 A4,4 0 0 1 60,82 V40 A4,4 0 0 1 64,36 Z" />
+  <text x="85" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">06</text>
+  <text x="130" y="70" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">总结：三条总体判断</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#E0E8F0" stroke-width="1" />
+
+  
+  <path fill="#F0F6FF" d="M72,130 H1208 A12,12 0 0 1 1220,142 V278 A12,12 0 0 1 1208,290 H72 A12,12 0 0 1 60,278 V142 A12,12 0 0 1 72,130 Z" />
+  <path fill="#00B4D8" d="M63,130 H1217 A3,3 0 0 1 1220,133 V133 A3,3 0 0 1 1217,136 H63 A3,3 0 0 1 60,133 V133 A3,3 0 0 1 63,130 Z" />
+  <circle cx="100" cy="175" r="24" fill="#0050B3" />
+  <text x="100" y="182" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">1</text>
+  <text x="140" y="182" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#0050B3">从火力密度转向数据定力</text>
+  <line x1="140" y1="195" x2="500" y2="195" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" />
+  <text x="140" y="218" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#444444">谁掌握数据采集、传输、算力和算法，谁就掌握主动权。</text>
+  <text x="140" y="245" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#666666">高精度武器的核心成本在于数据链（占80%以上），而非战斗部。现代战争的天平正在从"火药"向"比特"倾斜。</text>
+  <text x="140" y="272" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#666666">未来军力对比的关键指标：数据链完整度、算力规模、AI算法成熟度。</text>
+
+  
+  <path fill="#F0F6FF" d="M72,310 H1208 A12,12 0 0 1 1220,322 V458 A12,12 0 0 1 1208,470 H72 A12,12 0 0 1 60,458 V322 A12,12 0 0 1 72,310 Z" />
+  <path fill="#00B4D8" d="M63,310 H1217 A3,3 0 0 1 1220,313 V313 A3,3 0 0 1 1217,316 H63 A3,3 0 0 1 60,313 V313 A3,3 0 0 1 63,310 Z" />
+  <circle cx="100" cy="355" r="24" fill="#0050B3" />
+  <text x="100" y="362" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">2</text>
+  <text x="140" y="362" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#0050B3">民用基础设施即战场延伸</text>
+  <line x1="140" y1="375" x2="500" y2="375" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" />
+  <text x="140" y="398" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#444444">交通摄像头、云数据中心、低轨卫星互联网、手机应用程序——这些日常数字服务。</text>
+  <text x="140" y="425" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#666666">在战时瞬间转化为情报来源、打击目标和攻防工具。城市智慧化程度越高，战场透明化程度也越高。</text>
+  <text x="140" y="452" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#666666">防御方必须对民用基础设施实施严格的网络隔离与安全加固。</text>
+
+  
+  <path fill="#F0F6FF" d="M72,490 H1208 A12,12 0 0 1 1220,502 V638 A12,12 0 0 1 1208,650 H72 A12,12 0 0 1 60,638 V502 A12,12 0 0 1 72,490 Z" />
+  <path fill="#00B4D8" d="M63,490 H1217 A3,3 0 0 1 1220,493 V493 A3,3 0 0 1 1217,496 H63 A3,3 0 0 1 60,493 V493 A3,3 0 0 1 63,490 Z" />
+  <circle cx="100" cy="535" r="24" fill="#0050B3" />
+  <text x="100" y="542" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">3</text>
+  <text x="140" y="542" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#0050B3">数据战没有单方面的绝对优势</text>
+  <line x1="140" y1="555" x2="500" y2="555" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" />
+  <text x="140" y="578" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#444444">伊朗以非对称手段打击数据中心、击落无人机、没收星链终端。</text>
+  <text x="140" y="605" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#666666">即使是技术弱势一方，也能找到强者的数据节点实施致命打击。下一次战争的第一声警报，可能不是防空雷达</text>
+  <text x="140" y="625" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#666666">的蜂鸣，而是数据中心的断电报警。</text>
+  <text x="140" y="645" font-family="Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#C00000">在算法面前，没有谁是无法被分析的。</text>
+
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3" />
+</svg>

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bgGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F0F4F8" />
+      <stop offset="100%" stop-color="#E8EEF5" />
+    </linearGradient>
+    <linearGradient id="topBarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8" />
+      <stop offset="100%" stop-color="#0050B3" />
+    </linearGradient>
+    <linearGradient id="verticalBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0050B3" />
+      <stop offset="100%" stop-color="#00B4D8" />
+    </linearGradient>
+  </defs>
+
+  
+  <rect x="0" y="0" width="1280" height="720" fill="url(#bgGradLight)" />
+
+  
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBarGrad)" />
+
+  
+  <rect x="0" y="0" width="60" height="720" fill="#0050B3" fill-opacity="0.05" />
+  <path d="M60,0 L60,720 L0,680 L0,40 Z" fill="#0050B3" fill-opacity="0.08" />
+
+  
+  <path fill="#0050B3" d="M64,30 H106 A4,4 0 0 1 110,34 V76 A4,4 0 0 1 106,80 H64 A4,4 0 0 1 60,76 V34 A4,4 0 0 1 64,30 Z" />
+  <text x="85" y="62" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF" text-anchor="middle">目</text>
+  <text x="130" y="65" font-family="Microsoft YaHei, sans-serif" font-size="30" font-weight="bold" fill="#1A1A1A">录</text>
+  <text x="180" y="65" font-family="Arial, sans-serif" font-size="16" fill="#78909C">CONTENTS</text>
+
+  
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3" />
+
+  
+  
+  <path fill="#FFFFFF" stroke="#E0E6ED" stroke-width="1" d="M88,110 H612 A8,8 0 0 1 620,118 V197 A8,8 0 0 1 612,205 H88 A8,8 0 0 1 80,197 V118 A8,8 0 0 1 88,110 Z" />
+  <path fill="#0050B3" d="M83,110 H83 A3,3 0 0 1 86,113 V202 A3,3 0 0 1 83,205 H83 A3,3 0 0 1 80,202 V113 A3,3 0 0 1 83,110 Z" />
+  <circle cx="130" cy="150" r="22" fill="#0050B3" />
+  <text x="130" y="157" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF" text-anchor="middle">01</text>
+  <text x="170" y="145" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#1A2E44">民用监控系统已成为战略情报源</text>
+  <text x="170" y="175" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7B8C">交通摄像头→全天候瞄准镜，8200部队渗透案例</text>
+
+  
+  <path fill="#FFFFFF" stroke="#E0E6ED" stroke-width="1" d="M88,225 H612 A8,8 0 0 1 620,233 V312 A8,8 0 0 1 612,320 H88 A8,8 0 0 1 80,312 V233 A8,8 0 0 1 88,225 Z" />
+  <path fill="#0050B3" d="M83,225 H83 A3,3 0 0 1 86,228 V317 A3,3 0 0 1 83,320 H83 A3,3 0 0 1 80,317 V228 A3,3 0 0 1 83,225 Z" />
+  <circle cx="130" cy="265" r="22" fill="#0050B3" />
+  <text x="130" y="272" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF" text-anchor="middle">02</text>
+  <text x="170" y="260" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#1A2E44">网络阻断已成为开战的"第一枪"</text>
+  <text x="170" y="290" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7B8C">伊朗全国流量下降98%，网络战与物理打击同步</text>
+
+  
+  <path fill="#FFFFFF" stroke="#E0E6ED" stroke-width="1" d="M88,340 H612 A8,8 0 0 1 620,348 V427 A8,8 0 0 1 612,435 H88 A8,8 0 0 1 80,427 V348 A8,8 0 0 1 88,340 Z" />
+  <path fill="#0050B3" d="M83,340 H83 A3,3 0 0 1 86,343 V432 A3,3 0 0 1 83,435 H83 A3,3 0 0 1 80,432 V343 A3,3 0 0 1 83,340 Z" />
+  <circle cx="130" cy="380" r="22" fill="#0050B3" />
+  <text x="130" y="387" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF" text-anchor="middle">03</text>
+  <text x="170" y="375" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#1A2E44">战争账单本质上就是数据账单</text>
+  <text x="170" y="405" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7B8C">前两月花费250-290亿，每枚导弹即一台飞行计算机</text>
+
+  
+  <path fill="#FFFFFF" stroke="#E0E6ED" stroke-width="1" d="M88,455 H612 A8,8 0 0 1 620,463 V542 A8,8 0 0 1 612,550 H88 A8,8 0 0 1 80,542 V463 A8,8 0 0 1 88,455 Z" />
+  <path fill="#0050B3" d="M83,455 H83 A3,3 0 0 1 86,458 V547 A3,3 0 0 1 83,550 H83 A3,3 0 0 1 80,547 V458 A3,3 0 0 1 83,455 Z" />
+  <circle cx="130" cy="495" r="22" fill="#0050B3" />
+  <text x="130" y="502" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF" text-anchor="middle">04</text>
+  <text x="170" y="490" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#1A2E44">算力节点已成为高价值战略目标</text>
+  <text x="170" y="520" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7B8C">伊朗无人机打击AWS数据中心，击落11架MQ-9</text>
+
+  
+  <path fill="#FFFFFF" stroke="#E0E6ED" stroke-width="1" d="M88,570 H612 A8,8 0 0 1 620,578 V657 A8,8 0 0 1 612,665 H88 A8,8 0 0 1 80,657 V578 A8,8 0 0 1 88,570 Z" />
+  <path fill="#0050B3" d="M83,570 H83 A3,3 0 0 1 86,573 V662 A3,3 0 0 1 83,665 H83 A3,3 0 0 1 80,662 V573 A3,3 0 0 1 83,570 Z" />
+  <circle cx="130" cy="610" r="22" fill="#0050B3" />
+  <text x="130" y="617" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF" text-anchor="middle">05</text>
+  <text x="170" y="605" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#1A2E44">没有绝对安全的通信手段</text>
+  <text x="170" y="635" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7B8C">星链渗透与伊朗反制：射频干扰→终端失效</text>
+
+  
+  <path fill="#FFFFFF" fill-opacity="0.6" stroke="#0050B3" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="5 5" d="M692,110 H1188 A12,12 0 0 1 1200,122 V653 A12,12 0 0 1 1188,665 H692 A12,12 0 0 1 680,653 V122 A12,12 0 0 1 692,110 Z" />
+  <text x="940" y="170" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="bold" fill="#1A2E44" text-anchor="middle">报告框架</text>
+  <line x1="780" y1="190" x2="1100" y2="190" stroke="#0050B3" stroke-width="1" stroke-opacity="0.3" />
+
+  
+  <text x="940" y="230" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#333D4A" text-anchor="middle">现代战争核心已从</text>
+  <text x="940" y="260" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#333D4A" text-anchor="middle">火力密度转向数据定力</text>
+  <text x="940" y="310" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#6B7B8C" text-anchor="middle">民用基础设施即战场延伸</text>
+  <text x="940" y="340" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#6B7B8C" text-anchor="middle">数据战没有单方面的绝对优势</text>
+
+  <path fill="#0050B3" fill-opacity="0.08" d="M828,390 H1052 A8,8 0 0 1 1060,398 V462 A8,8 0 0 1 1052,470 H828 A8,8 0 0 1 820,462 V398 A8,8 0 0 1 828,390 Z" />
+  <text x="940" y="425" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#0050B3" text-anchor="middle">5个维度</text>
+  <text x="940" y="455" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B7B8C" text-anchor="middle">全方位解析信息数据战特征</text>
+
+  
+  <text x="640" y="698" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999" text-anchor="middle">2026年美以对伊军事冲突中信息数据战分析报告 · 目录</text>
+</svg>

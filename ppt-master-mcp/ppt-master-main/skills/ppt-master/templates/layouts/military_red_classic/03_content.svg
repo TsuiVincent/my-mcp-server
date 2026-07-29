@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+    <defs>
+        <linearGradient id="topGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#8B0000;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#C41E3A;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#C4A44A;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#F5D68A;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#C4A44A;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+    <!-- 顶部红条 -->
+    <rect x="0" y="0" width="1280" height="60" fill="url(#topGrad)"/>
+    <rect x="0" y="0" width="1280" height="3" fill="url(#goldGrad)"/>
+    <!-- 页眉 -->
+    <rect x="40" y="16" width="32" height="32" fill="none" stroke="#FFFFFF" stroke-width="2" rx="2"/>
+    <text x="56" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">{{CHAPTER_NUM}}</text>
+    <text x="90" y="42" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="bold" fill="#FFFFFF">{{PAGE_TITLE}}</text>
+    <text x="1230" y="42" text-anchor="end" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#FFFFFF" fill-opacity="0.6">{{ORG_SHORT}}</text>
+    <!-- 内容区 -->
+    <rect x="50" y="80" width="1180" height="580" fill="none" stroke="#E8D0D0" stroke-width="2" stroke-dasharray="10,10" rx="3"/>
+    <text x="640" y="360" text-anchor="middle" fill="#E0D0D0" font-size="18" font-family="Microsoft YaHei, sans-serif">{{CONTENT_AREA}}</text>
+    <text x="640" y="395" text-anchor="middle" fill="#E0D0D0" font-size="14" font-family="Microsoft YaHei, sans-serif">(由 AI 根据实际内容自由布局)</text>
+    <!-- 底部 -->
+    <rect x="0" y="688" width="1280" height="32" fill="url(#topGrad)"/>
+    <text x="640" y="710" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#FFE0E0">{{PAGE_NUM}}</text>
+    <text x="1230" y="710" text-anchor="end" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#FFE0E0" fill-opacity="0.7">{{ORG_SHORT}}</text>
+</svg>

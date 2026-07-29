@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="tocBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8F4FD"/>
+      <stop offset="100%" stop-color="#F0F8FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#tocBg)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#00B4D8"/>
+  <rect x="0" y="714" width="1280" height="6" fill="#0050B3"/>
+  <!-- Left decorative trapezoid -->
+  <polygon points="0,0 50,0 50,720 0,720" fill="#0050B3" fill-opacity="0.1"/>
+  <polygon points="0,0 30,0 30,720 0,720" fill="#0050B3" fill-opacity="0.2"/>
+  <!-- Title -->
+  <text x="80" y="75" font-family="Microsoft YaHei, sans-serif" font-size="32" font-weight="bold" fill="#003580">目 录</text>
+  <text x="80" y="100" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#6B8DB5">CONTENTS</text>
+  <rect x="80" y="110" width="60" height="3" fill="#00B4D8"/>
+  <!-- TOC Items - left column -->
+  <!-- Item 1 -->
+  <circle cx="140" cy="200" r="24" fill="#0050B3"/>
+  <text x="140" y="207" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">1</text>
+  <line x1="164" y1="200" x2="540" y2="200" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="206" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">民用监控系统已成为战略情报源</text>
+  <!-- Item 2 -->
+  <circle cx="140" cy="290" r="24" fill="#0050B3"/>
+  <text x="140" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">2</text>
+  <line x1="164" y1="290" x2="540" y2="290" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="296" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">网络阻断已成为开战的"第一枪"</text>
+  <!-- Item 3 -->
+  <circle cx="140" cy="380" r="24" fill="#0050B3"/>
+  <text x="140" y="387" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">3</text>
+  <line x1="164" y1="380" x2="540" y2="380" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="386" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">战争账单本质上就是数据账单</text>
+  <!-- Item 4 -->
+  <circle cx="140" cy="470" r="24" fill="#0050B3"/>
+  <text x="140" y="477" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">4</text>
+  <line x1="164" y1="470" x2="540" y2="470" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="476" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">算力节点已成为高价值战略目标</text>
+  <!-- Item 5 -->
+  <circle cx="140" cy="560" r="24" fill="#0050B3"/>
+  <text x="140" y="567" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">5</text>
+  <line x1="164" y1="560" x2="540" y2="560" stroke="#00B4D8" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="566" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#003580">没有绝对安全的通信手段</text>
+  <!-- Item 6 -->
+  <circle cx="140" cy="640" r="24" fill="#C41E3A"/>
+  <text x="140" y="647" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">★</text>
+  <line x1="164" y1="640" x2="540" y2="640" stroke="#C41E3A" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="200" y="646" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="bold" fill="#C41E3A">总结：三条总体判断</text>
+  <!-- Right side decorative card -->
+  <rect x="660" y="175" width="520" height="490" rx="12" fill="#FFFFFF" fill-opacity="0.6" stroke="#00B4D8" stroke-width="1"/>
+  <rect x="660" y="175" width="520" height="6" fill="url(#tocBg)" rx="3"/>
+  <text x="920" y="240" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="bold" fill="#003580">核心观点</text>
+  <rect x="820" y="255" width="200" height="3" fill="#00B4D8"/>
+  <text x="700" y="300" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">
+    <tspan x="700" dy="0">现代战争的核心已从火力密度</tspan>
+    <tspan x="700" dy="28">转向数据定力</tspan>
+  </text>
+  <text x="700" y="380" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">
+    <tspan x="700" dy="0">民用基础设施即战场延伸</tspan>
+    <tspan x="700" dy="28">——民用与军用界限已经消失</tspan>
+  </text>
+  <text x="700" y="460" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">
+    <tspan x="700" dy="0">数据战没有单方面的绝对优势</tspan>
+    <tspan x="700" dy="28">——弱势一方也能找到数据节点</tspan>
+  </text>
+  <text x="700" y="540" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">
+    <tspan x="700" dy="0">下一次战争第一声警报</tspan>
+    <tspan x="700" dy="28">可能是数据中心的断电报警</tspan>
+  </text>
+</svg>

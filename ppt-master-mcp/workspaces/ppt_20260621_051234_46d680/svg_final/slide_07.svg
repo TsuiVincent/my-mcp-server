@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="barGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8" />
+      <stop offset="100%" stop-color="#0050B3" />
+    </linearGradient>
+    <linearGradient id="numGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0050B3" />
+      <stop offset="100%" stop-color="#003366" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF" />
+  <rect x="0" y="0" width="1280" height="6" fill="url(#barGrad)" />
+  <rect x="0" y="0" width="6" height="720" fill="url(#barGrad)" />
+  <path fill="url(#numGrad)" d="M64,30 H106 A4,4 0 0 1 110,34 V76 A4,4 0 0 1 106,80 H64 A4,4 0 0 1 60,76 V34 A4,4 0 0 1 64,30 Z" />
+  <text x="85" y="62" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF" text-anchor="middle">5</text>
+  <text x="130" y="62" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="bold" fill="#1A1A1A">没有绝对安全的通信手段</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#D0E4F7" stroke-width="1" stroke-dasharray="6 4" />
+
+  <path fill="#F0F6FF" d="M64,120 H1216 A4,4 0 0 1 1220,124 V164 A4,4 0 0 1 1216,168 H64 A4,4 0 0 1 60,164 V124 A4,4 0 0 1 64,120 Z" />
+  <path fill="#00B4D8" d="M62,120 H62 A2,2 0 0 1 64,122 V166 A2,2 0 0 1 62,168 H62 A2,2 0 0 1 60,166 V122 A2,2 0 0 1 62,120 Z" />
+  <text x="80" y="150" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#004080">如果你用星链这样的先进卫星网络去渗透一个国家，你以为自己是猎人，但你也可能变成猎物。</text>
+
+  
+  <path fill="#F8FBFF" stroke="#D0E4F7" stroke-width="1" d="M68,188 H622 A8,8 0 0 1 630,196 V420 A8,8 0 0 1 622,428 H68 A8,8 0 0 1 60,420 V196 A8,8 0 0 1 68,188 Z" />
+  <path fill="#0050B3" d="M62,188 H62 A2,2 0 0 1 64,190 V426 A2,2 0 0 1 62,428 H62 A2,2 0 0 1 60,426 V190 A2,2 0 0 1 62,188 Z" />
+  <text x="80" y="218" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#0050B3">美方攻势：星链渗透</text>
+  <text x="80" y="248" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• SpaceX向美军出售Starshield军事版终端</text>
+  <text x="80" y="274" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 冲突开始时已部署于十多个无人机系统</text>
+  <text x="80" y="300" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 美国务院利用"互联网自由倡议"资金</text>
+  <text x="80" y="326" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 约6000台Starlink终端走私入境伊朗</text>
+  <text x="80" y="352" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 累计估计3万-5万台自2022年起流入</text>
+  <text x="80" y="400" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">来源：路透社调查（基于五角大楼文件）· PressTV</text>
+
+  
+  <path fill="#FFF8F0" stroke="#F0C48A" stroke-width="1" d="M658,188 H1212 A8,8 0 0 1 1220,196 V420 A8,8 0 0 1 1212,428 H658 A8,8 0 0 1 650,420 V196 A8,8 0 0 1 658,188 Z" />
+  <path fill="#C41E3A" d="M652,188 H652 A2,2 0 0 1 654,190 V426 A2,2 0 0 1 652,428 H652 A2,2 0 0 1 650,426 V190 A2,2 0 0 1 652,188 Z" />
+  <text x="670" y="218" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#C41E3A">伊朗反制：反间谍与射频干扰</text>
+  <text x="670" y="248" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 情报部全国反间谍行动，没收数百台终端</text>
+  <text x="670" y="274" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 3月19日：锡斯坦省逮捕13人，没收5台终端</text>
+  <text x="670" y="300" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 3月25日：德黑兰逮捕39人，没收7台设备</text>
+  <text x="670" y="326" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 部署射频干扰系统，军事级干扰信号</text>
+  <text x="670" y="352" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">• 非法使用Starlink定为刑事犯罪</text>
+  <text x="670" y="400" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">来源：伊朗情报部 · ایران اینترنشنال · Military.com</text>
+
+  
+  <path fill="#F0F6FF" stroke="#D0E4F7" stroke-width="1" d="M66,448 H1214 A6,6 0 0 1 1220,454 V498 A6,6 0 0 1 1214,504 H66 A6,6 0 0 1 60,498 V454 A6,6 0 0 1 66,448 Z" />
+  <path fill="#00B4D8" d="M62,448 H62 A2,2 0 0 1 64,450 V502 A2,2 0 0 1 62,504 H62 A2,2 0 0 1 60,502 V450 A2,2 0 0 1 62,448 Z" />
+  <text x="80" y="470" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#0050B3">核心矛盾：</text>
+  <text x="175" y="470" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#333333">数据内容可以加密，但"正在通信"这一事实无法隐藏。</text>
+  <text x="175" y="492" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#6B9FCA">进攻方可以利用卫星网络追踪目标，防御方同样可以利用信号特征反向定位并没收设备。</text>
+
+  <rect x="0" y="680" width="1280" height="40" fill="#F8FBFF" />
+  <text x="60" y="705" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA">五、通信安全</text>
+  <text x="640" y="705" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="middle">路透社 · 伊朗情报部 · Military.com</text>
+  <text x="1220" y="705" font-family="Arial, sans-serif" font-size="13" fill="#6B9FCA" text-anchor="end">07</text>
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3" />
+</svg>

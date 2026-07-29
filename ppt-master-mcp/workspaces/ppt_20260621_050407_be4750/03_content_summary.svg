@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="70" fill="#003366"/>
+  <rect x="40" y="0" width="6" height="70" fill="#CC0000"/>
+  <text x="60" y="46" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" fill="#FFFFFF">总结与核心结论</text>
+  <rect x="40" y="100" width="1200" height="50" fill="#E8EEF5"/>
+  <rect x="40" y="100" width="4" height="50" fill="#0066CC"/>
+  <text x="640" y="131" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#003366" font-weight="bold">现代战争的核心已从火力密度转向数据定力</text>
+  <rect x="40" y="175" width="380" height="200" fill="#F0F4FA" rx="8" stroke="#B0C8E0" stroke-width="1"/>
+  <rect x="40" y="175" width="380" height="40" fill="#003366" rx="8"/>
+  <rect x="40" y="205" width="380" height="10" fill="#003366"/>
+  <text x="230" y="202" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">结论一</text>
+  <text x="60" y="245" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#1A1A1A" font-weight="bold">从火力密度转向数据定力</text>
+  <text x="60" y="275" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#555555">从德黑兰的摄像头到星链终端，</text>
+  <text x="60" y="300" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#555555">从网络骨干网到数据中心，</text>
+  <text x="60" y="325" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#555555">数据流贯穿战争全周期。</text>
+  <rect x="450" y="175" width="380" height="200" fill="#F0F4FA" rx="8" stroke="#B0C8E0" stroke-width="1"/>
+  <rect x="450" y="175" width="380" height="40" fill="#CC0000" rx="8"/>
+  <rect x="450" y="205" width="380" height="10" fill="#CC0000"/>
+  <text x="640" y="202" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">结论二</text>
+  <text x="470" y="245" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#1A1A1A" font-weight="bold">民用基础设施即战场延伸</text>
+  <text x="470" y="275" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#555555">交通摄像头、云数据中心、</text>
+  <text x="470" y="300" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#555555">低轨卫星互联网、手机应用程序</text>
+  <text x="470" y="325" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#555555">在战时瞬间转化为攻防工具。</text>
+  <rect x="860" y="175" width="380" height="200" fill="#F0F4FA" rx="8" stroke="#B0C8E0" stroke-width="1"/>
+  <rect x="860" y="175" width="380" height="40" fill="#0066CC" rx="8"/>
+  <rect x="860" y="205" width="380" height="10" fill="#0066CC"/>
+  <text x="1050" y="202" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">结论三</text>
+  <text x="880" y="245" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#1A1A1A" font-weight="bold">数据战没有单方面的绝对优势</text>
+  <text x="880" y="275" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#555555">伊朗以非对称手段打击数据中心、</text>
+  <text x="880" y="300" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#555555">击落无人机、没收星链终端，</text>
+  <text x="880" y="325" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#555555">技术弱势一方也能致命打击。</text>
+  <rect x="40" y="405" width="1200" height="120" fill="#FFF8F0" rx="8" stroke="#F0D0A0" stroke-width="1"/>
+  <rect x="40" y="405" width="6" height="120" fill="#CC6600" rx="3"/>
+  <text x="65" y="435" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#CC6600">核心警句</text>
+  <text x="640" y="470" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="bold" fill="#1A1A1A">"下一次战争的第一声警报，可能不是防空雷达的蜂鸣，</text>
+  <text x="640" y="500" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="bold" fill="#1A1A1A">而是数据中心的断电报警。"</text>
+  <rect x="0" y="665" width="1280" height="55" fill="#F0F2F5"/>
+  <rect x="40" y="665" width="6" height="55" fill="#CC0000"/>
+  <text x="60" y="698" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#666666">总结</text>
+  <text x="1240" y="698" font-family="Arial, sans-serif" font-size="14" fill="#999999" text-anchor="end">12</text>
+</svg>

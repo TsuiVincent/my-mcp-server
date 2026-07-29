@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBar)"/>
+  <rect x="60" y="36" width="50" height="50" fill="#0050B3" rx="4"/>
+  <text x="85" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">04</text>
+  <text x="130" y="70" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">算力节点已成为高价值战略目标</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#E0E8F0" stroke-width="1"/>
+  <rect x="60" y="120" width="1160" height="60" fill="#F0F6FF" rx="8"/>
+  <rect x="60" y="120" width="4" height="60" fill="#00B4D8" rx="2"/>
+  <text x="80" y="148" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#333333">核心论点：面对全世界最强大的军队，伊朗选择了一条非对称反击路线——不打航母，专打数据中心。</text>
+  <text x="80" y="170" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#666666">2026年3月1日至2日，伊朗无人机对海湾地区基础设施发动袭击</text>
+
+  <!-- Left: Attack on AWS data centers -->
+  <rect x="60" y="205" width="560" height="230" fill="#FAFCFF" rx="10" stroke="#E0E8F0" stroke-width="1"/>
+  <rect x="60" y="205" width="560" height="40" fill="#C00000" rx="10"/>
+  <rect x="60" y="235" width="560" height="10" fill="#C00000"/>
+  <text x="340" y="231" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">⚡ 数据中心袭击</text>
+
+  <rect x="90" y="265" width="240" height="70" fill="#FFFFFF" rx="6" stroke="#E0E8F0" stroke-width="1"/>
+  <text x="210" y="293" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#C00000">AWS ME-CENTRAL-1</text>
+  <text x="210" y="318" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#666666">阿联酋可用区被命中</text>
+
+  <rect x="350" y="265" width="240" height="70" fill="#FFFFFF" rx="6" stroke="#E0E8F0" stroke-width="1"/>
+  <text x="470" y="293" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#C00000">AWS ME-SOUTH-1</text>
+  <text x="470" y="318" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#666666">巴林可用区遭损害</text>
+
+  <text x="90" y="380" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">这些数据中心托管着美军中东地区</text>
+  <text x="90" y="400" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#C00000">人工智能指挥链的核心节点</text>
+  <text x="90" y="420" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#999999">目标选择精准体现了对美军作战体系数据流的深刻理解</text>
+
+  <!-- Right: Drone losses -->
+  <rect x="660" y="205" width="560" height="230" fill="#FAFCFF" rx="10" stroke="#E0E8F0" stroke-width="1"/>
+  <rect x="660" y="205" width="560" height="40" fill="#0050B3" rx="10"/>
+  <rect x="660" y="235" width="560" height="10" fill="#0050B3"/>
+  <text x="940" y="231" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">🛩 无人机损失统计</text>
+
+  <rect x="700" y="270" width="480" height="60" fill="#FFFFFF" rx="8" stroke="#E0E8F0" stroke-width="1"/>
+  <text x="940" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#C00000">11架</text>
+  <text x="940" y="320" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">MQ-9"死神"无人机被击落</text>
+
+  <text x="700" y="360" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">• 每架MQ-9成本：约 <tspan fill="#C00000" font-weight="bold">3000万至3500万美元</tspan></text>
+  <text x="700" y="385" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">• 来源：Aviation Safety Network 记录</text>
+  <text x="700" y="410" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">• 加上无人机损失，美军的实际战争成本显著攀升</text>
+
+  <!-- Bottom insight -->
+  <rect x="60" y="460" width="1160" height="80" fill="#FFF8F0" rx="8" stroke="#FFB347" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="80" y="490" font-family="Microsoft YaHei, sans-serif" font-size="14" font-weight="bold" fill="#D47400">💡 非对称打击逻辑</text>
+  <text x="80" y="512" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#555555">摧毁一个数据中心的效果，可能超过击沉一艘航母——因为它瘫痪的是整个指挥链条的"大脑"。技术弱势一方同样能找到强者数据节点的致命弱点。</text>
+
+  <!-- Warfare cost bar -->
+  <rect x="60" y="565" width="1160" height="50" fill="#F0F6FF" rx="8"/>
+  <text x="640" y="595" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">战争成本计算：11架MQ-9 × $3,250万 ≈ $3.57亿（仅无人机损失）</text>
+
+  <rect x="60" y="665" width="1160" height="1" fill="#E0E8F0"/>
+  <text x="60" y="690" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：Aviation Safety Network · AWS状态报告</text>
+  <text x="1220" y="690" text-anchor="end" font-family="Arial, sans-serif" font-size="14" fill="#0050B3">07</text>
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3"/>
+</svg>

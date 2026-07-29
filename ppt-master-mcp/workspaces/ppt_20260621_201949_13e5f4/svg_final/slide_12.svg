@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00418D" />
+      <stop offset="100%" stop-color="#072C61" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF" />
+  <rect x="0" y="0" width="1280" height="8" fill="url(#topBar)" />
+  <rect x="80" y="100" width="4" height="36" fill="#0066CC" />
+  <text x="100" y="130" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#00418D">星链攻防战：卫星互联网的战场化</text>
+  <text x="100" y="155" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#6B7280">CASE STUDY: STARLINK IN THE BATTLEFIELD</text>
+  <line x1="80" y1="170" x2="1200" y2="170" stroke="#E2E8F0" stroke-width="1" />
+  
+  <path fill="#F0F4F8" d="M84,190 H1196 A4,4 0 0 1 1200,194 V230 A4,4 0 0 1 1196,234 H84 A4,4 0 0 1 80,230 V194 A4,4 0 0 1 84,190 Z" />
+  <rect x="80" y="190" width="4" height="44" fill="#C41E3A" />
+  <text x="100" y="218" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#1A202C">核心洞察：数据内容可以加密，但"正在通信"这一事实无法隐藏</text>
+  
+  
+  <path fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" d="M86,260 H614 A6,6 0 0 1 620,266 V454 A6,6 0 0 1 614,460 H86 A6,6 0 0 1 80,454 V266 A6,6 0 0 1 86,260 Z" />
+  <path fill="#C41E3A" d="M82,260 H618 A2,2 0 0 1 620,262 V262 A2,2 0 0 1 618,264 H82 A2,2 0 0 1 80,262 V262 A2,2 0 0 1 82,260 Z" />
+  <text x="100" y="295" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#C41E3A">美以：渗透部署</text>
+  <text x="100" y="325" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· SpaceX向美军出售Starshield军事版终端</text>
+  <text x="100" y="347" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· 冲突开始时已部署于十多个无人机系统</text>
+  <text x="100" y="369" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· 美国国务院利用"互联网自由倡议"资金</text>
+  <text x="100" y="391" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· 约6000台Starlink终端走私入境伊朗</text>
+  <text x="100" y="413" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· 累计估计3万至5万台终端自2022年走私</text>
+  
+  
+  <path fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" d="M656,260 H1194 A6,6 0 0 1 1200,266 V454 A6,6 0 0 1 1194,460 H656 A6,6 0 0 1 650,454 V266 A6,6 0 0 1 656,260 Z" />
+  <path fill="#0066CC" d="M652,260 H1198 A2,2 0 0 1 1200,262 V262 A2,2 0 0 1 1198,264 H652 A2,2 0 0 1 650,262 V262 A2,2 0 0 1 652,260 Z" />
+  <text x="670" y="295" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#0066CC">伊朗：反制行动</text>
+  <text x="670" y="325" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· 自3月起展开全国性反间谍行动</text>
+  <text x="670" y="347" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· 宣布没收数百台Starlink终端</text>
+  <text x="670" y="369" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· 3月19日：逮捕13人，没收5台终端</text>
+  <text x="670" y="391" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· 3月25日：德黑兰逮捕39人，没收7台</text>
+  <text x="670" y="413" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">· 部署先进射频干扰系统使终端失效</text>
+  
+  
+  <path fill="#FEF3E8" d="M86,490 H1194 A6,6 0 0 1 1200,496 V544 A6,6 0 0 1 1194,550 H86 A6,6 0 0 1 80,544 V496 A6,6 0 0 1 86,490 Z" />
+  <rect x="80" y="490" width="6" height="60" fill="#C41E3A" />
+  <text x="110" y="518" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#C41E3A">攻防对称性</text>
+  <text x="230" y="518" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#4A5568">进攻方可以利用卫星网络追踪目标，防御方同样可以利用信号特征反向定位并没收设备</text>
+  <text x="110" y="538" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">数据对抗时代，没有哪种通信手段能确保100%的安全</text>
+  
+  <line x1="80" y1="660" x2="1200" y2="660" stroke="#E2E8F0" stroke-width="1" />
+  <text x="80" y="685" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#9CA3AF">来源：公开媒体报道 · 伊朗情报部公告</text>
+  <text x="1200" y="685" text-anchor="end" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#9CA3AF">05 / 信息数据战分析 · 12</text>
+  <line x1="80" y1="100" x2="80" y2="115" stroke="#00418D" stroke-width="2" />
+  <line x1="80" y1="100" x2="95" y2="100" stroke="#00418D" stroke-width="2" />
+  <line x1="1200" y1="100" x2="1200" y2="115" stroke="#00418D" stroke-width="2" />
+  <line x1="1200" y1="100" x2="1185" y2="100" stroke="#00418D" stroke-width="2" />
+</svg>

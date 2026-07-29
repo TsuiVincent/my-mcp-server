@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00418D" />
+      <stop offset="100%" stop-color="#072C61" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF" />
+  <rect x="0" y="0" width="1280" height="8" fill="url(#topBar)" />
+  <rect x="80" y="100" width="4" height="36" fill="#0066CC" />
+  <text x="100" y="130" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#00418D">从战斧到JDAM：战争的成本逻辑</text>
+  <text x="100" y="155" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#6B7280">CASE STUDY: THE COST LOGIC OF PRECISION MUNITIONS</text>
+  <line x1="80" y1="170" x2="1200" y2="170" stroke="#E2E8F0" stroke-width="1" />
+  
+  <path fill="#F0F4F8" d="M84,190 H1196 A4,4 0 0 1 1200,194 V230 A4,4 0 0 1 1196,234 H84 A4,4 0 0 1 80,230 V194 A4,4 0 0 1 84,190 Z" />
+  <rect x="80" y="190" width="4" height="44" fill="#C41E3A" />
+  <text x="100" y="218" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#1A202C">核心洞察：高精度武器的成本优势建立在数据链优势之上——采购的不是弹药，而是数据终端</text>
+  
+  
+  <path fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" d="M86,260 H604 A6,6 0 0 1 610,266 V414 A6,6 0 0 1 604,420 H86 A6,6 0 0 1 80,414 V266 A6,6 0 0 1 86,260 Z" />
+  <path fill="#C41E3A" d="M82,260 H608 A2,2 0 0 1 610,262 V262 A2,2 0 0 1 608,264 H82 A2,2 0 0 1 80,262 V262 A2,2 0 0 1 82,260 Z" />
+  <text x="100" y="295" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#C41E3A">冲突初期：高数据链依赖</text>
+  <text x="100" y="325" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">JASSM最新型号：约 230万美元/枚</text>
+  <text x="100" y="347" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">战斧巡航导弹：约 200万美元/枚</text>
+  <text x="100" y="369" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">内置完整惯导+卫星接收机+地形匹配+末端识别</text>
+  <text x="100" y="391" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">需要卫星数据链实时更新目标坐标</text>
+  
+  <path fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" d="M646,260 H1194 A6,6 0 0 1 1200,266 V414 A6,6 0 0 1 1194,420 H646 A6,6 0 0 1 640,414 V266 A6,6 0 0 1 646,260 Z" />
+  <path fill="#0066CC" d="M642,260 H1198 A2,2 0 0 1 1200,262 V262 A2,2 0 0 1 1198,264 H642 A2,2 0 0 1 640,262 V262 A2,2 0 0 1 642,260 Z" />
+  <text x="660" y="295" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#0066CC">冲突后期：数据链需求降低</text>
+  <text x="660" y="325" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">2000磅 GBU-31：约 10.7万美元/枚</text>
+  <text x="660" y="347" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">1000磅 GBU-32：约 7.9万美元/枚</text>
+  <text x="660" y="369" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">500磅 GBU-38：约 7.5万美元/枚</text>
+  <text x="660" y="391" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">成本骤降——伊朗防空系统被削弱后复杂数据链需求降低</text>
+  
+  
+  <path fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" d="M86,450 H1194 A6,6 0 0 1 1200,456 V514 A6,6 0 0 1 1194,520 H86 A6,6 0 0 1 80,514 V456 A6,6 0 0 1 86,450 Z" />
+  <rect x="80" y="450" width="6" height="70" fill="#00418D" />
+  <text x="110" y="478" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#00418D">冲突前两个月总花费</text>
+  <text x="110" y="502" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#4A5568">250亿至290亿美元 | 日均约4-5亿美元 | 前六天约127亿美元</text>
+  
+  
+  <path fill="#FEF3E8" d="M86,540 H1194 A6,6 0 0 1 1200,546 V584 A6,6 0 0 1 1194,590 H86 A6,6 0 0 1 80,584 V546 A6,6 0 0 1 86,540 Z" />
+  <rect x="80" y="540" width="6" height="50" fill="#C41E3A" />
+  <text x="110" y="570" font-family="Microsoft YaHei, sans-serif" font-size="15" fill="#4A5568">THAAD消耗至少50%（约190-290枚）| Patriot拦截弹42%-50%（约1060-1430枚）| 每一枚拦截弹同样依赖数据链</text>
+  
+  <line x1="80" y1="660" x2="1200" y2="660" stroke="#E2E8F0" stroke-width="1" />
+  <text x="80" y="685" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#9CA3AF">来源：CSIS · 公开军事预算报告</text>
+  <text x="1200" y="685" text-anchor="end" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#9CA3AF">03 / 信息数据战分析 · 8</text>
+  <line x1="80" y1="100" x2="80" y2="115" stroke="#00418D" stroke-width="2" />
+  <line x1="80" y1="100" x2="95" y2="100" stroke="#00418D" stroke-width="2" />
+  <line x1="1200" y1="100" x2="1200" y2="115" stroke="#00418D" stroke-width="2" />
+  <line x1="1200" y1="100" x2="1185" y2="100" stroke="#00418D" stroke-width="2" />
+</svg>

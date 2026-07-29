@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT 预览 - ppt_20260621_001810_7d80f7</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#1a1a2e; color:#eee; font-family:"PingFang SC","Microsoft YaHei",sans-serif; }
+.toolbar { position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(0,0,0,0.85); backdrop-filter:blur(10px);
+  padding:12px 24px; display:flex; align-items:center; gap:16px;
+  border-bottom:1px solid rgba(255,255,255,0.1); }
+.toolbar select { padding:6px 12px; border-radius:6px; border:1px solid #444;
+  background:#2a2a3e; color:#eee; font-size:14px; cursor:pointer; }
+.toolbar button { padding:6px 16px; border-radius:6px; border:none; cursor:pointer;
+  font-size:13px; transition:all .2s; }
+.btn-prev,.btn-next { background:#3a3a5e; color:#eee; }
+.btn-prev:hover,.btn-next:hover { background:#5a5a7e; }
+.btn-export { background:#e94560; color:#fff; }
+.slide-nav { color:#aaa; font-size:14px; }
+.container { padding-top:70px; display:flex; flex-direction:column; align-items:center; gap:32px; padding-bottom:60px; }
+.slide { width:960px; background:#fff; border-radius:8px; overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4); }
+.slide-label { padding:8px 16px; background:#f0f0f0; color:#333; font-size:13px;
+  text-align:center; border-bottom:1px solid #ddd; }
+.slide svg { width:100%; height:auto; display:block; }
+.slide.hidden { display:none; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <span class="slide-nav">PPT 预览</span>
+  <select id="slideSelect"></select>
+  <button class="btn-prev" onclick="prevSlide()">◀ 上一页</button>
+  <button class="btn-next" onclick="nextSlide()">下一页 ▶</button>
+  <span class="slide-nav" id="pageInfo"></span>
+  <span style="flex:1"></span>
+  <span style="color:#aaa;font-size:12px;">共 2 页</span>
+</div>
+<div class="container">
+  <div class="slide" id="slide-1">
+  <div class="slide-label">第 1 页 / 共 2 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1628"/>
+      <stop offset="100%" style="stop-color:#1a2a4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="80" y="200" width="8" height="120" fill="#4fc3f7" rx="4"/>
+  <text x="120" y="260" fill="#ffffff" font-size="48" font-family="Microsoft YaHei,sans-serif" font-weight="bold">关于2026年美以对伊军事冲突中</text>
+  <text x="120" y="320" fill="#ffffff" font-size="48" font-family="Microsoft YaHei,sans-serif" font-weight="bold">信息数据战的分析报告</text>
+  <text x="120" y="400" fill="#90caf9" font-size="22" font-family="Microsoft YaHei,sans-serif">内部参阅 · 2026年6月</text>
+  <line x1="120" y1="440" x2="480" y2="440" stroke="#4fc3f7" stroke-width="2" opacity="0.5"/>
+  <text x="120" y="500" fill="#78909c" font-size="16" font-family="Microsoft YaHei,sans-serif">基于公开来源情报的五个维度分析</text>
+</svg>
+</div><div class="slide" id="slide-2">
+  <div class="slide-label">第 2 页 / 共 2 页</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <rect x="0" y="0" width="1280" height="80" fill="#0a1628"/>
+  <text x="80" y="52" fill="#ffffff" font-size="28" font-family="Microsoft YaHei,sans-serif" font-weight="bold">目  录</text>
+  <text x="80" y="160" fill="#1565c0" font-size="22" font-family="Microsoft YaHei,sans-serif" font-weight="bold">一、民用监控系统已成为战略情报源</text>
+  <text x="80" y="240" fill="#1565c0" font-size="22" font-family="Microsoft YaHei,sans-serif" font-weight="bold">二、网络阻断已成为开战的"第一枪"</text>
+  <text x="80" y="320" fill="#1565c0" font-size="22" font-family="Microsoft YaHei,sans-serif" font-weight="bold">三、战争账单本质上就是数据账单</text>
+  <text x="80" y="400" fill="#1565c0" font-size="22" font-family="Microsoft YaHei,sans-serif" font-weight="bold">四、算力节点已成为高价值战略目标</text>
+  <text x="80" y="480" fill="#1565c0" font-size="22" font-family="Microsoft YaHei,sans-serif" font-weight="bold">五、没有绝对安全的通信手段</text>
+</svg>
+</div>
+</div>
+<script>
+let current=1,total=2;
+const select=document.getElementById('slideSelect');
+for(let i=1;i<=total;i++)select.add(new Option('第 '+i+' 页',i));
+function showSlide(n){current=((n-1+total)%total)+1;
+document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('hidden',i+1!==current));
+select.value=current;
+document.getElementById('pageInfo').textContent=current+' / '+total;}
+select.onchange=()=>showSlide(parseInt(select.value));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')showSlide(current-1);if(e.key==='ArrowRight')showSlide(current+1);});
+showSlide(1);
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+# ── Python ────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# ── 虚拟环境 ──────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── 环境变量 / 密钥 ───────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# ── IDE ───────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# ── Docker 构建产物 ───────────────────────────────────
+# 保留各服务的 Dockerfile / docker-compose.yml
+# 忽略导入的镜像 tar
+images/*.tar
+
+# ── 离线 whl 包（体积大，不纳入版本控制）─────────────
+packages/
+
+# ── 运行时数据 / 上传文件 ─────────────────────────────
+uploads/
+mcp-file-doc/uploads/
+# ppt-master 项目数据
+ppt-master-mcp/ppt-master-main/projects/*/
+ppt-master-mcp/ppt-master-main/skills/ppt-master/projects/*/
+
+# ── 日志 ──────────────────────────────────────────────
+*.log
+logs/
+
+# ── 操作系统 ──────────────────────────────────────────
+Thumbs.db
+Desktop.ini
+.DS_Store
+ehthumbs.db
+
+# ── 字体文件（体积大，按需保留）──────────────────────
+# 当前 mcp-spreadsheet-pdf 下方正小标宋简.TTF 保留追踪
+# 如需忽略所有字体取消下行注释
+# *.TTF
+# *.ttf
+
+# ── ppt-master 子项目内部 .venv ───────────────────────
+ppt-master-mcp/.venv/
+ppt-master-mcp/ppt-master-main/.venv/
+
+# ── ppt-master 示例项目大文件 ──────────────────────────
+# AI 生成的 PNG 图片（体积大，非代码）
+ppt-master-mcp/ppt-master-main/examples/*/images/
+# PPTX 导出文件（二进制，可随时重新生成）
+ppt-master-mcp/ppt-master-main/examples/*/exports/
+# SVG 中间产物（保留 final 版足够）
+ppt-master-mcp/ppt-master-main/examples/*/svg_output/
+# 项目运行时数据
+ppt-master-mcp/ppt-master-main/skills/ppt-master/projects/
+
+# ── 临时文件 ──────────────────────────────────────────
+*.tmp
+*.bak
+*.cache
+_test.ps1

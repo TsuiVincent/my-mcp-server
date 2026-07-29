@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#003366" />
+  <rect x="40" y="0" width="6" height="720" fill="#CC0000" />
+  <text x="640" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="160" font-weight="bold" fill="#FFFFFF" fill-opacity="0.08">04</text>
+  <text x="640" y="340" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="48" font-weight="bold" fill="#FFFFFF">算力节点已成为高价值战略目标</text>
+  <text x="640" y="390" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" fill="#A0C4E5">不打航母，专打数据中心</text>
+  <line x1="590" y1="420" x2="690" y2="420" stroke="#CC0000" stroke-width="3" />
+  <path fill="#FFFFFF" fill-opacity="0.1" d="M446,450 H834 A6,6 0 0 1 840,456 V494 A6,6 0 0 1 834,500 H446 A6,6 0 0 1 440,494 V456 A6,6 0 0 1 446,450 Z" />
+  <text x="640" y="481" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#A0C4E5">AWS中东数据中心被直接命中，核心服务严重降级</text>
+  <rect x="0" y="665" width="1280" height="55" fill="#002244" />
+  <text x="1240" y="698" font-family="Arial, sans-serif" font-size="14" fill="#6688AA" text-anchor="end">8</text>
+</svg>

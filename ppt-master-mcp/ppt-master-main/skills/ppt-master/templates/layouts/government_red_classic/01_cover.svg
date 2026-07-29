@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+    <defs>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#C41E3A;stop-opacity:1" />
+            <stop offset="60%" style="stop-color:#8B0000;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#4A0000;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#D4A853;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#F5D68A;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#D4A853;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="1280" height="720" fill="url(#bgGrad)"/>
+    <!-- 金色边框 -->
+    <rect x="30" y="30" width="1220" height="660" fill="none" stroke="url(#goldGrad)" stroke-width="2" rx="4"/>
+    <rect x="40" y="40" width="1200" height="640" fill="none" stroke="#D4A853" stroke-width="1" stroke-opacity="0.3" rx="2"/>
+    <!-- 五星装饰 -->
+    <polygon points="640,80 650,110 680,110 655,130 665,160 640,140 615,160 625,130 600,110 630,110" fill="#F5D68A" fill-opacity="0.6"/>
+    <!-- 顶部金色横条 -->
+    <rect x="100" y="200" width="1080" height="3" fill="url(#goldGrad)"/>
+    <!-- 主标题 -->
+    <text x="640" y="280" text-anchor="middle" font-family="SimHei, Microsoft YaHei, sans-serif" font-size="54" font-weight="bold" fill="#FFFFFF">{{TITLE}}</text>
+    <!-- 副标题 -->
+    <text x="640" y="350" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="28" fill="#FFFFFF" fill-opacity="0.9">{{SUBTITLE}}</text>
+    <!-- 底部金色横条 -->
+    <rect x="100" y="410" width="1080" height="3" fill="url(#goldGrad)"/>
+    <!-- 单位名称 -->
+    <text x="640" y="490" text-anchor="middle" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="26" fill="#FFD700">{{AUTHOR}}</text>
+    <!-- 英文单位 -->
+    <text x="640" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#FFFFFF" fill-opacity="0.5" letter-spacing="2">{{AUTHOR_EN}}</text>
+    <!-- 日期 -->
+    <text x="640" y="630" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" fill="#FFFFFF" fill-opacity="0.7">{{DATE}}</text>
+    <!-- 底部红带 -->
+    <rect x="0" y="680" width="1280" height="40" fill="#4A0000" fill-opacity="0.8"/>
+    <text x="640" y="707" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#FFFFFF" fill-opacity="0.7">{{ORGANIZATION}}</text>
+</svg>

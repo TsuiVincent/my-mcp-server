@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bgGradEnd" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#003366" />
+      <stop offset="50%" stop-color="#001F4D" />
+      <stop offset="100%" stop-color="#000D1A" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00B4D8" />
+      <stop offset="100%" stop-color="#0050B3" />
+    </linearGradient>
+    <pattern id="gridEnd" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#FFFFFF" stroke-opacity="0.02" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  
+  <rect x="0" y="0" width="1280" height="720" fill="url(#bgGradEnd)" />
+  <rect x="0" y="0" width="1280" height="720" fill="url(#gridEnd)" />
+
+  
+  <rect x="0" y="0" width="1280" height="4" fill="#00B4D8" />
+
+  
+  <path d="M0,680 Q200,640 400,670 T800,650 T1280,670 L1280,720 L0,720 Z" fill="#00B4D8" fill-opacity="0.06" />
+
+  
+  <text x="640" y="60" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="bold" fill="#FFFFFF" text-anchor="middle">没有绝对安全的通信手段</text>
+  <line x1="540" y1="75" x2="740" y2="75" stroke="#00B4D8" stroke-width="2" />
+
+  <path fill="#FFFFFF" fill-opacity="0.06" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" d="M68,95 H612 A8,8 0 0 1 620,103 V287 A8,8 0 0 1 612,295 H68 A8,8 0 0 1 60,287 V103 A8,8 0 0 1 68,95 Z" />
+  <path fill="#00B4D8" d="M62,95 H62 A2,2 0 0 1 64,97 V293 A2,2 0 0 1 62,295 H62 A2,2 0 0 1 60,293 V97 A2,2 0 0 1 62,95 Z" />
+  <text x="80" y="130" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#90CAF9">星链渗透 vs 伊朗反制</text>
+  <text font-family="Microsoft YaHei, sans-serif" fill="#CFD8DC" font-size="14" x="80" y="165">● SpaceX向美军出售Starshield军事版终端</text><text font-family="Microsoft YaHei, sans-serif" fill="#CFD8DC" font-size="14" x="80" y="189">● 约6000台Starlink终端走私入境伊朗</text><text font-family="Microsoft YaHei, sans-serif" fill="#CFD8DC" font-size="14" x="80" y="213">● 伊朗反间谍行动没收数百台终端</text><text font-family="Microsoft YaHei, sans-serif" fill="#CFD8DC" font-size="14" x="80" y="237">● 部署射频干扰系统使部分终端完全失效</text><line x1="640" y1="95" x2="640" y2="295" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="4 4" />
+
+  
+  <path fill="#FFFFFF" fill-opacity="0.06" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" d="M668,95 H1212 A8,8 0 0 1 1220,103 V287 A8,8 0 0 1 1212,295 H668 A8,8 0 0 1 660,287 V103 A8,8 0 0 1 668,95 Z" />
+  <path fill="#00B4D8" d="M662,95 H662 A2,2 0 0 1 664,97 V293 A2,2 0 0 1 662,295 H662 A2,2 0 0 1 660,293 V97 A2,2 0 0 1 662,95 Z" />
+  <text x="680" y="130" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#90CAF9">数据对抗时代的本质</text>
+  <text font-family="Microsoft YaHei, sans-serif" fill="#CFD8DC" font-size="14" x="680" y="165">● 进攻方利用卫星网络追踪目标</text><text font-family="Microsoft YaHei, sans-serif" fill="#CFD8DC" font-size="14" x="680" y="189">● 防御方利用信号特征反向定位</text><text font-family="Microsoft YaHei, sans-serif" fill="#CFD8DC" font-size="14" x="680" y="213">● 数据内容可以加密</text><text font-family="Microsoft YaHei, sans-serif" fill="#CFD8DC" font-size="14" x="680" y="237">● 但"正在通信"这一事实无法隐藏</text><line x1="60" y1="320" x2="1220" y2="320" stroke="#00B4D8" stroke-opacity="0.2" stroke-width="1" />
+
+  <text x="640" y="360" font-family="Microsoft YaHei, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF" text-anchor="middle">三条总体判断</text>
+
+  
+  <path fill="#FFFFFF" fill-opacity="0.05" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" d="M68,390 H422 A8,8 0 0 1 430,398 V512 A8,8 0 0 1 422,520 H68 A8,8 0 0 1 60,512 V398 A8,8 0 0 1 68,390 Z" />
+  <rect x="60" y="390" width="370" height="4" fill="#00B4D8" />
+  <text x="245" y="425" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#00B4D8" text-anchor="middle">01</text>
+  <text x="245" y="455" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">从火力密度转向数据定力</text>
+  <text x="245" y="485" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">谁掌握数据采集、传输、算力和算法</text>
+  <text x="245" y="505" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">谁就掌握主动权</text>
+
+  
+  <path fill="#FFFFFF" fill-opacity="0.05" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" d="M463,390 H817 A8,8 0 0 1 825,398 V512 A8,8 0 0 1 817,520 H463 A8,8 0 0 1 455,512 V398 A8,8 0 0 1 463,390 Z" />
+  <rect x="455" y="390" width="370" height="4" fill="#00B4D8" />
+  <text x="640" y="425" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#00B4D8" text-anchor="middle">02</text>
+  <text x="640" y="455" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">民用基础设施即战场延伸</text>
+  <text x="640" y="485" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">交通摄像头、云数据中心、低轨卫星</text>
+  <text x="640" y="505" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">战时瞬间转化为情报来源与打击目标</text>
+
+  
+  <path fill="#FFFFFF" fill-opacity="0.05" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="1" d="M858,390 H1212 A8,8 0 0 1 1220,398 V512 A8,8 0 0 1 1212,520 H858 A8,8 0 0 1 850,512 V398 A8,8 0 0 1 858,390 Z" />
+  <rect x="850" y="390" width="370" height="4" fill="#00B4D8" />
+  <text x="1035" y="425" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#00B4D8" text-anchor="middle">03</text>
+  <text x="1035" y="455" font-family="Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">数据战没有绝对优势</text>
+  <text x="1035" y="485" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">弱势一方也能找到强者的数据节点</text>
+  <text x="1035" y="505" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#B0BEC5" text-anchor="middle">实施致命非对称打击</text>
+
+  
+  <path fill="#00B4D8" fill-opacity="0.08" d="M188,545 H1092 A8,8 0 0 1 1100,553 V617 A8,8 0 0 1 1092,625 H188 A8,8 0 0 1 180,617 V553 A8,8 0 0 1 188,545 Z" />
+  <text x="640" y="580" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#90CAF9" text-anchor="middle">下一次战争的第一声警报，可能不是防空雷达的蜂鸣，而是数据中心的断电报警</text>
+  <text x="640" y="610" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#90CAF9" text-anchor="middle">第一个倒下的，可能不是士兵，而是一根连接国家与外界的海底光缆</text>
+
+  
+  <rect x="0" y="694" width="1280" height="26" fill="#003366" fill-opacity="0.5" />
+  <rect x="0" y="690" width="1280" height="4" fill="#0050B3" />
+  <text x="640" y="712" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#78909C" text-anchor="middle">2026年美以对伊军事冲突中信息数据战分析报告 · 仅供内部参阅</text>
+</svg>

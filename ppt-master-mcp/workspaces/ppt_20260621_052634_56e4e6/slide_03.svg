@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <!-- Dark blue full-screen background -->
+  <rect width="1280" height="720" fill="#003366"/>
+  <!-- Right-side geometric decorations -->
+  <polygon points="900,0 1280,0 1280,280" fill="#004D80" fill-opacity="0.3"/>
+  <circle cx="1100" cy="500" r="200" fill="none" stroke="#FFFFFF" stroke-opacity="0.05" stroke-width="1"/>
+  <circle cx="1100" cy="500" r="140" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="1"/>
+  <!-- Red left vertical bar -->
+  <rect x="60" y="200" width="8" height="120" fill="#CC0000"/>
+  <!-- Large semi-transparent background number -->
+  <text x="120" y="300" fill="#FFFFFF" fill-opacity="0.08" font-size="180" font-weight="bold" font-family="Arial, sans-serif">01</text>
+  <!-- Chapter title (white) -->
+  <text x="120" y="360" fill="#FFFFFF" font-size="36" font-weight="bold" font-family="Microsoft YaHei, sans-serif">民用监控系统已成为</text>
+  <text x="120" y="410" fill="#FFFFFF" font-size="36" font-weight="bold" font-family="Microsoft YaHei, sans-serif">战略情报源</text>
+  <!-- Light blue-gray chapter description -->
+  <text x="120" y="460" fill="#B0C4DE" font-size="16" font-family="Microsoft YaHei, sans-serif">城市智慧化程度越高，战场透明化程度也越高</text>
+  <!-- Red decorative horizontal line -->
+  <line x1="120" y1="490" x2="350" y2="490" stroke="#CC0000" stroke-width="3"/>
+  <!-- Footer -->
+  <text x="120" y="660" fill="#FFFFFF" fill-opacity="0.4" font-size="14" font-family="Microsoft YaHei, sans-serif">内部参阅 · 2026年6月</text>
+</svg>

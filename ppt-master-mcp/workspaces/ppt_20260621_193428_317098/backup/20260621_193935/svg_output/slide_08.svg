@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="topBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00B4D8"/>
+      <stop offset="100%" stop-color="#0050B3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="6" fill="url(#topBar)"/>
+  <rect x="60" y="36" width="50" height="50" fill="#0050B3" rx="4"/>
+  <text x="85" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF">05</text>
+  <text x="130" y="70" font-family="Microsoft YaHei, sans-serif" font-size="28" font-weight="bold" fill="#1A1A1A">没有绝对安全的通信手段</text>
+  <line x1="60" y1="100" x2="1220" y2="100" stroke="#E0E8F0" stroke-width="1"/>
+  <rect x="60" y="120" width="1160" height="60" fill="#F0F6FF" rx="8"/>
+  <rect x="60" y="120" width="4" height="60" fill="#00B4D8" rx="2"/>
+  <text x="80" y="148" font-family="Microsoft YaHei, sans-serif" font-size="16" fill="#333333">核心论点：美军试图利用星链低轨卫星网络渗透数据节点，但伊朗同样展示了反制能力。</text>
+  <text x="80" y="170" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#666666">攻防博弈揭示：数据战中没有任何通信手段是绝对安全的</text>
+
+  <!-- Left: US penetration -->
+  <rect x="60" y="205" width="560" height="240" fill="#FAFCFF" rx="10" stroke="#E0E8F0" stroke-width="1"/>
+  <rect x="60" y="205" width="560" height="40" fill="#0050B3" rx="10"/>
+  <rect x="60" y="235" width="560" height="10" fill="#0050B3"/>
+  <text x="340" y="231" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">📡 美军渗透行动</text>
+
+  <rect x="90" y="265" width="500" height="50" fill="#FFFFFF" rx="6" stroke="#E0E8F0" stroke-width="1"/>
+  <circle cx="105" cy="290" r="5" fill="#0050B3"/>
+  <text x="120" y="295" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">Starshield军事版终端已部署于十多个无人机系统</text>
+
+  <rect x="90" y="325" width="500" height="50" fill="#FFFFFF" rx="6" stroke="#E0E8F0" stroke-width="1"/>
+  <circle cx="105" cy="350" r="5" fill="#0050B3"/>
+  <text x="120" y="355" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">约6000台Starlink终端走私入境伊朗</text>
+
+  <rect x="90" y="385" width="500" height="50" fill="#FFFFFF" rx="6" stroke="#E0E8F0" stroke-width="1"/>
+  <circle cx="105" cy="410" r="5" fill="#0050B3"/>
+  <text x="120" y="415" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">利用"互联网自由倡议"资金（美国国务院）</text>
+
+  <text x="90" y="435" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：路透社调查报道 · SpaceX合同文件</text>
+
+  <!-- Right: Iran countermeasures -->
+  <rect x="660" y="205" width="560" height="240" fill="#FFF8F0" rx="10" stroke="#FFB347" stroke-opacity="0.3" stroke-width="1"/>
+  <rect x="660" y="205" width="560" height="40" fill="#C00000" rx="10"/>
+  <rect x="660" y="235" width="560" height="10" fill="#C00000"/>
+  <text x="940" y="231" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">🛡 伊朗反制措施</text>
+
+  <rect x="690" y="265" width="500" height="50" fill="#FFFFFF" rx="6" stroke="#E0E8F0" stroke-width="1"/>
+  <circle cx="705" cy="290" r="5" fill="#C00000"/>
+  <text x="720" y="295" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">全国性反间谍行动，没收数百台Starlink终端</text>
+
+  <rect x="690" y="325" width="500" height="50" fill="#FFFFFF" rx="6" stroke="#E0E8F0" stroke-width="1"/>
+  <circle cx="705" cy="350" r="5" fill="#C00000"/>
+  <text x="720" y="355" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">非法使用Starlink定为刑事犯罪，战时从重处罚</text>
+
+  <rect x="690" y="385" width="500" height="50" fill="#FFFFFF" rx="6" stroke="#E0E8F0" stroke-width="1"/>
+  <circle cx="705" cy="410" r="5" fill="#C00000"/>
+  <text x="720" y="415" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">部署先进射频干扰系统，军事级干扰Starlink信号</text>
+
+  <text x="690" y="435" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">导致部分地区终端完全失效</text>
+
+  <!-- Bottom conclusion -->
+  <rect x="60" y="470" width="1160" height="80" fill="#F0F6FF" rx="10" stroke="#00B4D8" stroke-opacity="0.3" stroke-width="2"/>
+  <rect x="60" y="470" width="4" height="80" fill="#00B4D8" rx="2"/>
+  <text x="80" y="498" font-family="Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#0050B3">🔑 核心启示</text>
+  <text x="80" y="522" font-family="Microsoft YaHei, sans-serif" font-size="14" fill="#333333">低轨卫星通信（如Starlink）为战场数据渗透提供了新的可能性，但任何通信手段都存在被干扰、被没收、被利用的风险。</text>
+  <text x="80" y="542" font-family="Microsoft YaHei, sans-serif" font-size="13" fill="#666666">数据战没有单方面的绝对优势——攻防双方的博弈将持续演化。</text>
+
+  <rect x="60" y="665" width="1160" height="1" fill="#E0E8F0"/>
+  <text x="60" y="690" font-family="Microsoft YaHei, sans-serif" font-size="12" fill="#999999">来源：路透社调查报道 · 伊朗情报部公告</text>
+  <text x="1220" y="690" text-anchor="end" font-family="Arial, sans-serif" font-size="14" fill="#0050B3">08</text>
+  <rect x="0" y="716" width="1280" height="4" fill="#0050B3"/>
+</svg>

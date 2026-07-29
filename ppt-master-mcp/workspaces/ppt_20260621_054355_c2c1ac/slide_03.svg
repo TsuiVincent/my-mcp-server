@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#C00000"/>
+  <rect x="30" y="20" width="10" height="40" fill="#C00000"/>
+  <text x="50" y="52" font-family="Microsoft YaHei,sans-serif" font-size="32" font-weight="bold" fill="#C00000">民用监控系统已成为战略情报源</text>
+  <rect x="30" y="80" width="1220" height="60" fill="#F2F2F2"/>
+  <text x="640" y="116" font-family="Microsoft YaHei,sans-serif" font-size="18" fill="#000000" text-anchor="middle">城市里的交通摄像头，在战时可以变成对手的全天候瞄准镜</text>
+  <rect x="30" y="155" width="1220" height="490" fill="none" stroke="#C00000" stroke-width="2" stroke-dasharray="5 5"/>
+  <rect x="60" y="180" width="550" height="140" rx="8" fill="#F2F2F2"/>
+  <rect x="60" y="180" width="6" height="140" rx="3" fill="#C00000"/>
+  <rect x="85" y="195" width="50" height="28" rx="4" fill="#C00000"/>
+  <text x="110" y="215" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">案例</text>
+  <text x="150" y="215" font-family="Microsoft YaHei,sans-serif" font-size="18" font-weight="bold" fill="#000000">德黑兰精确打击</text>
+  <text x="85" y="242" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">以色列空军对德黑兰多个目标实施精确打击</text>
+  <text x="85" y="265" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">坐标来源：8200部队与摩萨德多年渗透成果</text>
+  <text x="85" y="288" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">来源：金融时报、路透社深度报道</text>
+  <rect x="660" y="180" width="550" height="140" rx="8" fill="#F2F2F2"/>
+  <rect x="660" y="180" width="6" height="140" rx="3" fill="#2E75B6"/>
+  <rect x="685" y="195" width="50" height="28" rx="4" fill="#2E75B6"/>
+  <text x="710" y="215" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">技术</text>
+  <text x="750" y="215" font-family="Microsoft YaHei,sans-serif" font-size="18" font-weight="bold" fill="#000000">AI行为模式分析</text>
+  <text x="685" y="242" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">长期系统性接管设备控制权</text>
+  <text x="685" y="265" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">AI算法识别护卫车队路线、出入频率</text>
+  <text x="685" y="288" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">通过车牌和轨迹推断机构隶属关系</text>
+  <rect x="60" y="345" width="1150" height="60" rx="8" fill="#FDF3EB" stroke="#F8CBAD" stroke-width="2"/>
+  <rect x="60" y="345" width="6" height="60" rx="3" fill="#C00000"/>
+  <text x="85" y="368" font-family="Microsoft YaHei,sans-serif" font-size="16" font-weight="bold" fill="#C00000">结论</text>
+  <text x="155" y="368" font-family="Microsoft YaHei,sans-serif" font-size="15" fill="#333333">民用监控设施的战时军事价值急剧上升。城市智慧化程度越高，战场透明化程度也越高。</text>
+  <text x="85" y="391" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#666666">防御方必须实施严格的密码管理、固件更新和网络隔离</text>
+  <rect x="60" y="425" width="1150" height="190" rx="8" fill="#F2F2F2"/>
+  <rect x="660" y="445" width="30" height="30" fill="#C00000"/>
+  <text x="675" y="467" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">!</text>
+  <text x="710" y="465" font-family="Microsoft YaHei,sans-serif" font-size="16" font-weight="bold" fill="#000000">关键启示</text>
+  <text x="85" y="450" font-family="Microsoft YaHei,sans-serif" font-size="16" font-weight="bold" fill="#C00000">渗透手段</text>
+  <text x="85" y="475" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">• 网络渗透民用基础设施（交通摄像</text>
+  <text x="95" y="495" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">头、市政传感器等）</text>
+  <text x="85" y="520" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">• 加密回传实时视频流至以色列服务器</text>
+  <text x="85" y="545" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">• 大数据分析城市人群行为模式</text>
+  <text x="710" y="495" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">• 城市安全与战场透明仅一线之隔</text>
+  <text x="710" y="520" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">• 防御方需加强供应链安全审查</text>
+  <text x="710" y="545" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#333333">• 物联网设备纳入战时管控体系</text>
+  <rect x="30" y="660" width="1220" height="40" fill="#F2F2F2"/>
+  <rect x="30" y="660" width="6" height="40" fill="#C00000"/>
+  <text x="50" y="686" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#666666">信息数据战分析报告 · 一、民用监控系统已成为战略情报源</text>
+  <rect x="1205" y="665" width="25" height="25" fill="#C00000"/>
+  <text x="1217" y="684" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">3</text>
+</svg>

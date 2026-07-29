@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <!-- Dark blue full-screen background -->
+  <rect width="1280" height="720" fill="#003366"/>
+  <!-- Right-side geometric decorations -->
+  <rect x="900" y="400" width="500" height="4" fill="#FFFFFF" fill-opacity="0.05" transform="rotate(-15, 900, 400)"/>
+  <rect x="800" y="500" width="600" height="3" fill="#FFFFFF" fill-opacity="0.08" transform="rotate(-10, 800, 500)"/>
+  <circle cx="1150" cy="550" r="180" fill="none" stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1"/>
+  <!-- Red left vertical bar -->
+  <rect x="60" y="200" width="8" height="120" fill="#CC0000"/>
+  <!-- Large semi-transparent background number -->
+  <text x="120" y="300" fill="#FFFFFF" fill-opacity="0.08" font-size="180" font-weight="bold" font-family="Arial, sans-serif">02</text>
+  <!-- Chapter title (white) -->
+  <text x="120" y="360" fill="#FFFFFF" font-size="36" font-weight="bold" font-family="Microsoft YaHei, sans-serif">网络阻断已成为</text>
+  <text x="120" y="410" fill="#FFFFFF" font-size="36" font-weight="bold" font-family="Microsoft YaHei, sans-serif">开战的"第一枪"</text>
+  <!-- Light blue-gray chapter description -->
+  <text x="120" y="460" fill="#B0C4DE" font-size="16" font-family="Microsoft YaHei, sans-serif">先切断对手的数据神经，再实施物理打击</text>
+  <!-- Red decorative horizontal line -->
+  <line x1="120" y1="490" x2="350" y2="490" stroke="#CC0000" stroke-width="3"/>
+  <!-- Footer -->
+  <text x="120" y="660" fill="#FFFFFF" fill-opacity="0.4" font-size="14" font-family="Microsoft YaHei, sans-serif">内部参阅 · 2026年6月</text>
+</svg>

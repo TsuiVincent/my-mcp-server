@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="chBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#001F3F"/>
+      <stop offset="100%" stop-color="#003366"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#chBg)"/>
+  <rect x="0" y="0" width="6" height="720" fill="#8B0000" fill-opacity="0.8"/>
+  <circle cx="150" cy="150" r="130" fill="#004080" fill-opacity="0.08"/>
+  <text x="640" y="280" text-anchor="middle" fill="#FFFFFF" fill-opacity="0.08" font-family="Arial, sans-serif" font-size="200" font-weight="bold">04</text>
+  <rect x="490" y="300" width="300" height="2" fill="#C9A227"/>
+  <text x="640" y="370" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, sans-serif" font-size="44" font-weight="bold">算力节点已成为高价值战略目标</text>
+  <text x="640" y="410" text-anchor="middle" fill="#A0B4C8" font-family="Microsoft YaHei, sans-serif" font-size="18">Computing Nodes as High-Value Strategic Targets</text>
+  <rect x="540" y="435" width="200" height="3" fill="#8B0000"/>
+  <text x="640" y="500" text-anchor="middle" fill="#8099B0" font-family="Microsoft YaHei, sans-serif" font-size="14">伊朗非对称反击：不打航母，专打数据中心</text>
+  <rect x="0" y="716" width="1280" height="4" fill="#8B0000"/>
+</svg>

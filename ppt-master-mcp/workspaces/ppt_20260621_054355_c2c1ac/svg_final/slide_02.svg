@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF" />
+  <rect x="0" y="0" width="1280" height="4" fill="#C00000" />
+  <rect x="30" y="20" width="10" height="40" fill="#C00000" />
+  <text x="50" y="52" font-family="Microsoft YaHei,sans-serif" font-size="32" font-weight="bold" fill="#C00000">内容结构</text>
+  <text x="50" y="75" font-family="Microsoft YaHei,sans-serif" font-size="16" fill="#666666">目录 · 六大板块</text>
+  <rect x="30" y="95" width="1220" height="555" fill="none" stroke="#C00000" stroke-width="2" stroke-dasharray="5 5" />
+  <path fill="#F2F2F2" d="M78,120 H582 A8,8 0 0 1 590,128 V202 A8,8 0 0 1 582,210 H78 A8,8 0 0 1 70,202 V128 A8,8 0 0 1 78,120 Z" />
+  <path fill="#C00000" d="M73,120 H73 A3,3 0 0 1 76,123 V207 A3,3 0 0 1 73,210 H73 A3,3 0 0 1 70,207 V123 A3,3 0 0 1 73,120 Z" />
+  <rect x="95" y="135" width="30" height="30" fill="#C00000" />
+  <text x="110" y="157" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="140" y="155" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#000000">民用监控系统</text>
+  <text x="140" y="180" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#666666">交通摄像头变瞄准镜 · 8200部队长期渗透</text>
+  <path fill="#F2F2F2" d="M648,120 H1152 A8,8 0 0 1 1160,128 V202 A8,8 0 0 1 1152,210 H648 A8,8 0 0 1 640,202 V128 A8,8 0 0 1 648,120 Z" />
+  <path fill="#C00000" d="M643,120 H643 A3,3 0 0 1 646,123 V207 A3,3 0 0 1 643,210 H643 A3,3 0 0 1 640,207 V123 A3,3 0 0 1 643,120 Z" />
+  <rect x="665" y="135" width="30" height="30" fill="#C00000" />
+  <text x="680" y="157" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="710" y="155" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#000000">网络阻断第一枪</text>
+  <text x="710" y="180" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#666666">伊朗流量骤降至4% · 网络攻击同步物理打击</text>
+  <path fill="#F2F2F2" d="M78,230 H582 A8,8 0 0 1 590,238 V312 A8,8 0 0 1 582,320 H78 A8,8 0 0 1 70,312 V238 A8,8 0 0 1 78,230 Z" />
+  <path fill="#C00000" d="M73,230 H73 A3,3 0 0 1 76,233 V317 A3,3 0 0 1 73,320 H73 A3,3 0 0 1 70,317 V233 A3,3 0 0 1 73,230 Z" />
+  <rect x="95" y="245" width="30" height="30" fill="#C00000" />
+  <text x="110" y="267" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="140" y="265" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#000000">战争数据账单</text>
+  <text x="140" y="290" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#666666">前两月250~290亿美元 · 导弹=会飞的计算机</text>
+  <path fill="#F2F2F2" d="M648,230 H1152 A8,8 0 0 1 1160,238 V312 A8,8 0 0 1 1152,320 H648 A8,8 0 0 1 640,312 V238 A8,8 0 0 1 648,230 Z" />
+  <path fill="#C00000" d="M643,230 H643 A3,3 0 0 1 646,233 V317 A3,3 0 0 1 643,320 H643 A3,3 0 0 1 640,317 V233 A3,3 0 0 1 643,230 Z" />
+  <rect x="665" y="245" width="30" height="30" fill="#C00000" />
+  <text x="680" y="267" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">4</text>
+  <text x="710" y="265" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#000000">算力节点战略目标</text>
+  <text x="710" y="290" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#666666">不打航母打数据中心 · AWS遭袭</text>
+  <path fill="#F2F2F2" d="M78,340 H582 A8,8 0 0 1 590,348 V422 A8,8 0 0 1 582,430 H78 A8,8 0 0 1 70,422 V348 A8,8 0 0 1 78,340 Z" />
+  <path fill="#C00000" d="M73,340 H73 A3,3 0 0 1 76,343 V427 A3,3 0 0 1 73,430 H73 A3,3 0 0 1 70,427 V343 A3,3 0 0 1 73,340 Z" />
+  <rect x="95" y="355" width="30" height="30" fill="#C00000" />
+  <text x="110" y="377" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">5</text>
+  <text x="140" y="375" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#000000">通信手段绝对安全</text>
+  <text x="140" y="400" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#666666">Starlink走私3~5万台 · 射频干扰反制</text>
+  <path fill="#FDF3EB" stroke="#F8CBAD" stroke-width="2" d="M648,340 H1152 A8,8 0 0 1 1160,348 V422 A8,8 0 0 1 1152,430 H648 A8,8 0 0 1 640,422 V348 A8,8 0 0 1 648,340 Z" />
+  <path fill="#2E75B6" d="M643,340 H643 A3,3 0 0 1 646,343 V427 A3,3 0 0 1 643,430 H643 A3,3 0 0 1 640,427 V343 A3,3 0 0 1 643,340 Z" />
+  <rect x="665" y="355" width="30" height="30" fill="#2E75B6" />
+  <text x="680" y="377" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">6</text>
+  <text x="710" y="375" font-family="Microsoft YaHei,sans-serif" font-size="20" font-weight="bold" fill="#000000">总结：三条总体判断</text>
+  <text x="710" y="400" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#666666">从火力密度转向数据定力</text>
+  <rect x="30" y="660" width="1220" height="40" fill="#F2F2F2" />
+  <rect x="30" y="660" width="6" height="40" fill="#C00000" />
+  <text x="50" y="686" font-family="Microsoft YaHei,sans-serif" font-size="14" fill="#666666">信息数据战分析报告 · 目录</text>
+  <rect x="1205" y="665" width="25" height="25" fill="#C00000" />
+  <text x="1217" y="684" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">1</text>
+</svg>

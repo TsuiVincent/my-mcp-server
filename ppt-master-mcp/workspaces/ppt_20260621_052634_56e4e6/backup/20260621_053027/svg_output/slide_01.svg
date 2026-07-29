@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <!-- White background -->
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <!-- Dark blue top bar -->
+  <rect x="0" y="0" width="1280" height="70" fill="#003366"/>
+  <!-- Red left vertical bar (full height) -->
+  <rect x="0" y="0" width="6" height="720" fill="#CC0000"/>
+  <!-- Logo placeholder -->
+  <rect x="1080" y="15" width="160" height="40" fill="#003366" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="1" rx="4"/>
+  <text x="1160" y="40" text-anchor="middle" fill="#FFFFFF" font-size="13" font-family="Microsoft YaHei, sans-serif">报告编号</text>
+  <!-- Main title -->
+  <text x="640" y="280" text-anchor="middle" fill="#1A1A1A" font-size="32" font-weight="bold" font-family="Microsoft YaHei, sans-serif">关于2026年美以对伊军事冲突中</text>
+  <text x="640" y="325" text-anchor="middle" fill="#1A1A1A" font-size="32" font-weight="bold" font-family="Microsoft YaHei, sans-serif">信息数据战的分析报告</text>
+  <!-- Subtitle -->
+  <text x="640" y="375" text-anchor="middle" fill="#666666" font-size="20" font-family="Microsoft YaHei, sans-serif">"史诗狂怒"行动中的数字战场</text>
+  <!-- Decorative divider (blue line + dots) -->
+  <line x1="540" y1="415" x2="700" y2="415" stroke="#0066CC" stroke-width="2"/>
+  <circle cx="545" cy="415" r="3" fill="#0066CC"/>
+  <circle cx="620" cy="415" r="3" fill="#0066CC"/>
+  <circle cx="695" cy="415" r="3" fill="#0066CC"/>
+  <!-- Presenter info -->
+  <text x="640" y="470" text-anchor="middle" fill="#333333" font-size="18" font-family="Microsoft YaHei, sans-serif">（供内部参阅）</text>
+  <!-- Bottom gray info area -->
+  <rect x="0" y="660" width="1280" height="60" fill="#F5F5F5"/>
+  <text x="640" y="695" text-anchor="middle" fill="#999999" font-size="14" font-family="Microsoft YaHei, sans-serif">2026年6月</text>
+</svg>
