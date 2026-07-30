@@ -9,7 +9,7 @@ services:
     container_name: mcp-file-doc
     restart: unless-stopped
     ports:
-      - "8002:8002"
+      - "19100:19100"
     environment:
       - TZ=Asia/Shanghai
       - HOST_DOWNLOADS=/mnt/host/downloads
@@ -31,7 +31,7 @@ services:
     container_name: mcp-markitdown
     restart: unless-stopped
     ports:
-      - "8007:8007"
+      - "19101:19101"
     environment:
       - TZ=Asia/Shanghai
     networks:
@@ -45,7 +45,7 @@ services:
     container_name: mcp-browser-playwright
     restart: unless-stopped
     ports:
-      - "8008:8008"
+      - "19102:19102"
     environment:
       - TZ=Asia/Shanghai
     shm_size: "2gb"          # Chromium 需要较大共享内存
@@ -60,7 +60,7 @@ services:
     container_name: mcp-sequential-thinking
     restart: unless-stopped
     ports:
-      - "8009:8009"
+      - "19103:19103"
     environment:
       - TZ=Asia/Shanghai
     networks:
@@ -74,7 +74,7 @@ services:
     container_name: mcp-data-platform
     restart: unless-stopped
     ports:
-      - "8003:8003"
+      - "19104:19104"
     environment:
       - TZ=Asia/Shanghai
     volumes:
@@ -90,7 +90,7 @@ services:
     container_name: mcp-datetime
     restart: unless-stopped
     ports:
-      - "8010:8010"
+      - "19105:19105"
     environment:
       - TZ=Asia/Shanghai
     networks:
@@ -104,7 +104,7 @@ services:
     container_name: mcp-ops-monitor
     restart: unless-stopped
     ports:
-      - "8004:8004"
+      - "19106:19106"
     environment:
       - TZ=Asia/Shanghai
     privileged: true
@@ -120,7 +120,7 @@ services:
     container_name: mcp-fetch-intranet
     restart: unless-stopped
     ports:
-      - "8005:8005"
+      - "19107:19107"
     environment:
       - TZ=Asia/Shanghai
     volumes:
@@ -136,7 +136,7 @@ services:
     container_name: ppt-master-mcp
     restart: unless-stopped
     ports:
-      - "8011:8011"
+      - "19108:19108"
     env_file:
       - ./ppt-master-mcp/.env
     environment:
@@ -156,7 +156,7 @@ services:
     container_name: mcp-spreadsheet-pdf
     restart: unless-stopped
     ports:
-      - "8012:8012"
+      - "19109:19109"
     environment:
       - TZ=Asia/Shanghai
     volumes:
@@ -175,11 +175,11 @@ services:
     container_name: mcp-drawio
     restart: unless-stopped
     ports:
-      - "8020:8020"
-      - "6002:6002"
+      - "19110:19110"
+      - "19111:19111"
     environment:
       - TZ=Asia/Shanghai
-      - DRAWIO_PREVIEW_BASE=http://localhost:6002
+      - DRAWIO_PREVIEW_BASE=http://localhost:19111
     volumes:
       - drawio_data:/data
     networks:

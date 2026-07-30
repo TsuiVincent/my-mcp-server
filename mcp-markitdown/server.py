@@ -16,12 +16,12 @@ logging.basicConfig(
 )
 
 # 创建服务器
-mcp = FastMCP("mcp-markitdown", host="0.0.0.0", port=8007, json_response=True)
+mcp = FastMCP("mcp-markitdown", host="0.0.0.0", port=19101, json_response=True)
 
 # 注册工具
 register_markitdown_tools(mcp)
 
-print("[MCP Server] mcp-markitdown 已就绪，端口: 8007", file=sys.stderr)
+print("[MCP Server] mcp-markitdown 已就绪，端口: 19101", file=sys.stderr)
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")

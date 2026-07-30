@@ -2,7 +2,7 @@
 mcp-file-doc - 文件操作与文档智能处理 MCP Server
 
 负责文件 I/O、远程传输、智能填表、Word 高级操作等功能。
-Markitdown 格式转换已拆分到 mcp-markitdown (8007)。
+Markitdown 格式转换已拆分到 mcp-markitdown (19101)。
 """
 from mcp.server.fastmcp import FastMCP
 from starlette.responses import FileResponse
@@ -12,7 +12,7 @@ from tools.word_tools import register_word_tools
 import sys, os
 
 # 创建服务器
-mcp = FastMCP("mcp-file-doc", host="0.0.0.0", port=8002, json_response=True)
+mcp = FastMCP("mcp-file-doc", host="0.0.0.0", port=19100, json_response=True)
 
 # 根据平台设置写入沙箱根目录
 if sys.platform == "win32":
@@ -51,7 +51,7 @@ register_file_tools(mcp, base_dir=base_dir)
 register_auto_fill_tools(mcp, base_dir=base_dir, server_base_url=server_base_url)
 register_word_tools(mcp, base_dir=base_dir, server_base_url=server_base_url)
 
-print(f"[MCP Server] mcp-file-doc 已就绪，端口: 8002，下载基地址: {server_base_url}", file=sys.stderr)
+print(f"[MCP Server] mcp-file-doc 已就绪，端口: 19100，下载基地址: {server_base_url}", file=sys.stderr)
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")

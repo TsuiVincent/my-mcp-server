@@ -15,8 +15,8 @@
         ▼               ▼  ▼  ▼  ▼  ▼  ▼  ▼  ▼  ▼  ▼  ▼                              ▼
 ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
 │ mcp-file-doc │ │mcp-markitdown│ │mcp-browser-  │ │mcp-sequential│ │mcp-data-     │ │mcp-datetime │
-│   :8002      │ │   :8007      │ │playwright    │ │-thinking     │ │platform      │ │   :8010      │
-│              │ │              │ │   :8008      │ │   :8009      │ │   :8003      │ │              │
+│   :19100      │ │   :19101      │ │playwright    │ │-thinking     │ │platform      │ │   :19105      │
+│              │ │              │ │   :19102      │ │   :19103      │ │   :19104      │ │              │
 │ 文件操作     │ │ Markitdown   │ │ 浏览器自动化  │ │ 结构化推理   │ │ 数据库查询   │ │ 时间日期     │
 │ 远程传输     │ │ 格式转换     │ │ 页面截图     │ │ 分步深度思考 │ │ Python沙箱   │ │ 时区转换     │
 │ 智能填表     │ │ Markdown渲染 │ │ 元素交互     │ │ 回溯修正     │ │ 数据可视化   │ │ Cron解析     │
@@ -26,8 +26,8 @@
 
 ┌──────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌──────────────┐ ┌──────────────┐
 │ mcp-ops-     │ │ mcp-fetch-      │ │ ppt-master-mcp  │ │ mcp-spread-  │ │ mcp-drawio   │
-│ monitor      │ │ intranet        │ │    :8011        │ │ sheet-pdf    │ │   :8020      │
-│   :8004      │ │    :8005        │ │                 │ │    :8012     │ │   :6002      │
+│ monitor      │ │ intranet        │ │    :19108        │ │ sheet-pdf    │ │   :19110      │
+│   :19106      │ │    :19107        │ │                 │ │    :19109     │ │   :19111      │
 │              │ │                 │ │ AI PPT 生成     │ │              │ │              │
 │ 系统监控     │ │ 内网抓取        │ │ AI 配图(16+)   │ │ Excel 操作   │ │ AI 图表生成  │
 │ 日志分析     │ │ 网页正文提取    │ │ 模板(20+)      │ │ CSV 处理     │ │ Draw.io 编辑 │
@@ -41,17 +41,17 @@
 
 | 服务器 | 端口 | 工具数 | 核心功能 | 部署要求 |
 |--------|------|--------|---------|---------|
-| [mcp-file-doc](./mcp-file-doc/) | 8002 | 26 | 文件 I/O、远程传输、**智能填表**、Word 高级操作 | 需 python-docx |
-| [mcp-markitdown](./mcp-markitdown/) | 8007 | 4 | Markitdown 格式转换、Markdown 渲染 | 需 markitdown |
-| [mcp-browser-playwright](./mcp-browser-playwright/) | 8008 | 14 | **浏览器自动化**、页面截图、元素交互、JS 执行 | 需 Chromium |
-| [mcp-sequential-thinking](./mcp-sequential-thinking/) | 8009 | 1 | **结构化多步推理**、回溯修正、分支推理 | 无 |
-| [mcp-data-platform](./mcp-data-platform/) | 8003 | 21 | 数据库查询、Python沙箱、数据可视化、知识库检索 | 需数据库连接 |
-| [mcp-datetime](./mcp-datetime/) | **8010** | 7 | 时间日期查询、时区转换、Cron解析 | 无 |
-| [mcp-ops-monitor](./mcp-ops-monitor/) | 8004 | 13 | CPU/内存/磁盘监控、日志分析、命令执行 | 需部署在目标主机 |
-| [mcp-fetch-intranet](./mcp-fetch-intranet/) | 8005 | 19 | 内网网页抓取、正文提取、递归爬取、配置管理 | 需内网可达 |
-| [**ppt-master-mcp**](./ppt-master-mcp/) | **8011** | **15** | **AI PPT 生成与增强**、20+模板、AI配图(16+后端)、PPTX导出 | 需 ppt-master v4.2.0 |
-| [mcp-spreadsheet-pdf](./mcp-spreadsheet-pdf/) | 8012 | 14 | Excel/CSV/PDF 操作、统计图表、智能填表 | 需 PyMuPDF |
-| [mcp-drawio](./mcp-drawio/) | 8020 | 6 | **AI Draw.io 图表生成**、实时预览、图库注入 | 需 Chromium |
+| [mcp-file-doc](./mcp-file-doc/) | 19100 | 26 | 文件 I/O、远程传输、**智能填表**、Word 高级操作 | 需 python-docx |
+| [mcp-markitdown](./mcp-markitdown/) | 19101 | 4 | Markitdown 格式转换、Markdown 渲染 | 需 markitdown |
+| [mcp-browser-playwright](./mcp-browser-playwright/) | 19102 | 14 | **浏览器自动化**、页面截图、元素交互、JS 执行 | 需 Chromium |
+| [mcp-sequential-thinking](./mcp-sequential-thinking/) | 19103 | 1 | **结构化多步推理**、回溯修正、分支推理 | 无 |
+| [mcp-data-platform](./mcp-data-platform/) | 19104 | 21 | 数据库查询、Python沙箱、数据可视化、知识库检索 | 需数据库连接 |
+| [mcp-datetime](./mcp-datetime/) | **19105** | 7 | 时间日期查询、时区转换、Cron解析 | 无 |
+| [mcp-ops-monitor](./mcp-ops-monitor/) | 19106 | 13 | CPU/内存/磁盘监控、日志分析、命令执行 | 需部署在目标主机 |
+| [mcp-fetch-intranet](./mcp-fetch-intranet/) | 19107 | 19 | 内网网页抓取、正文提取、递归爬取、配置管理 | 需内网可达 |
+| [**ppt-master-mcp**](./ppt-master-mcp/) | **19108** | **15** | **AI PPT 生成与增强**、20+模板、AI配图(16+后端)、PPTX导出 | 需 ppt-master v4.2.0 |
+| [mcp-spreadsheet-pdf](./mcp-spreadsheet-pdf/) | 19109 | 14 | Excel/CSV/PDF 操作、统计图表、智能填表 | 需 PyMuPDF |
+| [mcp-drawio](./mcp-drawio/) | 19110 | 6 | **AI Draw.io 图表生成**、实时预览、图库注入 | 需 Chromium |
 
 ## 快速启动
 
@@ -104,7 +104,7 @@ docker-compose up -d mcp-sequential-thinking
 
 ## 新增服务介绍
 
-### mcp-browser-playwright (:8008) - 浏览器自动化
+### mcp-browser-playwright (:19102) - 浏览器自动化
 
 基于 Playwright + Chromium，支持内网后台自动化操作。
 
@@ -121,7 +121,7 @@ docker-compose up -d mcp-sequential-thinking
 | `browser_go_back` / `browser_go_forward` | 前后导航 |
 | `browser_close` | 关闭页面 |
 
-### mcp-sequential-thinking (:8009) - 结构化推理
+### mcp-sequential-thinking (:19103) - 结构化推理
 
 帮助 LLM 在复杂问题上分步深度思考，支持回溯修正和分支推理。
 
@@ -136,17 +136,17 @@ docker-compose up -d mcp-sequential-thinking
 ```json
 {
   "mcpServers": {
-    "mcp-file-doc":              { "type": "streamableHttp", "url": "http://127.0.0.1:8002/mcp" },
-    "mcp-markitdown":             { "type": "streamableHttp", "url": "http://127.0.0.1:8007/mcp" },
-    "mcp-browser-playwright":     { "type": "streamableHttp", "url": "http://127.0.0.1:8008/mcp" },
-    "mcp-sequential-thinking":    { "type": "streamableHttp", "url": "http://127.0.0.1:8009/mcp" },
-    "mcp-data-platform":          { "type": "streamableHttp", "url": "http://127.0.0.1:8003/mcp" },
-    "mcp-datetime":               { "type": "streamableHttp", "url": "http://127.0.0.1:8010/mcp" },
-    "mcp-ops-monitor":            { "type": "streamableHttp", "url": "http://127.0.0.1:8004/mcp" },
-    "mcp-fetch-intranet":         { "type": "streamableHttp", "url": "http://127.0.0.1:8005/mcp" },
-    "ppt-master-mcp":             { "type": "streamableHttp", "url": "http://127.0.0.1:8011/mcp" },
-    "mcp-spreadsheet-pdf":        { "type": "streamableHttp", "url": "http://127.0.0.1:8012/mcp" },
-    "mcp-drawio":                 { "type": "streamableHttp", "url": "http://127.0.0.1:8020/mcp" }
+    "mcp-file-doc":              { "type": "streamableHttp", "url": "http://127.0.0.1:19100/mcp" },
+    "mcp-markitdown":             { "type": "streamableHttp", "url": "http://127.0.0.1:19101/mcp" },
+    "mcp-browser-playwright":     { "type": "streamableHttp", "url": "http://127.0.0.1:19102/mcp" },
+    "mcp-sequential-thinking":    { "type": "streamableHttp", "url": "http://127.0.0.1:19103/mcp" },
+    "mcp-data-platform":          { "type": "streamableHttp", "url": "http://127.0.0.1:19104/mcp" },
+    "mcp-datetime":               { "type": "streamableHttp", "url": "http://127.0.0.1:19105/mcp" },
+    "mcp-ops-monitor":            { "type": "streamableHttp", "url": "http://127.0.0.1:19106/mcp" },
+    "mcp-fetch-intranet":         { "type": "streamableHttp", "url": "http://127.0.0.1:19107/mcp" },
+    "ppt-master-mcp":             { "type": "streamableHttp", "url": "http://127.0.0.1:19108/mcp" },
+    "mcp-spreadsheet-pdf":        { "type": "streamableHttp", "url": "http://127.0.0.1:19109/mcp" },
+    "mcp-drawio":                 { "type": "streamableHttp", "url": "http://127.0.0.1:19110/mcp" }
   }
 }
 ```
@@ -155,17 +155,17 @@ docker-compose up -d mcp-sequential-thinking
 
 | 服务器 | 协议 | 端点 |
 |--------|------|------|
-| mcp-file-doc | Streamable HTTP | `http://<IP>:8002/mcp` |
-| mcp-markitdown | Streamable HTTP | `http://<IP>:8007/mcp` |
-| mcp-browser-playwright | Streamable HTTP | `http://<IP>:8008/mcp` |
-| mcp-sequential-thinking | Streamable HTTP | `http://<IP>:8009/mcp` |
-| mcp-data-platform | Streamable HTTP | `http://<IP>:8003/mcp` |
-| mcp-datetime | Streamable HTTP | `http://<IP>:8010/mcp` |
-| mcp-ops-monitor | Streamable HTTP | `http://<IP>:8004/mcp` |
-| mcp-fetch-intranet | Streamable HTTP | `http://<IP>:8005/mcp` |
-| ppt-master-mcp | Streamable HTTP | `http://<IP>:8011/mcp` |
-| mcp-spreadsheet-pdf | Streamable HTTP | `http://<IP>:8012/mcp` |
-| mcp-drawio | Streamable HTTP | `http://<IP>:8020/mcp` |
+| mcp-file-doc | Streamable HTTP | `http://<IP>:19100/mcp` |
+| mcp-markitdown | Streamable HTTP | `http://<IP>:19101/mcp` |
+| mcp-browser-playwright | Streamable HTTP | `http://<IP>:19102/mcp` |
+| mcp-sequential-thinking | Streamable HTTP | `http://<IP>:19103/mcp` |
+| mcp-data-platform | Streamable HTTP | `http://<IP>:19104/mcp` |
+| mcp-datetime | Streamable HTTP | `http://<IP>:19105/mcp` |
+| mcp-ops-monitor | Streamable HTTP | `http://<IP>:19106/mcp` |
+| mcp-fetch-intranet | Streamable HTTP | `http://<IP>:19107/mcp` |
+| ppt-master-mcp | Streamable HTTP | `http://<IP>:19108/mcp` |
+| mcp-spreadsheet-pdf | Streamable HTTP | `http://<IP>:19109/mcp` |
+| mcp-drawio | Streamable HTTP | `http://<IP>:19110/mcp` |
 
 ## 设计原则
 

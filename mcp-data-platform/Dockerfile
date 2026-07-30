@@ -18,6 +18,6 @@ COPY . .
 # 数据持久化目录
 VOLUME ["/data/mcp-user-data"]
 
-EXPOSE 8003
+EXPOSE 19104
 
 CMD ["python", "server.py"]

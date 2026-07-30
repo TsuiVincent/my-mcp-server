@@ -13,7 +13,7 @@ PPT Master MCP Server
   - Live Preview (内置HTTP snippet server)
 
 启动:
-  python server.py --port 8011
+  python server.py --port 19108
 """
 
 from __future__ import annotations
@@ -52,7 +52,7 @@ if str(PPT_SCRIPTS_DIR) not in sys.path:
 
 # ── 工作区目录 ────────────────────────────────────────────
 WORKSPACES_DIR = HERE / 'workspaces'
-PREVIEW_PORT_START = 18111
+PREVIEW_PORT_START = 19112
 _preview_server_instance: Optional['PreviewServer'] = None
 _preview_lock = threading.Lock()
 
@@ -940,7 +940,7 @@ def _tool_generate_image(
 def create_mcp_server() -> FastMCP:
     """创建并配置 MCP Server 实例。"""
     mcp = FastMCP(
-        name='PPT Master MCP Server', host="0.0.0.0", port=8011, json_response=True,
+        name='PPT Master MCP Server', host="0.0.0.0", port=19108, json_response=True,
         instructions='PPT Master - AI驱动的PPT生成服务。支持源文档解析、SVG编辑、模板浏览、预览和PPTX导出。',
     )
 
@@ -1236,7 +1236,7 @@ def create_mcp_server() -> FastMCP:
 
 def main():
     parser = argparse.ArgumentParser(description='PPT Master MCP Server')
-    parser.add_argument('--port', type=int, default=8011, help='MCP Server 端口 (默认 8011)')
+    parser.add_argument('--port', type=int, default=19108, help='MCP Server 端口 (默认 19108)')
     parser.add_argument('--host', type=str, default='0.0.0.0', help='绑定地址 (默认 0.0.0.0)')
     parser.add_argument('--transport', type=str, default='sse', choices=['sse', 'stdio'], help='传输模式 (默认 sse)')
     args = parser.parse_args()

@@ -13,7 +13,7 @@ python server.py
 
 配置数据库自动创建在数据根目录 `config_manager.db`（SQLite持久化）。
 
-默认监听 `http://0.0.0.0:8005`，使用 `streamable-http` 传输协议。
+默认监听 `http://0.0.0.0:19107`，使用 `streamable-http` 传输协议。
 
 ## 工具列表 (19个)
 
@@ -58,7 +58,7 @@ python server.py
   "mcpServers": {
     "mcp-fetch-intranet": {
       "type": "streamableHttp",
-      "url": "http://127.0.0.1:8005/mcp"
+      "url": "http://127.0.0.1:19107/mcp"
     }
   }
 }
@@ -70,7 +70,7 @@ python server.py
   "mcpServers": {
     "mcp-fetch-intranet": {
       "transport": "streamable-http",
-      "url": "http://127.0.0.1:8005/mcp"
+      "url": "http://127.0.0.1:19107/mcp"
     }
   }
 }
@@ -78,7 +78,7 @@ python server.py
 
 ### Dify
 - **协议类型**: Streamable HTTP
-- **服务端点**: `http://<服务器IP>:8005/mcp`
+- **服务端点**: `http://<服务器IP>:19107/mcp`
 
 ### Cursor / Claude Desktop
 ```json
@@ -86,7 +86,7 @@ python server.py
   "mcpServers": {
     "mcp-fetch-intranet": {
       "type": "streamableHttp",
-      "url": "http://<服务器IP>:8005/mcp"
+      "url": "http://<服务器IP>:19107/mcp"
     }
   }
 }

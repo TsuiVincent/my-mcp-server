@@ -37,9 +37,9 @@ if not exist .env (
 REM 启动服务器
 echo [3/3] 启动 MCP Server...
 echo.
-echo MCP Server: http://localhost:8011/sse
-echo 预览服务: 自动分配端口（从 18111 开始）
+echo MCP Server: http://localhost:19108/sse
+echo 预览服务: 自动分配端口（从 19111 开始）
 echo.
-python server.py --port 8011 --transport sse
+python server.py --port 19108 --transport sse
 
 pause

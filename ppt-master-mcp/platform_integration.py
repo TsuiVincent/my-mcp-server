@@ -23,13 +23,13 @@ PPT_MASTER_MCP_SEED = {
     "contactPhone": "",
     "logoUrl": "_random_local_logo()",  # 替换为实际调用
     "overview": "AI驱动的PPT生成与增强服务。支持源文档解析(PDF/DOCX/PPTX/URL/Markdown)、SVG编辑、模板浏览(20+模板)、AI配图生成(16+后端)、实时预览、原生可编辑PPTX导出，以及给已有PPTX添加转场动画/音频旁白/演讲者备注。基于 ppt-master v4.2.0 开源项目封装。",
-    "usageInstructions": "1. 在 individual-mcp/ppt-master-mcp/ 目录下运行 start.bat 启动 MCP Server（默认端口8011）\n2. 平台对话中勾选此 MCP 即可使用\n3. 建议搭配「PPT生成助手」Skill 使用，获得最佳交互体验\n4. 新增「Native PPTX增强」功能：可给已有PPTX追加转场动画和音频旁白",
-    "endpoint": "http://127.0.0.1:8011",
+    "usageInstructions": "1. 在 individual-mcp/ppt-master-mcp/ 目录下运行 start.bat 启动 MCP Server（默认端口19108）\n2. 平台对话中勾选此 MCP 即可使用\n3. 建议搭配「PPT生成助手」Skill 使用，获得最佳交互体验\n4. 新增「Native PPTX增强」功能：可给已有PPTX追加转场动画和音频旁白",
+    "endpoint": "http://127.0.0.1:19108",
     "serverConfig": {
         "mcpServers": {
             "ppt-master-mcp": {
                 "command": "python",
-                "args": ["server.py", "--port", "8011", "--transport", "sse"],
+                "args": ["server.py", "--port", "19108", "--transport", "sse"],
                 "cwd": "./individual-mcp/ppt-master-mcp"
             }
         }

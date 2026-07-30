@@ -11,8 +11,8 @@ pip install -r requirements.txt
 python server.py
 ```
 
-- MCP 端口: `8020`（streamable-http 协议）
-- 预览端口: `6002`（HTTP，自动找空闲端口）
+- MCP 端口: `19110`（streamable-http 协议）
+- 预览端口: `19111`（HTTP，自动找空闲端口）
 - draw.io 嵌入源: `https://embed.diagrams.net`（可通过 `DRAWIO_BASE_URL` 配置）
 
 ## 工具列表 (7个)
@@ -108,7 +108,7 @@ style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fo
   "mcpServers": {
     "mcp-drawio": {
       "type": "streamableHttp",
-      "url": "http://127.0.0.1:8020/mcp"
+      "url": "http://127.0.0.1:19110/mcp"
     }
   }
 }
@@ -139,10 +139,10 @@ mcp-drawio:
   container_name: mcp-drawio
   restart: unless-stopped
   ports:
-    - "8020:8020"
-    - "6002:6002"
+    - "19110:19110"
+    - "19111:19111"
   environment:
-    - DRAWIO_PREVIEW_BASE=http://<服务器IP>:6002
+    - DRAWIO_PREVIEW_BASE=http://<服务器IP>:19111
   volumes:
     - drawio_data:/data/drawio
 ```

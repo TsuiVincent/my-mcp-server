@@ -30,7 +30,7 @@ AI 驱动的 PPT 生成与增强服务。将 ppt-master 的能力封装为 MCP (
 | 变量 | 说明 | 默认值 |
 |------|------|--------|
 | `MCP_HOST` | 绑定地址 | `0.0.0.0` |
-| `MCP_PORT` | 服务端口 | `8011` |
+| `MCP_PORT` | 服务端口 | `19108` |
 | `WORKSPACES_DIR` | 工作区目录 | `./workspaces` |
 | `PPT_MASTER_PATH` | ppt-master 项目路径 | `./ppt-master-main` |
 | `PPT_IMAGE_GEN_ENABLED` | AI 生图开关 | `false` |
@@ -52,19 +52,19 @@ pip install -r requirements.txt
 ### 2. 启动服务
 
 ```bash
-python server.py --port 8011
+python server.py --port 19108
 ```
 
 启动日志：
 ```
 PPT Master MCP Server 启动中...
   - AI 图像生成: 已关闭（PPT_IMAGE_GEN_ENABLED=false）
-使用 SSE 传输模式: http://0.0.0.0:8011/sse
+使用 SSE 传输模式: http://0.0.0.0:19108/sse
 ```
 
 ### 3. 测试
 
-在 MCP 客户端中连接 `http://127.0.0.1:8011/mcp`，调用 `ppt_list_templates` 验证。
+在 MCP 客户端中连接 `http://127.0.0.1:19108/mcp`，调用 `ppt_list_templates` 验证。
 
 ---
 
@@ -152,10 +152,10 @@ set PPT_IMAGE_GEN_ENABLED=false && docker-compose up -d ppt-master-mcp
 ```bash
 # Windows PowerShell
 $env:PPT_IMAGE_GEN_ENABLED = "true"
-python server.py --port 8011
+python server.py --port 19108
 
 # Linux / macOS
-PPT_IMAGE_GEN_ENABLED=true python server.py --port 8011
+PPT_IMAGE_GEN_ENABLED=true python server.py --port 19108
 ```
 
 ### 验证开关状态
@@ -270,7 +270,7 @@ PPT Master 内置 20+ 模板，分三类：
 ## 技术架构
 
 ```
-MCP Client  →  ppt-master-mcp (server.py, 端口 8011)
+MCP Client  →  ppt-master-mcp (server.py, 端口 19108)
                   ├── workspace 管理（项目创建/文件读写）
                   ├── 源文档解析（PDF/DOCX/PPTX/URL → Markdown）
                   ├── 模板浏览

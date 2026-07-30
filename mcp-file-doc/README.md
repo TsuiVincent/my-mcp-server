@@ -2,7 +2,7 @@
 
 负责文件 I/O、远程传输、智能填表、Word 高级操作等功能。
 
-> **注意**：Markitdown 格式转换已拆分到 [mcp-markitdown](../mcp-markitdown/) (端口 8007)，Excel 操作已迁移至 [mcp-spreadsheet-pdf](../mcp-spreadsheet-pdf/) (端口 8012)。
+> **注意**：Markitdown 格式转换已拆分到 [mcp-markitdown](../mcp-markitdown/) (端口 19101)，Excel 操作已迁移至 [mcp-spreadsheet-pdf](../mcp-spreadsheet-pdf/) (端口 19109)。
 
 详细架构和跨服务器配置见 [根目录 README](../README.md)。
 
@@ -13,7 +13,7 @@ pip install -r requirements.txt
 python server.py
 ```
 
-默认监听 `http://0.0.0.0:8002`，使用 `streamable-http` 传输协议。
+默认监听 `http://0.0.0.0:19100`，使用 `streamable-http` 传输协议。
 
 ## 工具列表 (26个)
 
@@ -87,7 +87,7 @@ LLM 调用 smart_fill_form_local(docx_path=server_path, knowledge_data="...")
   "mcpServers": {
     "mcp-file-doc": {
       "type": "streamableHttp",
-      "url": "http://127.0.0.1:8002/mcp"
+      "url": "http://127.0.0.1:19100/mcp"
     }
   }
 }
@@ -99,7 +99,7 @@ LLM 调用 smart_fill_form_local(docx_path=server_path, knowledge_data="...")
   "mcpServers": {
     "mcp-file-doc": {
       "transport": "streamable-http",
-      "url": "http://127.0.0.1:8002/mcp"
+      "url": "http://127.0.0.1:19100/mcp"
     }
   }
 }
@@ -107,7 +107,7 @@ LLM 调用 smart_fill_form_local(docx_path=server_path, knowledge_data="...")
 
 ### Dify
 - **协议类型**: Streamable HTTP
-- **服务端点**: `http://<服务器IP>:8002/mcp`
+- **服务端点**: `http://<服务器IP>:19100/mcp`
 
 ### Cursor / Claude Desktop
 ```json
@@ -115,7 +115,7 @@ LLM 调用 smart_fill_form_local(docx_path=server_path, knowledge_data="...")
   "mcpServers": {
     "mcp-file-doc": {
       "type": "streamableHttp",
-      "url": "http://<服务器IP>:8002/mcp"
+      "url": "http://<服务器IP>:19100/mcp"
     }
   }
 }

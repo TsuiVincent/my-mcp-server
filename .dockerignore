@@ -1,0 +1,21 @@
+# ── 离线 Wheel 包（过大，不上传 Docker daemon）──
+packages/
+
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# ── IDE ──
+.idea/
+.vscode/
+*.swp
+
+# ── 数据目录（容器内挂载/生成）──
+#workspaces/
+#uploads/
+
+# ── Git ──
+.git/
+.gitignore

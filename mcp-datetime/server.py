@@ -13,11 +13,11 @@ logging.basicConfig(
     handlers=[logging.StreamHandler(sys.stderr)]
 )
 
-mcp = FastMCP("mcp-datetime", host="0.0.0.0", port=8010, json_response=True)
+mcp = FastMCP("mcp-datetime", host="0.0.0.0", port=19105, json_response=True)
 
 register_datetime_tools(mcp)
 
-print("[MCP Server] mcp-datetime 已就绪，端口: 8010", file=sys.stderr)
+print("[MCP Server] mcp-datetime 已就绪，端口: 19105", file=sys.stderr)
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")

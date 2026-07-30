@@ -12,7 +12,7 @@ logging.basicConfig(
 )
 
 # 创建服务器
-mcp = FastMCP("mcp-fetch-intranet", host="0.0.0.0", port=8005)
+mcp = FastMCP("mcp-fetch-intranet", host="0.0.0.0", port=19107)
 
 # 数据根目录（配置管理SQLite持久化用）
 if sys.platform == "win32":
@@ -29,7 +29,7 @@ register_api_tools(mcp)
 register_web_scraper_tools(mcp)
 register_config_manager_tools(mcp, base_dir=base_dir)
 
-print(f"[MCP Server] mcp-fetch-intranet 已就绪，端口: 8005", file=sys.stderr)
+print(f"[MCP Server] mcp-fetch-intranet 已就绪，端口: 19107", file=sys.stderr)
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")

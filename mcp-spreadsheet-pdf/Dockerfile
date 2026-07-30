@@ -21,5 +21,5 @@ COPY . .
 RUN mkdir -p /usr/share/fonts/truetype/custom && \
     cp /app/方正小标宋简.TTF /usr/share/fonts/truetype/custom/ 2>/dev/null; \
     fc-cache -fv
-EXPOSE 8012
+EXPOSE 19109
 CMD ["python", "server.py"]

@@ -35,6 +35,6 @@ RUN playwright install chromium --with-deps
 
 COPY . .
 
-EXPOSE 8008
+EXPOSE 19102
 
 CMD ["python", "server.py"]

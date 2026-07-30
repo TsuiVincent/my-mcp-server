@@ -10,7 +10,7 @@ playwright install chromium
 python server.py
 ```
 
-默认监听 `http://0.0.0.0:8008`，使用 `streamable-http` 传输协议。
+默认监听 `http://0.0.0.0:19102`，使用 `streamable-http` 传输协议。
 
 ## 工具列表 (14个)
 

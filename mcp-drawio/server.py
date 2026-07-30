@@ -6,7 +6,7 @@ mcp-drawio - Draw.io 图表生成与预览 MCP Server
 - 浏览器实时预览
 - 导出为 .drawio / .png / .svg 文件
 
-端口: 8020
+端口: 19110
 """
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ logging.basicConfig(level=logging.INFO, format='[DrawIO-MCP] %(asctime)s %(level
 logger = logging.getLogger('mcp-drawio')
 
 # ── 创建 MCP 服务器 ───────────────────────────────────────
-mcp = FastMCP("mcp-drawio", host="0.0.0.0", port=8020, json_response=True)
+mcp = FastMCP("mcp-drawio", host="0.0.0.0", port=19110, json_response=True)
 
 # ── 工作目录 ──────────────────────────────────────────────
 if sys.platform == "win32":
@@ -310,7 +310,7 @@ def _ensure_starlette():
 
 # ── HTTP 服务器（独立线程）────────────────────────────────
 _http_thread = None
-_http_port = 6002
+_http_port = 19111
 
 
 def _find_free_port(start: int, span: int = 50) -> int:
@@ -330,7 +330,7 @@ def _start_preview_server():
     import uvicorn
 
     global _http_port, _http_thread
-    _http_port = int(os.environ.get("DRAWIO_PREVIEW_PORT", "0")) or _find_free_port(6002)
+    _http_port = int(os.environ.get("DRAWIO_PREVIEW_PORT", "0")) or _find_free_port(19111)
 
     app = _ensure_starlette()
     config = uvicorn.Config(app, host="0.0.0.0", port=_http_port, log_level="warning")
@@ -706,7 +706,7 @@ async def drawio_add_page(
     }, ensure_ascii=False)
 
 
-print(f"[MCP Server] mcp-drawio 已就绪，端口: 8020", file=sys.stderr)
+print(f"[MCP Server] mcp-drawio 已就绪，端口: 19110", file=sys.stderr)
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")

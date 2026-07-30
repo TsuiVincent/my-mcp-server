@@ -12,7 +12,7 @@ import asyncio
 import re
 
 # 创建服务器
-mcp = FastMCP("mcp-browser-playwright", host="0.0.0.0", port=8008, json_response=True)
+mcp = FastMCP("mcp-browser-playwright", host="0.0.0.0", port=19102, json_response=True)
 
 # =====================================================================
 # 浏览器实例管理
@@ -370,7 +370,7 @@ async def browser_close() -> str:
         return _make_error("CLOSE_ERROR", str(e))
 
 
-print("[MCP Server] mcp-browser-playwright 已就绪，端口: 8008", file=sys.stderr)
+print("[MCP Server] mcp-browser-playwright 已就绪，端口: 19102", file=sys.stderr)
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")

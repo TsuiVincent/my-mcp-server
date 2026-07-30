@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 暴露端口（根据实际情况调整）
-EXPOSE 8004
+EXPOSE 19106
 
 # 运行服务
 CMD ["python", "server.py"]

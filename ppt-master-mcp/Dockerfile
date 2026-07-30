@@ -20,6 +20,6 @@ COPY . .
 # 工作区数据持久化
 VOLUME ["/app/workspaces"]
 
-EXPOSE 8011
+EXPOSE 19108
 
-CMD ["python", "server.py", "--port", "8011"]
+CMD ["python", "server.py", "--port", "19108"]

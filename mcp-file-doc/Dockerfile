@@ -15,6 +15,6 @@ COPY . .
 # 数据持久化目录
 VOLUME ["/data"]
 
-EXPOSE 8002
+EXPOSE 19100
 
 CMD ["python", "server.py"]

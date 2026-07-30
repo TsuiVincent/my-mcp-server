@@ -9,7 +9,7 @@ pip install -r requirements.txt
 python server.py
 ```
 
-默认监听 `http://0.0.0.0:8009`，使用 `streamable-http` 传输协议。
+默认监听 `http://0.0.0.0:19103`，使用 `streamable-http` 传输协议。
 
 ## 工具列表 (1个)
 

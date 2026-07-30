@@ -12,14 +12,14 @@ logging.basicConfig(
 )
 
 # 创建服务器
-mcp = FastMCP("mcp-ops-monitor", host="0.0.0.0", port=8004)
+mcp = FastMCP("mcp-ops-monitor", host="0.0.0.0", port=19106)
 
 # 注册所有工具模块
 register_monitor_tools(mcp)
 register_log_analyzer_tools(mcp)
 register_custom_tools(mcp)
 
-print(f"[MCP Server] mcp-ops-monitor 已就绪，端口: 8004", file=sys.stderr)
+print(f"[MCP Server] mcp-ops-monitor 已就绪，端口: 19106", file=sys.stderr)
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")

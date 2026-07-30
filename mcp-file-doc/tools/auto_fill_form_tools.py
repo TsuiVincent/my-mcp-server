@@ -598,7 +598,7 @@ def register_auto_fill_tools(
         base_dir: 写入沙箱根目录
         synonyms_config: 同义词配置文件路径（可选）。支持 JSON 文件，优先级：
             参数指定 > 环境变量 FIELD_SYNONYMS_CONFIG > base_dir/config/field_synonyms.json > 内置默认
-        server_base_url: 服务器对外基础 URL，用于生成文件下载链接，如 http://192.168.1.10:8002
+        server_base_url: 服务器对外基础 URL，用于生成文件下载链接，如 http://192.168.1.10:19100
     """
 
     # 加载字段同义词映射（支持外部配置文件，Docker 友好）
@@ -613,11 +613,11 @@ def register_auto_fill_tools(
                 ctx = mcp.get_context()
                 req = ctx.request_context.request
                 if req is not None:
-                    host = req.headers.get("x-forwarded-host") or req.headers.get("host", "localhost:8002")
+                    host = req.headers.get("x-forwarded-host") or req.headers.get("host", "localhost:19100")
                     proto = req.headers.get("x-forwarded-proto", "http")
                     url_base = f"{proto}://{host}"
             except Exception:
-                url_base = "http://localhost:8002"
+                url_base = "http://localhost:19100"
         if not url_base:
             return ""
         try:

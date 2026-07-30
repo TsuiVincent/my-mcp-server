@@ -11,7 +11,7 @@ pip install -r requirements.txt
 python server.py
 ```
 
-默认监听 `http://0.0.0.0:8007`，使用 `streamable-http` 传输协议。
+默认监听 `http://0.0.0.0:19101`，使用 `streamable-http` 传输协议。
 
 ## 工具列表 (4个)
 
@@ -38,7 +38,7 @@ python server.py
   "mcpServers": {
     "mcp-markitdown": {
       "type": "streamableHttp",
-      "url": "http://127.0.0.1:8007/mcp"
+      "url": "http://127.0.0.1:19101/mcp"
     }
   }
 }
@@ -50,7 +50,7 @@ python server.py
   "mcpServers": {
     "mcp-markitdown": {
       "transport": "streamable-http",
-      "url": "http://127.0.0.1:8007/mcp"
+      "url": "http://127.0.0.1:19101/mcp"
     }
   }
 }
@@ -58,7 +58,7 @@ python server.py
 
 ### Dify
 - **协议类型**: Streamable HTTP
-- **服务端点**: `http://<服务器IP>:8007/mcp`
+- **服务端点**: `http://<服务器IP>:19101/mcp`
 
 ### Cursor / Claude Desktop
 ```json
@@ -66,7 +66,7 @@ python server.py
   "mcpServers": {
     "mcp-markitdown": {
       "type": "streamableHttp",
-      "url": "http://<服务器IP>:8007/mcp"
+      "url": "http://<服务器IP>:19101/mcp"
     }
   }
 }

@@ -11,7 +11,7 @@ import uuid
 import sys
 
 # 创建服务器
-mcp = FastMCP("mcp-sequential-thinking", host="0.0.0.0", port=8009, json_response=True)
+mcp = FastMCP("mcp-sequential-thinking", host="0.0.0.0", port=19103, json_response=True)
 
 # =====================================================================
 # 会话状态存储：session_id -> 思考历史
@@ -128,7 +128,7 @@ async def sequential_thinking(
     return json.dumps(result, ensure_ascii=False, indent=2)
 
 
-print("[MCP Server] mcp-sequential-thinking 已就绪，端口: 8009", file=sys.stderr)
+print("[MCP Server] mcp-sequential-thinking 已就绪，端口: 19103", file=sys.stderr)
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")

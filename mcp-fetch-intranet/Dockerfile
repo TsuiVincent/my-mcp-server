@@ -14,6 +14,6 @@ COPY . .
 # 配置管理数据持久化
 VOLUME ["/data/mcp-user-data"]
 
-EXPOSE 8005
+EXPOSE 19107
 
 CMD ["python", "server.py"]

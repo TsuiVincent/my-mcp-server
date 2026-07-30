@@ -194,7 +194,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ── 配置 ──
-PORT = int(os.getenv("MCP_PORT", "8015"))  # 端口号需全局唯一
+PORT = int(os.getenv("MCP_PORT", "19115"))  # 端口号需全局唯一
 
 # ── 创建 MCP Server ──
 mcp = FastMCP(
@@ -253,7 +253,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 8015
+EXPOSE 19115
 
 CMD ["python", "server.py"]
 ```
@@ -277,7 +277,7 @@ RUN rm -rf /tmp/wheels
 
 COPY . .
 
-EXPOSE 8015
+EXPOSE 19115
 
 CMD ["python", "server.py"]
 ```
@@ -301,7 +301,7 @@ CMD ["python", "server.py"]
     container_name: mcp-earthquake
     restart: unless-stopped
     ports:
-      - "8015:8015"
+      - "19115:19115"
     environment:
       - TZ=Asia/Shanghai
       - EARTHQUAKE_API_BASE_URL=${EARTHQUAKE_API_BASE_URL:-https://api.example.com/earthquake/v1}
@@ -357,12 +357,12 @@ EARTHQUAKE_MCP_SEED = {
     "logoUrl": "_random_local_logo()",
     "overview": "地震预警查询服务。支持查询最近地震列表、获取区域地震预警信息。数据来源于第三方地震预警API。",
     "usageInstructions": "1. 确保 EARTHQUAKE_API_KEY 已配置\n2. 平台对话中勾选此 MCP 即可使用",
-    "endpoint": "http://127.0.0.1:8015",
+    "endpoint": "http://127.0.0.1:19115",
     "serverConfig": {
         "mcpServers": {
             "mcp-earthquake": {
                 "command": "python",
-                "args": ["server.py", "--port", "8015", "--transport", "sse"],
+                "args": ["server.py", "--port", "19115", "--transport", "sse"],
                 "cwd": "./individual-mcp/mcp-earthquake"
             }
         }
@@ -416,7 +416,7 @@ docker-compose up -d mcp-earthquake
 
 正常启动应看到：
 ```
-mcp-earthquake  | mcp-earthquake 启动，端口: 8015
+mcp-earthquake  | mcp-earthquake 启动，端口: 19115
 ```
 
 ---
@@ -496,19 +496,19 @@ docker-compose up -d mcp-earthquake
 
 | 服务 | 端口 |
 |---|---|
-| mcp-file-doc | 8000 |
-| mcp-markitdown | 8001 |
-| mcp-browser-playwright | 8002 |
-| mcp-data-platform | 8003 |
-| mcp-sequential-thinking | 8004 |
-| mcp-spreadsheet-pdf | 8005 |
-| mcp-ops-monitor | 8007 |
-| mcp-datetime | 8010 |
-| ppt-master-mcp | 8011 |
-| mcp-fetch-intranet | 8012 |
-| mcp-drawio | 8013 |
-| **mcp-earthquake** | **8015** |
-| （新服务） | 80xx（自选未占用端口） |
+| mcp-file-doc | 19100 |
+| mcp-markitdown | 19101 |
+| mcp-browser-playwright | 19102 |
+| mcp-sequential-thinking | 19103 |
+| mcp-data-platform | 19104 |
+| mcp-datetime | 19105 |
+| mcp-ops-monitor | 19106 |
+| mcp-fetch-intranet | 19107 |
+| ppt-master-mcp | 19108 |
+| mcp-spreadsheet-pdf | 19109 |
+| mcp-drawio | 19110 / 19111 |
+| **mcp-earthquake** | **19115** |
+| （新服务） | 191xx（自选未占用端口） |
 
 ---
 

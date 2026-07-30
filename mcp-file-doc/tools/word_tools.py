@@ -81,11 +81,11 @@ def register_word_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
                 ctx = mcp.get_context()
                 req = ctx.request_context.request
                 if req is not None:
-                    host = req.headers.get("x-forwarded-host") or req.headers.get("host", "localhost:8002")
+                    host = req.headers.get("x-forwarded-host") or req.headers.get("host", "localhost:19100")
                     proto = req.headers.get("x-forwarded-proto", "http")
                     url_base = f"{proto}://{host}"
             except Exception:
-                url_base = "http://localhost:8002"
+                url_base = "http://localhost:19100"
         if not url_base:
             return ""
         try:

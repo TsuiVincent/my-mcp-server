@@ -14,7 +14,7 @@ logging.basicConfig(
 )
 
 # 创建服务器
-mcp = FastMCP("mcp-data-platform", host="0.0.0.0", port=8003)
+mcp = FastMCP("mcp-data-platform", host="0.0.0.0", port=19104)
 
 # 用户数据根目录
 if sys.platform == "win32":
@@ -33,7 +33,7 @@ register_python_executor_tools(mcp)
 register_visualization_tools(mcp)
 register_knowledge_search_tools(mcp)
 
-print(f"[MCP Server] mcp-data-platform 已就绪，端口: 8003", file=sys.stderr)
+print(f"[MCP Server] mcp-data-platform 已就绪，端口: 19104", file=sys.stderr)
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")
