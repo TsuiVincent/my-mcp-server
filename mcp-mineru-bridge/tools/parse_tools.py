@@ -3,6 +3,7 @@ MinerU 文档解析工具 - 通过远程 MinerU API 实现文档解析
 """
 import os
 import json
+import tempfile
 import httpx
 from mcp.server.fastmcp import FastMCP
 
@@ -13,6 +14,39 @@ def _build_headers(api_key: str) -> dict:
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
     return headers
+
+
+def _resolve_file(file_path: str = "", url: str = "") -> tuple[str, str, bool]:
+    """
+    解析文件来源：本地路径或 URL 下载。
+    返回 (最终路径, 文件名, 是否需要清理临时文件)
+    """
+    if url:
+        # 从 URL 下载到临时文件
+        try:
+            with httpx.Client(timeout=300, follow_redirects=True) as client:
+                resp = client.get(url)
+                resp.raise_for_status()
+        except httpx.ConnectError as e:
+            raise RuntimeError(f"无法连接到文件下载地址 ({url}): {e}")
+        except httpx.HTTPStatusError as e:
+            raise RuntimeError(f"下载文件失败 (HTTP {e.response.status_code}): {url}")
+        except httpx.TimeoutException:
+            raise RuntimeError(f"下载文件超时: {url}")
+
+        # 从 URL 中推断文件名
+        filename = url.rstrip("/").split("/")[-1] or "downloaded_file"
+        # 写入临时文件
+        suffix = os.path.splitext(filename)[1] or ""
+        fd, tmp_path = tempfile.mkstemp(suffix=suffix)
+        with os.fdopen(fd, "wb") as f:
+            f.write(resp.content)
+        return tmp_path, filename, True
+    else:
+        # 本地文件
+        if not os.path.isfile(file_path):
+            raise FileNotFoundError(f"文件不存在 - {file_path}")
+        return file_path, os.path.basename(file_path), False
 
 
 def register_parse_tools(mcp: FastMCP, mineru_api_url: str = "http://localhost:8000", mineru_api_key: str = ""):
@@ -26,7 +60,8 @@ def register_parse_tools(mcp: FastMCP, mineru_api_url: str = "http://localhost:8
 
     @mcp.tool()
     def parse_document(
-        file_path: str,
+        file_path: str = "",
+        url: str = "",
         backend: str = "pipeline",
         ocr: bool = False,
         formula: bool = True,
@@ -38,7 +73,8 @@ def register_parse_tools(mcp: FastMCP, mineru_api_url: str = "http://localhost:8
         将文档发送到远程 MinerU 服务进行解析，返回 Markdown 文本
 
         Args:
-            file_path: 本地文档路径（PDF/DOCX/PPTX/XLSX/图片）
+            file_path: 本地文档路径（PDF/DOCX/PPTX/XLSX/图片），与 url 二选一
+            url: 远程文档 URL（HTTP 下载地址，用于 agent 平台传参），与 file_path 二选一
             backend: 解析后端，可选 pipeline / hybrid-engine / vlm-engine，默认 pipeline
             ocr: 是否启用 OCR（扫描件/图片 PDF 建议开启）
             formula: 是否启用公式识别（默认开启）
@@ -49,25 +85,34 @@ def register_parse_tools(mcp: FastMCP, mineru_api_url: str = "http://localhost:8
         Returns:
             解析后的 Markdown 文本及结构化信息
         """
-        if not os.path.isfile(file_path):
-            return f"错误：文件不存在 - {file_path}"
+        if not file_path and not url:
+            return "错误：请提供 file_path（本地路径）或 url（远程地址）"
+        if url and file_path:
+            return "错误：file_path 和 url 不能同时提供，请选择其中一种"
 
-        filename = os.path.basename(file_path)
-        files = {"files": (filename, open(file_path, "rb"))}
-
-        data = {
-            "backend": backend,
-            "lang_list": language,
-            "return_md": "true",
-            "return_content_list": "true",
-            "ocr_enabled": str(ocr).lower(),
-            "formula_enabled": str(formula).lower(),
-            "table_enabled": str(table).lower(),
-        }
-        if pages:
-            data["pages"] = pages
-
+        # 解析文件来源
         try:
+            resolved_path, filename, needs_cleanup = _resolve_file(file_path, url)
+        except (FileNotFoundError, RuntimeError) as e:
+            return str(e)
+
+        f = None
+        try:
+            f = open(resolved_path, "rb")
+            files = {"files": (filename, f)}
+
+            data = {
+                "backend": backend,
+                "lang_list": language,
+                "return_md": "true",
+                "return_content_list": "true",
+                "ocr_enabled": str(ocr).lower(),
+                "formula_enabled": str(formula).lower(),
+                "table_enabled": str(table).lower(),
+            }
+            if pages:
+                data["pages"] = pages
+
             with httpx.Client(timeout=600) as client:
                 resp = client.post(
                     f"{base_url}/file_parse",
@@ -82,8 +127,13 @@ def register_parse_tools(mcp: FastMCP, mineru_api_url: str = "http://localhost:8
             return "错误：MinerU 解析超时（>600秒），文件可能过大或服务繁忙"
         except httpx.HTTPStatusError as e:
             return f"错误：MinerU 服务返回异常 (HTTP {e.response.status_code}): {e.response.text}"
+        except OSError as e:
+            return f"错误：无法读取文件 - {e}"
         finally:
-            files["files"][1].close()
+            if f:
+                f.close()
+            if needs_cleanup:
+                os.unlink(resolved_path)
 
         try:
             result = resp.json()
@@ -108,7 +158,8 @@ def register_parse_tools(mcp: FastMCP, mineru_api_url: str = "http://localhost:8
 
     @mcp.tool()
     def parse_document_async(
-        file_path: str,
+        file_path: str = "",
+        url: str = "",
         backend: str = "pipeline",
         ocr: bool = False,
         formula: bool = True,
@@ -120,7 +171,8 @@ def register_parse_tools(mcp: FastMCP, mineru_api_url: str = "http://localhost:8
         异步提交文档解析任务，返回 task_id（适合大文件或批量处理）
 
         Args:
-            file_path: 本地文档路径
+            file_path: 本地文档路径，与 url 二选一
+            url: 远程文档 URL（HTTP 下载地址），与 file_path 二选一
             backend: 解析后端
             ocr: 是否启用 OCR
             formula: 是否启用公式识别
@@ -131,25 +183,33 @@ def register_parse_tools(mcp: FastMCP, mineru_api_url: str = "http://localhost:8
         Returns:
             task_id，可用于 get_task_status / get_task_result 查询
         """
-        if not os.path.isfile(file_path):
-            return f"错误：文件不存在 - {file_path}"
-
-        filename = os.path.basename(file_path)
-        files = {"files": (filename, open(file_path, "rb"))}
-
-        data = {
-            "backend": backend,
-            "lang_list": language,
-            "return_md": "true",
-            "return_content_list": "true",
-            "ocr_enabled": str(ocr).lower(),
-            "formula_enabled": str(formula).lower(),
-            "table_enabled": str(table).lower(),
-        }
-        if pages:
-            data["pages"] = pages
+        if not file_path and not url:
+            return "错误：请提供 file_path（本地路径）或 url（远程地址）"
+        if url and file_path:
+            return "错误：file_path 和 url 不能同时提供，请选择其中一种"
 
         try:
+            resolved_path, filename, needs_cleanup = _resolve_file(file_path, url)
+        except (FileNotFoundError, RuntimeError) as e:
+            return str(e)
+
+        f = None
+        try:
+            f = open(resolved_path, "rb")
+            files = {"files": (filename, f)}
+
+            data = {
+                "backend": backend,
+                "lang_list": language,
+                "return_md": "true",
+                "return_content_list": "true",
+                "ocr_enabled": str(ocr).lower(),
+                "formula_enabled": str(formula).lower(),
+                "table_enabled": str(table).lower(),
+            }
+            if pages:
+                data["pages"] = pages
+
             with httpx.Client(timeout=30) as client:
                 resp = client.post(
                     f"{base_url}/tasks",
@@ -162,8 +222,13 @@ def register_parse_tools(mcp: FastMCP, mineru_api_url: str = "http://localhost:8
             return f"错误：无法连接到 MinerU 服务 ({base_url})。详情: {e}"
         except httpx.HTTPStatusError as e:
             return f"错误：提交任务失败 (HTTP {e.response.status_code}): {e.response.text}"
+        except OSError as e:
+            return f"错误：无法读取文件 - {e}"
         finally:
-            files["files"][1].close()
+            if f:
+                f.close()
+            if needs_cleanup:
+                os.unlink(resolved_path)
 
         result = resp.json()
         task_id = result.get("task_id", "")
