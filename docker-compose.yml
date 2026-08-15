@@ -185,6 +185,22 @@ services:
     networks:
       - mcp-network
 
+  # ============================================================
+  # Server 12: MinerU 文档解析桥接（对接远程 MinerU API）
+  # ============================================================
+  mcp-mineru-bridge:
+    build: ./mcp-mineru-bridge
+    container_name: mcp-mineru-bridge
+    restart: unless-stopped
+    ports:
+      - "19112:19112"
+    environment:
+      - TZ=Asia/Shanghai
+      - MINERU_API_URL=${MINERU_API_URL:-http://host.docker.internal:8000}
+      - MINERU_API_KEY=${MINERU_API_KEY:-}
+    networks:
+      - mcp-network
+
 # ============================================================
 # 共享网络
 # ============================================================
