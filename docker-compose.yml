@@ -1,30 +1,6 @@
-version: "3.8"
-
 services:
   # ============================================================
-  # Server 1: 文件操作 + 远程传输 + 智能填表 + Word 高级操作
-  # ============================================================
-  mcp-file-doc:
-    build: ./mcp-file-doc
-    container_name: mcp-file-doc
-    restart: unless-stopped
-    ports:
-      - "19100:19100"
-    environment:
-      - TZ=Asia/Shanghai
-      - HOST_DOWNLOADS=/mnt/host/downloads
-      - HOST_DESKTOP=/mnt/host/desktop
-      - HOST_DOCUMENTS=/mnt/host/documents
-    volumes:
-      - file_doc_data:/data
-      - ${USERPROFILE:-~}/Downloads:/mnt/host/downloads
-      - ${USERPROFILE:-~}/Desktop:/mnt/host/desktop
-      - ${USERPROFILE:-~}/Documents:/mnt/host/documents
-    networks:
-      - mcp-network
-
-  # ============================================================
-  # Server 2: Markitdown 格式转换
+  # Server 1: Markitdown 格式转换
   # ============================================================
   mcp-markitdown:
     build: ./mcp-markitdown
@@ -149,18 +125,75 @@ services:
       - mcp-network
 
   # ============================================================
-  # Server 10: Excel / CSV / PDF 操作
+  # Server 10a: 智能填表专用（Word + Excel）
   # ============================================================
-  mcp-spreadsheet-pdf:
-    build: ./mcp-spreadsheet-pdf
-    container_name: mcp-spreadsheet-pdf
+  mcp-form-fill:
+    build: ./mcp-form-fill
+    container_name: mcp-form-fill
     restart: unless-stopped
     ports:
-      - "19109:19109"
+      - "19120:19120"
     environment:
       - TZ=Asia/Shanghai
     volumes:
-      - spreadsheet_pdf_data:/data
+      - form_fill_data:/data
+      - ${USERPROFILE:-~}/Downloads:/mnt/host/downloads
+      - ${USERPROFILE:-~}/Desktop:/mnt/host/desktop
+      - ${USERPROFILE:-~}/Documents:/mnt/host/documents
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 11b: Word 通用操作
+  # ============================================================
+  mcp-office-word:
+    build: ./mcp-office-word
+    container_name: mcp-office-word
+    restart: unless-stopped
+    ports:
+      - "19121:19121"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - office_word_data:/data
+      - ${USERPROFILE:-~}/Downloads:/mnt/host/downloads
+      - ${USERPROFILE:-~}/Desktop:/mnt/host/desktop
+      - ${USERPROFILE:-~}/Documents:/mnt/host/documents
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 11c: Excel/CSV 通用操作
+  # ============================================================
+  mcp-office-excel:
+    build: ./mcp-office-excel
+    container_name: mcp-office-excel
+    restart: unless-stopped
+    ports:
+      - "19122:19122"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - office_excel_data:/data
+      - ${USERPROFILE:-~}/Downloads:/mnt/host/downloads
+      - ${USERPROFILE:-~}/Desktop:/mnt/host/desktop
+      - ${USERPROFILE:-~}/Documents:/mnt/host/documents
+    networks:
+      - mcp-network
+
+  # ============================================================
+  # Server 11d: PDF 操作
+  # ============================================================
+  mcp-office-pdf:
+    build: ./mcp-office-pdf
+    container_name: mcp-office-pdf
+    restart: unless-stopped
+    ports:
+      - "19123:19123"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - office_pdf_data:/data
       - ${USERPROFILE:-~}/Downloads:/mnt/host/downloads
       - ${USERPROFILE:-~}/Desktop:/mnt/host/desktop
       - ${USERPROFILE:-~}/Documents:/mnt/host/documents
@@ -185,22 +218,6 @@ services:
     networks:
       - mcp-network
 
-  # ============================================================
-  # Server 12: MinerU 文档解析桥接（对接远程 MinerU API）
-  # ============================================================
-  mcp-mineru-bridge:
-    build: ./mcp-mineru-bridge
-    container_name: mcp-mineru-bridge
-    restart: unless-stopped
-    ports:
-      - "19112:19112"
-    environment:
-      - TZ=Asia/Shanghai
-      - MINERU_API_URL=${MINERU_API_URL:-http://host.docker.internal:8000}
-      - MINERU_API_KEY=${MINERU_API_KEY:-}
-    networks:
-      - mcp-network
-
 # ============================================================
 # 共享网络
 # ============================================================
@@ -212,9 +229,11 @@ networks:
 # 持久化卷
 # ============================================================
 volumes:
-  file_doc_data:          # mcp-file-doc 文件数据
   data_platform_data:    # mcp-data-platform 用户数据
   fetch_intranet_data:   # mcp-fetch-intranet 配置数据
   ppt_master_data:       # ppt-master-mcp PPT 项目工作区
-  spreadsheet_pdf_data:  # mcp-spreadsheet-pdf 文档数据
   drawio_data:           # mcp-drawio 图表数据
+  form_fill_data:        # mcp-form-fill 填表数据
+  office_word_data:      # mcp-office-word 文档数据
+  office_excel_data:     # mcp-office-excel 表格数据
+  office_pdf_data:       # mcp-office-pdf PDF 数据

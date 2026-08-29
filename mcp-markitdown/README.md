@@ -1,6 +1,6 @@
 # mcp-markitdown - Markitdown 格式转换 MCP Server
 
-负责 Markitdown 格式转换、Markdown 渲染等功能。独立承载文档转换工具（4个），与 `mcp-file-doc` 的智能填表功能解耦。
+负责 Markitdown 格式转换、Markdown 渲染等功能。独立承载文档转换工具（4个）。
 
 详细架构和跨服务器配置见 [根目录 README](../README.md)。
 

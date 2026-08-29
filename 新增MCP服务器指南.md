@@ -496,7 +496,6 @@ docker-compose up -d mcp-earthquake
 
 | 服务 | 端口 |
 |---|---|
-| mcp-file-doc | 19100 |
 | mcp-markitdown | 19101 |
 | mcp-browser-playwright | 19102 |
 | mcp-sequential-thinking | 19103 |
@@ -505,8 +504,11 @@ docker-compose up -d mcp-earthquake
 | mcp-ops-monitor | 19106 |
 | mcp-fetch-intranet | 19107 |
 | ppt-master-mcp | 19108 |
-| mcp-spreadsheet-pdf | 19109 |
 | mcp-drawio | 19110 / 19111 |
+| mcp-form-fill | 19120 |
+| mcp-office-word | 19121 |
+| mcp-office-excel | 19122 |
+| mcp-office-pdf | 19123 |
 | **mcp-earthquake** | **19115** |
 | （新服务） | 191xx（自选未占用端口） |
 
