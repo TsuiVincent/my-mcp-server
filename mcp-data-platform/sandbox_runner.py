@@ -46,6 +46,9 @@ SAFE_MODULES = {
     'pandas', 'numpy', 'scipy', 'statsmodels', 'sklearn',
     'matplotlib', 'mpl_toolkits', 'openpyxl', 'xlrd', 'pyarrow',
     'polars', 'jinja2', 'tabulate',
+    # 私有数据表全量计算通道：sqlite3.connect 受库级 I/O 白名单约束
+    # （仅放行本人 user_sqlite/{uid}_private.db，见 _escapes_workdir）
+    'sqlite3',
 }
 
 # 环境变量扩展（逗号分隔），便于内网按需放行更多库
@@ -94,6 +97,9 @@ _LIB_FILE_IO_POS_ARGS = {
     'write_table': (1,),
     'scan_csv': (0,), 'scan_parquet': (0,), 'scan_ipc': (0,),
     'write_csv': (0,), 'write_parquet': (0,), 'write_ipc': (0,),
+    # sqlite3 / DB-API 连接（首参为库文件路径；pymysql 等首参为主机名，
+    # 相对串会按工作目录内路径判定、不会误伤）
+    'connect': (0,),
 }
 
 # 上述库函数的路径参数常见关键字名
@@ -123,19 +129,46 @@ def _static_str(node):
     return None
 
 
+def _user_private_db_path(workdir: str) -> str:
+    """由会话工作目录推导本人私有 SQLite 库路径。
+
+    沙箱工作目录固定为 {base_dir}/sandbox/{uid}（见 _session_workdir），
+    私有库位于 {base_dir}/user_sqlite/{uid}_private.db（与
+    tools.user_kb_sqlite_tools.get_user_sqlite_path 保持一致）。
+    uid 取自工作目录名（已做字符清洗），天然按用户隔离、无越权面。
+    """
+    wd = os.path.normpath(os.path.abspath(workdir))
+    base = os.path.dirname(os.path.dirname(wd))  # 剥掉 sandbox/{uid} 两级
+    uid = os.path.basename(wd)
+    return os.path.normpath(os.path.join(base, 'user_sqlite', f'{uid}_private.db'))
+
+
 def _escapes_workdir(path_str: str, workdir: str = None) -> bool:
     """判断字面量路径是否越出会话工作目录。
 
     workdir 已知时按沙箱运行时的同一规则解析；workdir 为 None 时保守判定
     （绝对路径或含 '..' 的路径一律视为越界）。
+    白名单：本人私有 SQLite 库文件（路径与 user_id 精确匹配）不受工作目录限制。
+    支持 file:/path?xxx URI 形式（sqlite3 uri=True）。
     """
     if not path_str:
         return False
+    if path_str.startswith('file:'):
+        # sqlite3 URI：file:/path?mode=ro → 取 /path 参与判定
+        path_str = path_str[5:].split('?', 1)[0]
     if workdir:
         base = os.path.normpath(os.path.abspath(workdir))
         target = os.path.normpath(path_str if os.path.isabs(path_str)
                                   else os.path.join(base, path_str))
-        return not (target == base or target.startswith(base + os.sep))
+        if target == base or target.startswith(base + os.sep):
+            return False
+        # 白名单：本人私有数据表（pandas 全量计算/导出通道）
+        try:
+            if target == _user_private_db_path(workdir):
+                return False
+        except Exception:
+            pass
+        return True
     if os.path.isabs(path_str) or path_str.startswith(('/', '\\')):
         return True
     return '..' in path_str.replace('\\', '/').split('/')

@@ -26,8 +26,18 @@ def init_user_dirs(base_dir: str):
 
 
 # ===================== 工具1：用户私有 SQL 查询 =====================
-def _user_private_sql_query(base_dir: str, user_id: str, sql: str) -> str:
-    """内部实现：查询用户私有结构化数据"""
+_DEFAULT_MAX_ROWS = 1000
+_HARD_MAX_ROWS = 5000
+
+
+def _user_private_sql_query(base_dir: str, user_id: str, sql: str,
+                            max_rows: int = _DEFAULT_MAX_ROWS) -> str:
+    """内部实现：查询用户私有结构化数据
+
+    max_rows 仅限制返回给 LLM 的行数（默认 1000，上限 5000），不影响 SQL 本身能力：
+    大表应优先聚合（GROUP BY）或 LIMIT/OFFSET 分页；全量计算/导出走
+    python_exec_json + pandas 直连本人私有库（沙箱已白名单放行）。
+    """
     deny_words = {"drop", "alter", "insert", "delete", "update", "create", "truncate"}
     sql_lower = sql.lower()
     for word in deny_words:
@@ -39,21 +49,35 @@ def _user_private_sql_query(base_dir: str, user_id: str, sql: str) -> str:
         return "提示：你暂未上传任何表格/JSON结构化数据。"
 
     try:
+        limit = max(1, min(int(max_rows or _DEFAULT_MAX_ROWS), _HARD_MAX_ROWS))
+    except (TypeError, ValueError):
+        limit = _DEFAULT_MAX_ROWS
+
+    try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         cursor.execute(sql)
 
         cols = [desc[0] for desc in cursor.description]
-        rows = cursor.fetchall()
+        rows = cursor.fetchmany(limit + 1)  # 多取一行判断是否截断
         conn.close()
+        truncated = len(rows) > limit
+        rows = rows[:limit]
 
         if not rows:
             return "查询结果：无匹配数据"
 
-        result_lines = ["查询结果："]
+        result_lines = [f"查询结果（单次最多返回 {limit} 行{'，已截断' if truncated else ''}）："]
         result_lines.append(" | ".join(cols))
         for row in rows:
             result_lines.append(" | ".join(str(item) for item in row))
+        if truncated:
+            result_lines.append(
+                f"\n【提示】结果超过 {limit} 行已截断。大表分析请优先在 SQL 中聚合"
+                "（GROUP BY / COUNT / SUM / AVG），或用 LIMIT/OFFSET 分页查看；"
+                f"如需全量计算或导出，可在 python_exec_json 中用 pandas 直连本人私有数据表：{db_path}"
+                "（沙箱已放行该文件），计算结果 to_csv 保存到工作目录后平台会自动托管为下载链接。"
+            )
         return "\n".join(result_lines)
 
     except Exception as e:
@@ -106,10 +130,14 @@ def register_user_kb_tools(mcp, base_dir: str):
 
     @mcp.tool(
         name="user_private_sql_query",
-        description="查询当前用户自己上传的Excel、CSV、JSON结构化数据表。仅支持SELECT查询，禁止修改数据。Args: user_id(当前登录用户ID), sql(SELECT查询语句)"
+        description=(
+            "查询当前用户自己上传的Excel、CSV、JSON结构化数据表。仅支持SELECT查询，禁止修改数据。"
+            "大表请优先聚合（GROUP BY）或 LIMIT/OFFSET 分页，超出上限的结果会截断并提示。"
+            "Args: user_id(当前登录用户ID), sql(SELECT查询语句), max_rows(返回行数上限,默认1000,最大5000,可选)"
+        )
     )
-    def user_private_sql_query(user_id: str, sql: str) -> str:
-        return _user_private_sql_query(base_dir, user_id, sql)
+    def user_private_sql_query(user_id: str, sql: str, max_rows: int = 1000) -> str:
+        return _user_private_sql_query(base_dir, user_id, sql, max_rows=max_rows)
 
     @mcp.tool(
         name="user_private_rag_search",

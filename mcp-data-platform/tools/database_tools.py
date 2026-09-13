@@ -1,12 +1,18 @@
 """
 数据库管理与分析工具
 
-实现 SQLite / MySQL / PostgreSQL 的统一连接管理，支持只读 SQL 查询、
-表结构查看与数据统计。本次升级要点：
+实现 SQLite / MySQL 族 / PostgreSQL 族 / Oracle / SQL Server / 达梦 / ClickHouse
+的统一连接管理，支持只读 SQL 查询、表结构查看与数据统计。
+兼容协议库通过「类型别名 → 驱动族」归一化接入，无需独立驱动：
+- MySQL 协议族：MariaDB、TiDB、OceanBase(MySQL模式)、TDSQL、PolarDB、Doris、StarRocks
+- PostgreSQL 协议族：人大金仓 KingbaseES、openGauss/GaussDB、Vastbase、瀚高 HighGo、神通 Oscar
+
+本次升级要点：
 - 连接持久化：注册信息落 SQLite 元数据库 {base_dir}/meta/connections.db，重启不丢；
 - 密码加密：cryptography.Fernet（密钥取自 MCP_SECRET_KEY，缺省时落盘随机密钥文件）；
 - 用户隔离：所有工具按 user_id 存取，互不可见；
-- 只读强制：SQLite 使用 mode=ro URI，MySQL/PG 设置会话只读；
+- 只读强制：SQLite 使用 mode=ro URI，MySQL/PG 设置会话只读，Oracle/达梦设只读事务，
+  全族统一 SQL 关键字黑名单兜底；
 - 注入加固：表名/列名统一「校验 + 引号包裹」，标识符不再直接拼接；
 - 连接复用：可用时走 DBUtils.PooledDB，不可用时自动降级为直连。
 
@@ -269,11 +275,63 @@ def _quote_literal(value: str) -> str:
 
 
 def _validate_db_connection_type(db_type: str) -> Optional[str]:
-    """验证数据库类型"""
-    allowed = ("sqlite", "mysql", "postgresql", "postgres")
-    if db_type not in allowed:
-        return f"【错误】不支持的数据库类型: {db_type}，支持: {', '.join(allowed)}"
-    return None
+    """验证数据库类型（返回归一化后的驱动族，非法类型返回错误文案；兼容旧调用）"""
+    if _normalize_db_type(db_type):
+        return None
+    return (
+        f"【错误】不支持的数据库类型: {db_type}。支持: sqlite；"
+        "MySQL 协议族 mysql/mariadb/tidb/oceanbase/tdsql/polardb/doris/starrocks；"
+        "PostgreSQL 协议族 postgresql/kingbase/opengauss/gaussdb/vastbase/highgo/oscar；"
+        "以及 oracle、sqlserver、dm(达梦)、clickhouse"
+    )
+
+
+# ===================== 数据库类型别名与驱动族 =====================
+# 按「协议/驱动族」归一：兼容 MySQL / PostgreSQL 协议的国产与分布式库
+# 直接复用现有 pymysql / psycopg2 实现，无需独立驱动。
+
+_DB_TYPE_ALIASES: Dict[str, str] = {
+    # SQLite
+    "sqlite": "sqlite",
+    # MySQL 协议族（pymysql）
+    "mysql": "mysql", "mariadb": "mysql", "tidb": "mysql",
+    "oceanbase": "mysql", "tdsql": "mysql", "polardb": "mysql",
+    "doris": "mysql", "starrocks": "mysql",
+    # PostgreSQL 协议族（psycopg2）
+    "postgresql": "postgresql", "postgres": "postgresql",
+    "kingbase": "postgresql", "kingbasees": "postgresql",   # 人大金仓
+    "opengauss": "postgresql", "gaussdb": "postgresql",      # 华为 openGauss/GaussDB
+    "vastbase": "postgresql",                                 # 海量数据库 Vastbase G100
+    "highgo": "postgresql",                                   # 瀚高
+    "oscar": "postgresql",                                    # 神舟通用
+    # 独立驱动
+    "oracle": "oracle",
+    "sqlserver": "sqlserver", "mssql": "sqlserver",
+    "dm": "dm", "dameng": "dm",                               # 达梦 DM8
+    "clickhouse": "clickhouse", "ch": "clickhouse",
+}
+
+# 各类型的默认端口（按用户传入的原始别名匹配，未命中则保持 0）
+_DB_DEFAULT_PORTS: Dict[str, int] = {
+    "mysql": 3306, "mariadb": 3306, "tidb": 4000, "oceanbase": 2881,
+    "tdsql": 3306, "polardb": 3306, "doris": 9030, "starrocks": 9030,
+    "postgresql": 5432, "postgres": 5432, "kingbase": 54321, "kingbasees": 54321,
+    "opengauss": 5432, "gaussdb": 8000, "vastbase": 5432, "highgo": 5866,
+    "oscar": 2003,
+    "oracle": 1521, "sqlserver": 1433, "mssql": 1433,
+    "dm": 5236, "dameng": 5236, "clickhouse": 8123, "ch": 8123,
+}
+
+
+def _normalize_db_type(db_type: str) -> Optional[str]:
+    """把用户传入的数据库类型归一化为驱动族。
+
+    返回 sqlite/mysql/postgresql/oracle/sqlserver/dm/clickhouse 之一；
+    无法识别时返回 None。
+    """
+    if not db_type:
+        return None
+    return _DB_TYPE_ALIASES.get(db_type.strip().lower())
 
 
 # ===================== 连接获取（池化 + 降级） =====================
@@ -465,6 +523,234 @@ def _query_postgresql(config: dict, sql: str) -> str:
         return f"【PostgreSQL查询异常】{str(e)}"
 
 
+# ===================== Oracle 实现（python-oracledb thin 模式，支持 12.1+） =====================
+
+def _oracle_connect(host: str, port: int, user: str, password: str, database: str) -> Any:
+    """建立 Oracle 只读连接（thin 模式，无需 Instant Client）。"""
+    try:
+        import oracledb
+    except ImportError:
+        raise ImportError("oracledb 库未安装。请执行: pip install python-oracledb")
+    service = database or "ORCL"
+    conn = oracledb.connect(user=user, password=password, dsn=f"{host}:{port}/{service}")
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SET TRANSACTION READ ONLY")
+        cursor.close()
+    except Exception as e:
+        logger.warning("设置 Oracle 只读事务失败（建议使用只读账号）: %s", e)
+    return conn
+
+
+def _query_oracle(config: dict, sql: str) -> str:
+    """执行Oracle查询"""
+    error = _sanitize_sql(sql)
+    if error:
+        return error
+
+    host = config.get("host", "localhost")
+    port = int(config.get("port", 1521) or 1521)
+    user = config.get("user", "")
+    database = config.get("database", "")
+    key = ("oracle", host, port, user, database)
+
+    try:
+        conn = _acquire(
+            key,
+            lambda: _oracle_connect(host, port, user, config.get("password", ""), database),
+        )
+        try:
+            cursor = conn.cursor()
+            cursor.execute(sql)
+
+            if cursor.description:
+                cols = [d[0] for d in cursor.description]
+                rows = [tuple(r) for r in cursor.fetchall()]
+                cursor.close()
+                if not rows:
+                    return "查询结果：无匹配数据"
+                result = _format_query_result(cols, rows)
+                result.append(f"\n共 {len(rows)} 条记录")
+                return "\n".join(result)
+            cursor.close()
+            return "查询已执行（无返回结果）"
+        finally:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+            conn.close()
+
+    except Exception as e:
+        return f"【Oracle查询异常】{str(e)}"
+
+
+# ===================== SQL Server 实现（pymssql） =====================
+
+def _sqlserver_connect(host: str, port: int, user: str, password: str, database: str) -> Any:
+    """建立 SQL Server 只读连接（只读依赖关键字黑名单 + 只读账号）。"""
+    try:
+        import pymssql
+    except ImportError:
+        raise ImportError("pymssql 库未安装。请执行: pip install pymssql")
+    return pymssql.connect(
+        server=host, port=str(port), user=user, password=password,
+        database=database, charset="utf8", login_timeout=8,
+    )
+
+
+def _query_sqlserver(config: dict, sql: str) -> str:
+    """执行SQL Server查询"""
+    error = _sanitize_sql(sql)
+    if error:
+        return error
+
+    host = config.get("host", "localhost")
+    port = int(config.get("port", 1433) or 1433)
+    user = config.get("user", "sa")
+    database = config.get("database", "")
+    key = ("sqlserver", host, port, user, database)
+
+    try:
+        conn = _acquire(
+            key,
+            lambda: _sqlserver_connect(host, port, user, config.get("password", ""), database),
+        )
+        try:
+            cursor = conn.cursor()
+            cursor.execute(sql)
+
+            if cursor.description:
+                cols = [d[0] for d in cursor.description]
+                rows = [tuple(r) for r in cursor.fetchall()]
+                cursor.close()
+                if not rows:
+                    return "查询结果：无匹配数据"
+                result = _format_query_result(cols, rows)
+                result.append(f"\n共 {len(rows)} 条记录")
+                return "\n".join(result)
+            cursor.close()
+            return "查询已执行（无返回结果）"
+        finally:
+            conn.close()
+
+    except Exception as e:
+        return f"【SQL Server查询异常】{str(e)}"
+
+
+# ===================== 达梦 DM8 实现（dmPython） =====================
+
+def _dm_connect(host: str, port: int, user: str, password: str, database: str) -> Any:
+    """建立达梦只读连接。database 参数映射为达梦模式（SCHEMA）。"""
+    try:
+        import dmPython
+    except ImportError:
+        raise ImportError(
+            "dmPython 驱动未安装（达梦数据库）。请在 requirements.txt 中保留 dmPython 并重建镜像"
+        )
+    kwargs: Dict[str, Any] = dict(user=user, password=password, server=host, port=port)
+    schema = (database or "").strip()
+    if schema:
+        kwargs["schema"] = schema
+    conn = dmPython.connect(**kwargs)
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SET TRANSACTION READ ONLY")
+        cursor.close()
+    except Exception as e:
+        logger.warning("设置达梦只读事务失败（建议使用只读账号）: %s", e)
+    return conn
+
+
+def _query_dm(config: dict, sql: str) -> str:
+    """执行达梦查询"""
+    error = _sanitize_sql(sql)
+    if error:
+        return error
+
+    host = config.get("host", "localhost")
+    port = int(config.get("port", 5236) or 5236)
+    user = config.get("user", "SYSDBA")
+    database = config.get("database", "")
+    key = ("dm", host, port, user, database)
+
+    try:
+        conn = _acquire(
+            key,
+            lambda: _dm_connect(host, port, user, config.get("password", ""), database),
+        )
+        try:
+            cursor = conn.cursor()
+            cursor.execute(sql)
+
+            if cursor.description:
+                cols = [d[0] for d in cursor.description]
+                rows = [tuple(r) for r in cursor.fetchall()]
+                cursor.close()
+                if not rows:
+                    return "查询结果：无匹配数据"
+                result = _format_query_result(cols, rows)
+                result.append(f"\n共 {len(rows)} 条记录")
+                return "\n".join(result)
+            cursor.close()
+            return "查询已执行（无返回结果）"
+        finally:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+            conn.close()
+
+    except Exception as e:
+        return f"【达梦查询异常】{str(e)}"
+
+
+# ===================== ClickHouse 实现（clickhouse-connect，HTTP 接口） =====================
+
+def _ch_connect(host: str, port: int, user: str, password: str, database: str) -> Any:
+    """建立 ClickHouse 连接（HTTP 8123）。"""
+    try:
+        import clickhouse_connect
+    except ImportError:
+        raise ImportError("clickhouse-connect 库未安装。请执行: pip install clickhouse-connect")
+    return clickhouse_connect.get_client(
+        host=host, port=port, username=user or "default",
+        password=password, database=database or "default",
+    )
+
+
+def _query_clickhouse(config: dict, sql: str) -> str:
+    """执行ClickHouse查询（客户端非 DB-API 连接，不走连接池，直连每次新建）。"""
+    error = _sanitize_sql(sql)
+    if error:
+        return error
+
+    host = config.get("host", "localhost")
+    port = int(config.get("port", 8123) or 8123)
+    user = config.get("user", "default")
+    database = config.get("database", "")
+
+    try:
+        client = _ch_connect(host, port, user, config.get("password", ""), database)
+        try:
+            result = client.query(sql)
+            cols = list(result.result_column_names)
+            rows = [tuple(r) for r in result.result_rows]
+            if not rows:
+                return "查询结果：无匹配数据"
+            formatted = _format_query_result(cols, rows)
+            formatted.append(f"\n共 {len(rows)} 条记录")
+            return "\n".join(formatted)
+        finally:
+            try:
+                client.close()
+            except Exception:
+                pass
+
+    except Exception as e:
+        return f"【ClickHouse查询异常】{str(e)}"
+
+
 # ===================== 通用工具函数 =====================
 
 def _format_query_result(cols: list, rows: list) -> list:
@@ -583,18 +869,21 @@ def register_database_tools(mcp, base_dir: str = None):
         name="db_register_connection",
         description=(
             "注册新的数据库连接配置(仅支持内网数据库)，配置持久化保存、按用户隔离。"
-            "Args: name(连接名称), db_type(数据库类型:sqlite/mysql/postgresql), "
-            "host(主机地址), port(端口), user(用户名), password(密码), "
-            "database(数据库名；SQLite 填文件绝对路径), extra_params(JSON格式额外参数,可选), "
+            "支持: sqlite；MySQL 协议族 mysql/mariadb/tidb/oceanbase/tdsql/polardb/doris/starrocks；"
+            "PostgreSQL 协议族 postgresql/kingbase(人大金仓)/opengauss/gaussdb/vastbase/highgo/oscar；"
+            "以及 oracle、sqlserver、dm(达梦)、clickhouse。"
+            "Args: name(连接名称), db_type(数据库类型,见上), "
+            "host(主机地址), port(端口,0则用默认), user(用户名), password(密码), "
+            "database(数据库名；SQLite 填文件绝对路径；达梦填模式名), extra_params(可选JSON额外参数), "
             "user_id(当前登录用户ID,默认default)"
         )
     )
     def db_register_connection(name: str, db_type: str, host: str = "localhost", port: int = 0,
                                user: str = "", password: str = "", database: str = "",
                                extra_params: str = "", user_id: str = "default") -> str:
-        error = _validate_db_connection_type(db_type)
-        if error:
-            return error
+        family = _normalize_db_type(db_type)
+        if not family:
+            return _validate_db_connection_type(db_type)
 
         name_err = _validate_identifier(name, "连接名称")
         if name_err:
@@ -603,14 +892,9 @@ def register_database_tools(mcp, base_dir: str = None):
         if not host:
             host = "localhost"
 
-        # 端口默认值
+        # 端口默认值（按用户传入的原始别名匹配，如 kingbase→54321、dameng→5236）
         if port == 0:
-            if db_type == "mysql":
-                port = 3306
-            elif db_type in ("postgresql", "postgres"):
-                port = 5432
-            elif db_type == "sqlite":
-                port = 0
+            port = _DB_DEFAULT_PORTS.get(db_type.strip().lower(), 0)
 
         extra = {}
         if extra_params:
@@ -620,7 +904,7 @@ def register_database_tools(mcp, base_dir: str = None):
                 return "【错误】extra_params 不是有效的JSON格式"
 
         cfg = {
-            "db_type": db_type,
+            "db_type": family,
             "host": host,
             "port": port,
             "user": user,
@@ -633,8 +917,8 @@ def register_database_tools(mcp, base_dir: str = None):
         except Exception as e:
             return f"【错误】连接保存失败: {e}"
 
-        host_display = database if db_type == "sqlite" else f"{host}:{port}/{database}"
-        return f"【已注册】连接 '{name}' ({db_type}:{host_display})"
+        host_display = database if family == "sqlite" else f"{host}:{port}/{database}"
+        return f"【已注册】连接 '{name}' ({family}:{host_display})"
 
     @mcp.tool(
         name="db_execute_query",
@@ -651,14 +935,22 @@ def register_database_tools(mcp, base_dir: str = None):
             names = [c["name"] for c in _list_connections(uid)]
             return f"【错误】连接 '{connection_name}' 未注册。可用连接: {names}"
 
-        db_type = config["db_type"]
+        db_type = _normalize_db_type(config.get("db_type", "")) or config.get("db_type", "")
         try:
             if db_type == "sqlite":
                 return _query_sqlite(config["database"], sql)
             elif db_type == "mysql":
                 return _query_mysql(config, sql)
-            elif db_type in ("postgresql", "postgres"):
+            elif db_type == "postgresql":
                 return _query_postgresql(config, sql)
+            elif db_type == "oracle":
+                return _query_oracle(config, sql)
+            elif db_type == "sqlserver":
+                return _query_sqlserver(config, sql)
+            elif db_type == "dm":
+                return _query_dm(config, sql)
+            elif db_type == "clickhouse":
+                return _query_clickhouse(config, sql)
             return f"【错误】不支持的数据库类型: {db_type}"
         except Exception as e:
             return f"【查询异常】{str(e)}"
@@ -681,17 +973,48 @@ def register_database_tools(mcp, base_dir: str = None):
         if name_err:
             return name_err
 
-        if config["db_type"] == "sqlite":
+        family = _normalize_db_type(config.get("db_type", "")) or config.get("db_type", "")
+
+        if family == "sqlite":
             return _get_table_schema_sqlite(config["database"], table_name)
 
-        # MySQL/PostgreSQL 通过查询 information_schema（表名走字面量转义）
+        if family in ("oracle", "dm"):
+            # Oracle / 达梦：user_tab_columns 数据字典（表名不区分大小写）
+            sql = (
+                "SELECT column_name, data_type, nullable, data_default "
+                "FROM user_tab_columns WHERE UPPER(table_name) = UPPER("
+                f"{_quote_literal(table_name)}) ORDER BY column_id"
+            )
+            try:
+                return _query_oracle(config, sql) if family == "oracle" else _query_dm(config, sql)
+            except Exception as e:
+                return f"【获取表结构失败】{str(e)}"
+
+        if family == "sqlserver":
+            sql = (
+                "SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT "
+                "FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "
+                f"{_quote_literal(table_name)} ORDER BY ORDINAL_POSITION"
+            )
+            try:
+                return _query_sqlserver(config, sql)
+            except Exception as e:
+                return f"【获取表结构失败】{str(e)}"
+
+        if family == "clickhouse":
+            try:
+                return _query_clickhouse(config, f"DESCRIBE TABLE {_quote_ident(table_name, 'mysql')}")
+            except Exception as e:
+                return f"【获取表结构失败】{str(e)}"
+
+        # MySQL/PostgreSQL 协议族通过查询 information_schema（表名走字面量转义）
         sql = (
             "SELECT column_name, data_type, is_nullable, column_default "
             "FROM information_schema.columns WHERE table_name = "
             f"{_quote_literal(table_name)} ORDER BY ordinal_position"
         )
         try:
-            if config["db_type"] == "mysql":
+            if family == "mysql":
                 return _query_mysql(config, sql)
             return _query_postgresql(config, sql)
         except Exception as e:

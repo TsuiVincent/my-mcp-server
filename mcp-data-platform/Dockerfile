@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # 使用腾讯云镜像加速下载（清华源当前对部分包返回 403，与平台侧 Dockerfile 保持一致）
 RUN pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple/ \
-    && pip config set global.timeout 120 \
-    && pip config set global.retries 5
+    && pip config set global.timeout 300 \
+    && pip config set global.retries 8
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

@@ -24,11 +24,25 @@ python server.py
 ### 数据库管理
 | 工具名 | 功能 | 参数 |
 |--------|------|------|
-| `db_register_connection` | 注册数据库连接 | `name`, `db_type`(sqlite/mysql/postgresql), `db_path`/`host`/`port`/`user`/`password`/`database` |
+| `db_register_connection` | 注册数据库连接 | `name`, `db_type`, `db_path`/`host`/`port`/`user`/`password`/`database` |
 | `db_execute_query` | 执行SQL查询(只读) | `connection_name`, `sql` |
 | `db_get_table_schema` | 获取表结构 | `connection_name`, `table_name` |
 | `db_get_table_stats` | 表数据统计 | `connection_name`, `table_name` |
 | `db_list_connections` | 列出所有连接 | 无 |
+
+**支持数据库（按协议/驱动族归一，类型别名注册）：**
+
+| 驱动族 | db_type 别名 | 驱动 |
+|--------|--------------|------|
+| SQLite | `sqlite` | 内置 sqlite3（mode=ro 只读） |
+| MySQL 族 | `mysql` `mariadb` `tidb` `oceanbase` `tdsql` `polardb` `doris` `starrocks` | pymysql |
+| PostgreSQL 族 | `postgresql` `kingbase`(人大金仓) `opengauss` `gaussdb` `vastbase` `highgo`(瀚高) `oscar`(神通) | psycopg2-binary |
+| Oracle | `oracle`（12.1+，thin 模式） | python-oracledb |
+| SQL Server | `sqlserver` `mssql` | pymssql |
+| 达梦 DM8 | `dm` `dameng` | dmPython |
+| ClickHouse | `clickhouse` `ch` | clickhouse-connect |
+
+只读强制：SQLite `mode=ro` + `query_only`；MySQL/PG 会话只读；Oracle/达梦只读事务；全族统一 SQL 关键字黑名单（禁止 DROP/ALTER/INSERT/DELETE/UPDATE/CREATE/TRUNCATE/GRANT/EXEC/ATTACH 等）。
 
 ### Python代码执行
 | 工具名 | 功能 | 参数 |

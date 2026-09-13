@@ -10,6 +10,11 @@ pymysql>=1.1.0
 psycopg2-binary>=2.9.9
 DBUtils>=3.0,<4
 cryptography>=42.0
+# 扩展数据库驱动（Oracle thin / SQL Server / ClickHouse / 达梦）
+oracledb>=2.0
+pymssql>=2.2.11
+clickhouse-connect>=0.7
+dmPython>=2.5
 
 # 数据分析栈（沙箱内可用）
 pandas>=2.2,<3

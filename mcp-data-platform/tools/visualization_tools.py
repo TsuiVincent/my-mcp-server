@@ -209,25 +209,56 @@ def _create_line_chart(data_json: str, title: str = "折线图",
         fig.patch.set_facecolor(theme_config["bg_color"])
         ax.set_facecolor(theme_config["bg_color"])
 
-        if isinstance(data, list):
+        plotted = False
+        if isinstance(data, dict):
+            # {"labels": [...], "values": [...]} 或 {"x": [...], "y": [...]}
+            values = data.get("values") or data.get("y") or []
+            if values:
+                labels = (data.get("labels") or data.get("x")
+                          or [str(i) for i in range(len(values))])
+                ax.plot(labels, values, color=theme_config["colors"][0],
+                        marker="o", markersize=4, linewidth=1.5)
+                plotted = True
+            elif data and all(isinstance(v, (int, float)) for v in data.values()):
+                # {"1月": 120, "2月": 135, ...}（与柱状图 dict 格式一致）
+                ax.plot(list(data.keys()), list(data.values()),
+                        color=theme_config["colors"][0],
+                        marker="o", markersize=4, linewidth=1.5)
+                plotted = True
+        elif isinstance(data, list):
             if data and isinstance(data[0], dict):
-                # 多系列数据：[{"label": "系列1", "values": [1,2,3]}, ...]
-                for idx, series in enumerate(data):
-                    color = theme_config["colors"][idx % len(theme_config["colors"])]
-                    ax.plot(range(len(series.get("values", []))),
-                            series.get("values", []),
-                            label=series.get("label", f"系列{idx+1}"),
-                            color=color, marker="o", markersize=4, linewidth=1.5)
-                ax.legend()
+                if "labels" in data[0] and "values" in data[0]:
+                    # [{"labels": [...], "values": [...]}]：单系列（与柱状图格式兼容）
+                    labels = data[0].get("labels") or list(range(len(data[0]["values"])))
+                    ax.plot(labels, data[0]["values"], color=theme_config["colors"][0],
+                            marker="o", markersize=4, linewidth=1.5)
+                    plotted = True
+                else:
+                    # 多系列数据：[{"label": "系列1", "values": [1,2,3]}, ...]
+                    for idx, series in enumerate(data):
+                        color = theme_config["colors"][idx % len(theme_config["colors"])]
+                        ax.plot(range(len(series.get("values", []))),
+                                series.get("values", []),
+                                label=series.get("label", f"系列{idx+1}"),
+                                color=color, marker="o", markersize=4, linewidth=1.5)
+                        plotted = True
+                    ax.legend()
             elif data and isinstance(data[0], (int, float)):
                 ax.plot(range(len(data)), data, color=theme_config["colors"][0],
                         marker="o", markersize=4, linewidth=1.5)
-            else:
+                plotted = True
+            elif data and isinstance(data[0], list):
                 # [[x1,y1], [x2,y2], ...]
                 xs = [p[0] for p in data]
                 ys = [p[1] for p in data]
                 ax.plot(xs, ys, color=theme_config["colors"][0],
                         marker="o", markersize=4, linewidth=1.5)
+                plotted = True
+
+        if not plotted:
+            return ('【错误】数据格式不支持，未绘制任何数据。支持: '
+                    '{"labels":["1月",...],"values":[120,...]}、[120,135,...]、'
+                    '[{"label":"系列名","values":[...]}]（多系列）、[[x,y],...]（坐标对）')
 
         ax.set_title(title, color=theme_config["text_color"], fontsize=14)
         ax.set_xlabel(xlabel, color=theme_config["text_color"])
@@ -314,8 +345,13 @@ def _create_pie_chart(data_json: str, title: str = "饼图",
             labels = list(data.keys())
             values = list(data.values())
         elif isinstance(data, list) and data and isinstance(data[0], dict):
-            labels = [d.get("label", f"项目{i}") for i, d in enumerate(data)]
-            values = [d.get("value", 0) for d in data]
+            if "labels" in data[0] and "values" in data[0]:
+                # [{"labels": [...], "values": [...]}]（与柱状图格式兼容）
+                labels = list(data[0]["labels"])
+                values = list(data[0]["values"])
+            else:
+                labels = [d.get("label", f"项目{i}") for i, d in enumerate(data)]
+                values = [d.get("value", 0) for d in data]
         else:
             return "【错误】数据格式不支持"
 
@@ -367,7 +403,15 @@ def _create_scatter_chart(data_json: str, title: str = "散点图",
         fig.patch.set_facecolor(theme_config["bg_color"])
         ax.set_facecolor(theme_config["bg_color"])
 
-        if isinstance(data, list):
+        plotted = False
+        if isinstance(data, dict):
+            # {"x": [...], "y": [...]}（y 可兼容 values 键）
+            ys = data.get("y") or data.get("values") or []
+            if ys:
+                xs = data.get("x") or data.get("labels") or list(range(len(ys)))
+                ax.scatter(xs, ys, color=theme_config["colors"][0], alpha=0.7, s=30)
+                plotted = True
+        elif isinstance(data, list):
             if data and isinstance(data[0], dict):
                 for idx, series in enumerate(data):
                     color = theme_config["colors"][idx % len(theme_config["colors"])]
@@ -375,11 +419,18 @@ def _create_scatter_chart(data_json: str, title: str = "散点图",
                     ys = series.get("y", [])
                     ax.scatter(xs, ys, label=series.get("label", f"系列{idx+1}"),
                               color=color, alpha=0.7, s=30)
+                    plotted = True
                 ax.legend()
             elif data and isinstance(data[0], list):
                 xs = [p[0] for p in data]
                 ys = [p[1] for p in data]
                 ax.scatter(xs, ys, color=theme_config["colors"][0], alpha=0.7, s=30)
+                plotted = True
+
+        if not plotted:
+            return ('【错误】数据格式不支持，未绘制任何数据。支持: '
+                    '{"x":[1,2,...],"y":[4,5,...]}、[[x1,y1],[x2,y2],...]、'
+                    '[{"x":[...],"y":[...],"label":"系列名"}]（多系列）')
 
         ax.set_title(title, color=theme_config["text_color"], fontsize=14)
         ax.set_xlabel(xlabel, color=theme_config["text_color"])
@@ -701,7 +752,7 @@ def register_visualization_tools(mcp, base_dir: str = None):
 
     @mcp.tool(
         name="viz_line_chart",
-        description='生成折线图。Args: data_json(JSON数据,支持数组或[{label,values}]多系列格式), title(标题), xlabel(X轴标签), ylabel(Y轴标签), theme(主题:default/dark/colorblind), format(输出格式:svg/png,默认svg)'
+        description='生成折线图。Args: data_json(JSON数据,支持 {"labels":["1月",...],"values":[120,...]}、数值数组[120,135,...]、[{"label":"系列名","values":[...]}]多系列、[[x,y],...]坐标对), title(标题), xlabel(X轴标签), ylabel(Y轴标签), theme(主题:default/dark/colorblind), format(输出格式:svg/png,默认svg)'
     )
     def viz_line_chart(data_json: str, title: str = "折线图", xlabel: str = "X",
                        ylabel: str = "Y", theme: str = "default",
@@ -719,7 +770,7 @@ def register_visualization_tools(mcp, base_dir: str = None):
 
     @mcp.tool(
         name="viz_pie_chart",
-        description='生成饼图。Args: data_json(JSON数据,{"名称":数值}), title(标题), theme(主题), show_percent(是否显示百分比), format(输出格式:svg/png)'
+        description='生成饼图。Args: data_json(JSON数据,{"名称":数值} 或 [{"label":..,"value":..}] 或 [{"labels":[...],"values":[...]}]), title(标题), theme(主题), show_percent(是否显示百分比), format(输出格式:svg/png)'
     )
     def viz_pie_chart(data_json: str, title: str = "饼图",
                       theme: str = "default", show_percent: bool = True,
@@ -728,7 +779,7 @@ def register_visualization_tools(mcp, base_dir: str = None):
 
     @mcp.tool(
         name="viz_scatter_chart",
-        description='生成散点图。Args: data_json(JSON数据,[[x1,y1],[x2,y2]]或[{x,y,label}多系列]), title(标题), xlabel/ylabel(轴标签), theme(主题), format(输出格式:svg/png)'
+        description='生成散点图。Args: data_json(JSON数据,支持 {"x":[1,2,...],"y":[4,5,...]}、[[x1,y1],[x2,y2],...]、[{"x":[...],"y":[...],"label":"系列名"}]多系列), title(标题), xlabel/ylabel(轴标签), theme(主题), format(输出格式:svg/png)'
     )
     def viz_scatter_chart(data_json: str, title: str = "散点图", xlabel: str = "X",
                           ylabel: str = "Y", theme: str = "default",
