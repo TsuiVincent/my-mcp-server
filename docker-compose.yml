@@ -10,6 +10,12 @@ services:
       - "19101:19101"
     environment:
       - TZ=Asia/Shanghai
+      # ---- 可访问范围（内网可能使用公网段地址，故放开全部网段限制）----
+      - FETCH_ALLOW_ALL=1
+      # 如需收紧为"仅放行指定网段"，可去掉上面一项，改用下面两项（叠加在"非公网"默认规则之上）：
+      # - FETCH_ALLOWED_CIDRS=11.0.0.0/8,30.0.0.0/8
+      # - FETCH_ALLOWED_HOSTS=*.corp.local,*.intranet.local
+      # - FETCH_RESOLVE_DNS=0           # 关闭域名 DNS 解析判定
     networks:
       - mcp-network
 
@@ -24,7 +30,16 @@ services:
       - "19102:19102"
     environment:
       - TZ=Asia/Shanghai
+      # ---- 截图落盘：宿主目录挂载映射 ----
+      - HOST_DOWNLOADS=/mnt/host/downloads
+      - HOST_DESKTOP=/mnt/host/desktop
+      - HOST_DOCUMENTS=/mnt/host/documents
     shm_size: "2gb"          # Chromium 需要较大共享内存
+    volumes:
+      - browser_screenshots:/data/screenshots
+      - ${USERPROFILE:-~}/Downloads:/mnt/host/downloads
+      - ${USERPROFILE:-~}/Desktop:/mnt/host/desktop
+      - ${USERPROFILE:-~}/Documents:/mnt/host/documents
     networks:
       - mcp-network
 
@@ -53,10 +68,27 @@ services:
       - "19104:19104"
     environment:
       - TZ=Asia/Shanghai
+      # 沙箱单次执行内存上限（MB），需低于下方容器内存限制
+      - SANDBOX_MAX_MEMORY_MB=512
+      # 可选：元数据库密码加密密钥；未设置时自动落盘 secret.key
+      # - MCP_SECRET_KEY=change-me
     volumes:
       - data_platform_data:/data/mcp-user-data
     networks:
       - mcp-network
+    # 探活：mcp-data-platform 无依赖服务，自身通过 TCP 端口自检
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket,sys; s=socket.socket(); s.settimeout(3); sys.exit(s.connect_ex(('127.0.0.1',19104)))"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    # 资源限制：为 matplotlib/沙箱子进程预留足够内存
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 3g
 
   # ============================================================
   # Server 6: 时间日期服务（从 mcp-fetch-intranet 拆分）
@@ -89,16 +121,35 @@ services:
       - mcp-network
 
   # ============================================================
-  # Server 8: 内网抓取与API网关
+  # Server 8: 网页爬虫与API网关（静态抓取 + 可选 JS 渲染 + 配置管理）
   # ============================================================
   mcp-fetch-intranet:
-    build: ./mcp-fetch-intranet
+    build:
+      context: ./mcp-fetch-intranet
+      args:
+        # 1=安装 Chromium 支持 JS 渲染（镜像约 +1GB）；0=仅静态抓取
+        WITH_RENDER: "1"
     container_name: mcp-fetch-intranet
     restart: unless-stopped
     ports:
       - "19107:19107"
     environment:
       - TZ=Asia/Shanghai
+      - WITH_RENDER=1
+      # ---- 可访问范围（内网可能使用公网段地址，故放开全部网段限制）----
+      - FETCH_ALLOW_ALL=1
+      # 如需收紧为"仅放行指定网段"，可改用下面两项（叠加在"非公网"默认规则之上）：
+      # - FETCH_ALLOWED_CIDRS=11.0.0.0/8,30.0.0.0/8
+      # - FETCH_ALLOWED_HOSTS=*.corp.local,*.intranet.local
+      # ---- 可选：抓取性能与安全 ----
+      # - FETCH_RATE_LIMIT=5            # 每域名每秒最大请求数
+      # - FETCH_RATE_MAX_WAIT=5         # 限流等待上限(秒)：单页最多等多久，超过则跳过并标注
+      # - FETCH_CRAWL_MAX_SECONDS=300   # 单次爬取总时间预算(秒)，0=不限制
+      # - WEB_RENDER_CONCURRENCY=2      # 浏览器渲染并发上限
+      # - WEB_FETCH_MAX_CHARS=60000     # 单页正文返回上限
+      # - FETCH_VERIFY_TLS=1            # 是否校验 HTTPS 证书（内网自签默认不校验）
+      # - FETCH_RESOLVE_DNS=0           # 关闭域名 DNS 解析判定
+    shm_size: "1gb"   # Chromium 需要较大的 /dev/shm，避免崩溃
     volumes:
       - fetch_intranet_data:/data/mcp-user-data
     networks:
@@ -230,6 +281,7 @@ networks:
 # ============================================================
 volumes:
   data_platform_data:    # mcp-data-platform 用户数据
+  browser_screenshots:   # mcp-browser-playwright 截图落盘目录
   fetch_intranet_data:   # mcp-fetch-intranet 配置数据
   ppt_master_data:       # ppt-master-mcp PPT 项目工作区
   drawio_data:           # mcp-drawio 图表数据

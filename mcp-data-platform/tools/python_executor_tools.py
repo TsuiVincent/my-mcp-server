@@ -1,113 +1,95 @@
 """
-Python代码执行工具
-实现安全的Python代码片段执行器，支持标准库调用，包含语法检查、
-沙箱执行、结果返回功能，具备资源限制与安全隔离机制。
+Python代码执行工具（真子进程沙箱）
 
 工具列表：
-- python_exec_safe: 安全执行Python代码片段
 - python_check_syntax: 检查Python代码语法
-- python_exec_with_timeout: 带超时限制的代码执行
+- python_exec_safe: 安全执行Python代码片段
+- python_exec_json: 执行Python代码并返回JSON格式结果
+
+底层执行统一由 sandbox_runner 提供：
+- 真子进程隔离（代码崩溃/死循环不影响 MCP 服务进程）
+- 资源限制 + 可 kill 的超时控制
+- 模块白名单（放行 pandas/numpy/scipy/matplotlib 等科学计算栈，
+  封死 os/sys/socket/subprocess 等逃逸面）
+- 文件读写限定在「用户会话工作目录」内，目录跨调用保留，
+  支持在同一会话中二次读取上一步产物
 """
 
 import ast
-import sys
-import io
-import time
-import signal
+import base64
 import logging
-import traceback
-import threading
-from typing import Any, Optional
+import os
+import sys
+
+# 保证以 tools.xxx 形式导入时也能找到项目根目录下的 sandbox_runner
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
+from sandbox_runner import (
+    DEFAULT_TIMEOUT,
+    MAX_TIMEOUT,
+    execute as _sandbox_execute,
+)
 
 logger = logging.getLogger(__name__)
 
-# ===================== 安全配置 =====================
+# 注册时注入的数据根目录（会话工作目录挂在其下）
+_BASE_DIR = None
 
-# 允许的标准库模块白名单
-_ALLOWED_MODULES = frozenset({
-    # 基础数学
-    "math", "cmath", "decimal", "fractions", "statistics", "random",
-    # 数据结构
-    "collections", "heapq", "bisect", "array", "itertools", "functools",
-    "operator", "typing",
-    # 字符串与文本
-    "string", "re", "textwrap", "difflib", "unicodedata",
-    # 日期时间
-    "datetime", "time", "calendar", "zoneinfo",
-    # 文件与路径
-    "os.path", "pathlib", "glob", "fnmatch", "tempfile",
-    # 数据序列化
-    "json", "csv", "base64", "hashlib", "hmac",
-    # 工具
-    "copy", "enum", "dataclasses", "pprint", "logging",
-    # 数据
-    "numbers", "types", "warnings",
-})
+# 图片类产物内联回传：平台据 base64_data 托管为下载链接并在对话中内联渲染。
+# 仅图片扩展名且单文件不超过 _MAX_INLINE_B64 才内联，其余保持原有 name/size/path 结构。
+_IMAGE_EXTS = ('.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp', '.svg')
+_MAX_INLINE_B64 = 5 * 1024 * 1024
 
 
-# 禁止的内置函数/关键字
-_DENIED_BUILTINS = frozenset({
-    "exec", "eval", "compile", "open", "__import__", "input",
-    "breakpoint", "memoryview"
-})
+def _attach_image_payloads(files: list) -> list:
+    """为图片类产物补充 filename 与 base64_data（供平台自动托管）。
 
-# 最大执行时间（秒）
-_MAX_EXECUTION_TIME = 5
-
-# 最大内存限制（字节，接近值）
-_MAX_MEMORY = 128 * 1024 * 1024  # 128MB
-
-
-class _SandboxModuleImporter:
-    """沙箱模块导入器：仅允许导入白名单中的模块"""
-
-    @staticmethod
-    def find_spec(fullname, path=None, target=None):
-        if fullname in _ALLOWED_MODULES or any(
-            fullname.startswith(f"{allowed}.") for allowed in _ALLOWED_MODULES
-        ):
-            return None  # 使用默认加载
-        raise ImportError(f"模块 '{fullname}' 不在沙箱白名单中")
-
-    @staticmethod
-    def create_module(spec):
-        return None
+    读取失败或体积超限时跳过该文件，不影响 files 其余字段。
+    """
+    for f in files or []:
+        if not isinstance(f, dict):
+            continue
+        name = f.get('name') or ''
+        if os.path.splitext(name)[1].lower() not in _IMAGE_EXTS:
+            continue
+        size = f.get('size') or 0
+        path = f.get('path')
+        if not path or size <= 0 or size > _MAX_INLINE_B64:
+            continue
+        try:
+            with open(path, 'rb') as fp:
+                data = fp.read()
+        except OSError as e:
+            logger.warning(f"读取图片产物失败，跳过内联: {path}: {e}")
+            continue
+        f['filename'] = os.path.basename(name)
+        f['base64_data'] = base64.b64encode(data).decode('ascii')
+    return files
 
 
-class _RestrictedTransformer(ast.NodeTransformer):
-    """AST转换器：移除危险调用"""
-
-    def __init__(self):
-        self.has_dangerous = False
-
-    def visit_Call(self, node):
-        # 检查直接的危险调用
-        if isinstance(node.func, ast.Name):
-            if node.func.id in ("exec", "eval", "compile", "__import__", "open"):
-                self.has_dangerous = True
-                return ast.Expr(value=ast.Constant(value=f"# {node.func.id}() 调用被阻止"))
-        return self.generic_visit(node)
-
-    def visit_Import(self, node):
-        for alias in node.names:
-            if alias.name not in _ALLOWED_MODULES and not any(
-                alias.name.startswith(f"{a}.") for a in _ALLOWED_MODULES
-            ):
-                self.has_dangerous = True
-                return ast.Expr(value=ast.Constant(value=f"# import {alias.name} 被阻止"))
-        return self.generic_visit(node)
-
-    def visit_ImportFrom(self, node):
-        if node.module:
-            if node.module not in _ALLOWED_MODULES and not any(
-                node.module.startswith(f"{a}.") for a in _ALLOWED_MODULES
-            ):
-                self.has_dangerous = True
-                return ast.Expr(value=ast.Constant(value=f"# from {node.module} import 被阻止"))
-        return self.generic_visit(node)
+def _default_base_dir() -> str:
+    """未显式注入 base_dir 时的兜底目录（与 server.py 保持一致）。"""
+    if os.name == "nt":
+        base = os.path.join(os.path.expanduser("~"), "mcp-user-data")
+    else:
+        base = "/data/mcp-user-data"
+    return base
 
 
-# ===================== 实现 =====================
+def _session_workdir(base_dir: str, user_id: str) -> str:
+    """获取（并创建）某用户的会话工作目录。
+
+    目录名做字符白名单清洗，避免 user_id 中的路径分隔符造成越权。
+    """
+    safe_uid = "".join(
+        c for c in str(user_id or "default") if c.isalnum() or c in ("-", "_")
+    ) or "default"
+    workdir = os.path.join(base_dir, "sandbox", safe_uid)
+    os.makedirs(workdir, exist_ok=True)
+    return workdir
+
 
 def _check_syntax(code: str) -> dict:
     """检查Python代码语法"""
@@ -119,138 +101,44 @@ def _check_syntax(code: str) -> dict:
             "valid": False,
             "message": f"语法错误 (行{e.lineno}, 列{e.offset}): {e.msg}",
             "line": e.lineno,
-            "offset": e.offset
+            "offset": e.offset,
         }
 
 
-def _transform_code(code: str) -> tuple:
-    """安全转换代码，返回(转换后代码, 是否有被阻止的内容)"""
+def _execute(code: str, user_id: str = "default", timeout: int = DEFAULT_TIMEOUT) -> dict:
+    """在真子进程沙箱中执行代码，返回统一结构。
+
+    返回：{"success", "stdout", "stderr", "files", "execution_time_ms"}
+    """
+    base_dir = _BASE_DIR or _default_base_dir()
     try:
-        tree = ast.parse(code)
-    except SyntaxError:
-        return code, False
-
-    transformer = _RestrictedTransformer()
-    new_tree = transformer.visit(tree)
-    ast.fix_missing_locations(new_tree)
-
-    try:
-        new_code = ast.unparse(new_tree)
-        return new_code, transformer.has_dangerous
-    except Exception:
-        return code, transformer.has_dangerous
-
-
-def _execute_in_sandbox(code: str, timeout: int = _MAX_EXECUTION_TIME) -> dict:
-    """在沙箱中执行Python代码"""
-    result = {
-        "success": False,
-        "stdout": "",
-        "stderr": "",
-        "result": None,
-        "blocked": False,
-        "execution_time_ms": 0
-    }
-
-    # 语法检查
-    syntax_result = _check_syntax(code)
-    if not syntax_result["valid"]:
-        result["stderr"] = syntax_result["message"]
-        return result
-
-    # AST安全转换
-    transformed_code, has_blocked = _transform_code(code)
-    result["blocked"] = has_blocked
-
-    # 构建沙箱全局环境
-    safe_builtins = {
-        name: getattr(__builtins__, name)
-        for name in dir(__builtins__)
-        if name not in _DENIED_BUILTINS and not name.startswith("_")
-    }
-    safe_builtins.update({
-        "__builtins__": safe_builtins,
-        "print": lambda *args, **kwargs: _capture_print(*args, **kwargs),
-    })
-
-    safe_globals = {"__builtins__": safe_builtins}
-
-    # 捕获输出
-    captured_output = io.StringIO()
-    captured_error = io.StringIO()
-
-    def _capture_print(*args, **kwargs):
-        sep = kwargs.get("sep", " ")
-        end = kwargs.get("end", "\n")
-        captured_output.write(sep.join(str(a) for a in args) + end)
-
-    # 在单独线程中执行
-    execution_output = {}
-
-    def _run():
-        try:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = captured_output
-            sys.stderr = captured_error
-
-            local_ns = {}
-            exec(transformed_code, safe_globals, local_ns)
-
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-
-            # 收集最后一个表达式结果
-            last_val = None
-            for val in local_ns.values():
-                if not val.__class__.__name__.startswith("_"):
-                    pass
-            execution_output["result"] = local_ns
-            execution_output["success"] = True
-        except Exception as e:
-            execution_output["success"] = False
-            execution_output["error"] = f"{type(e).__name__}: {str(e)}"
-            execution_output["traceback"] = traceback.format_exc()
-
-    start_time = time.time()
-    thread = threading.Thread(target=_run, daemon=True)
-    thread.start()
-    thread.join(timeout=timeout)
-
-    elapsed_ms = int((time.time() - start_time) * 1000)
-    result["execution_time_ms"] = elapsed_ms
-
-    if thread.is_alive():
-        result["stderr"] = f"执行超时 ({timeout}s)"
-        return result
-
-    result["stdout"] = captured_output.getvalue()
-    result["stderr"] = captured_error.getvalue()
-    result["success"] = execution_output.get("success", False)
-
-    if result["success"]:
-        local_ns = execution_output.get("result", {})
-        # 导出非私有变量
-        exported = {}
-        for k, v in local_ns.items():
-            if not k.startswith("_") and k != "__builtins__":
-                try:
-                    exported[k] = repr(v)
-                except Exception:
-                    exported[k] = f"<{type(v).__name__}>"
-        result["result"] = exported
-        if has_blocked:
-            result["stdout"] = "【警告】部分危险调用已被阻止。\n" + result["stdout"]
-    else:
-        result["stderr"] = execution_output.get("error", "未知错误")
-
-    return result
+        workdir = _session_workdir(base_dir, user_id)
+    except Exception as e:
+        return {
+            "success": False,
+            "stdout": "",
+            "stderr": f"会话工作目录创建失败: {type(e).__name__}: {e}",
+            "files": [],
+            "execution_time_ms": 0,
+        }
+    return _sandbox_execute(code, workdir=workdir, timeout=timeout)
 
 
 # ===================== 注册函数 =====================
 
-def register_python_executor_tools(mcp):
-    """注册Python代码执行工具到 MCP 服务器"""
+def register_python_executor_tools(mcp, base_dir: str = None):
+    """注册Python代码执行工具到 MCP 服务器
+
+    Args:
+        mcp: FastMCP 实例
+        base_dir: 用户数据根目录；会话工作目录位于 {base_dir}/sandbox/{user_id}
+    """
+    global _BASE_DIR
+    _BASE_DIR = base_dir or _default_base_dir()
+    try:
+        os.makedirs(os.path.join(_BASE_DIR, "sandbox"), exist_ok=True)
+    except Exception as e:
+        logger.warning("创建沙箱会话目录失败: %s", e)
 
     @mcp.tool(
         name="python_check_syntax",
@@ -260,50 +148,69 @@ def register_python_executor_tools(mcp):
         result = _check_syntax(code)
         if result["valid"]:
             return "Python语法检查通过"
-        else:
-            return f"语法错误: {result['message']}"
+        return f"语法错误: {result['message']}"
 
     @mcp.tool(
         name="python_exec_safe",
-        description="安全执行Python代码片段(沙箱环境,仅允许数学/字符串/日期/json/csv等标准库)。Args: code(Python代码,必填), timeout(超时秒数,默认5,最大30)"
+        description=(
+            "在真子进程沙箱中执行Python代码片段，支持 pandas/numpy/scipy/matplotlib "
+            "等数据分析与科学计算库。文件读写限定在当前用户会话工作目录内，"
+            "相对路径写的文件会在后续调用中保留。"
+            "Args: code(Python代码,必填), timeout(超时秒数,默认30,最大300), "
+            "user_id(当前登录用户ID,默认default)"
+        )
     )
-    def python_exec_safe(code: str, timeout: int = 5) -> str:
-        if timeout > 30:
-            timeout = 30
-        if timeout < 1:
-            timeout = 5
+    def python_exec_safe(code: str, timeout: int = DEFAULT_TIMEOUT,
+                         user_id: str = "default") -> str:
+        timeout = max(1, min(int(timeout or DEFAULT_TIMEOUT), MAX_TIMEOUT))
 
-        exec_result = _execute_in_sandbox(code, timeout)
+        exec_result = _execute(code, user_id=user_id, timeout=timeout)
         output_parts = []
 
-        if exec_result["blocked"]:
-            output_parts.append("【安全提示】代码中部分危险调用已被自动移除。")
-
         if exec_result["stdout"]:
-            output_parts.append(f"--- 输出 ---\n{exec_result['stdout'].strip()}")
+            output_parts.append(f"--- 输出 ---\n{exec_result['stdout']}")
 
         if exec_result["stderr"]:
             output_parts.append(f"--- 错误 ---\n{exec_result['stderr']}")
 
-        if exec_result["success"] and exec_result.get("result"):
-            output_parts.append(f"--- 变量 ---")
-            for k, v in exec_result["result"].items():
-                output_parts.append(f"  {k} = {v}")
+        files = exec_result.get("files") or []
+        if files:
+            output_parts.append("--- 生成文件 ---")
+            for f in files:
+                output_parts.append(f"  {f['name']} ({f['size']} 字节)")
 
         if not output_parts:
             output_parts.append("代码执行完成（无输出）")
 
         output_parts.append(f"\n执行耗时: {exec_result['execution_time_ms']}ms")
-
         return "\n".join(output_parts)
 
     @mcp.tool(
         name="python_exec_json",
-        description="执行Python代码并返回JSON格式结果(适合程序化调用)。Args: code(Python代码,必填)"
+        description=(
+            "在真子进程沙箱中执行Python代码并返回结构化JSON结果(适合程序化调用)。"
+            "返回字段: success/stdout/stderr/files/execution_time_ms。"
+            "沙箱内用 matplotlib 保存的 png/jpg/webp 等图片会以 filename+base64_data "
+            "内联在 files 中，平台自动托管为下载链接并在对话中内联渲染。"
+            "Args: code(Python代码,必填), timeout(超时秒数,默认30,最大300), "
+            "user_id(当前登录用户ID,默认default)"
+        )
     )
-    def python_exec_json(code: str) -> str:
-        import json as json_mod
-        exec_result = _execute_in_sandbox(code, _MAX_EXECUTION_TIME)
-        return json_mod.dumps(exec_result, ensure_ascii=False, indent=2)
+    def python_exec_json(code: str, timeout: int = DEFAULT_TIMEOUT,
+                         user_id: str = "default") -> dict:
+        timeout = max(1, min(int(timeout or DEFAULT_TIMEOUT), MAX_TIMEOUT))
+        exec_result = _execute(code, user_id=user_id, timeout=timeout)
+        # 图片类产物内联 base64，供平台托管为可下载链接并在对话中内联渲染
+        files = _attach_image_payloads(exec_result.get("files", []))
+        # 兼容旧字段（result/blocked），新增 files 结构化文件列表
+        return {
+            "success": exec_result["success"],
+            "stdout": exec_result["stdout"],
+            "stderr": exec_result["stderr"],
+            "result": exec_result["stdout"],
+            "blocked": False,
+            "files": files,
+            "execution_time_ms": exec_result["execution_time_ms"],
+        }
 
-    logger.info("Python代码执行工具已注册")
+    logger.info("Python代码执行工具已注册（真子进程沙箱）")

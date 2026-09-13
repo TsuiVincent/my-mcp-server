@@ -15,9 +15,12 @@ import re
 import json
 import base64
 import time
+import socket
 import hashlib
 import logging
 import tempfile
+import ipaddress
+import threading
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 from collections import defaultdict
@@ -26,24 +29,47 @@ logger = logging.getLogger(__name__)
 
 # ===================== 配置 =====================
 
-# 内网允许的域名/IP前缀
-_ALLOWED_HOSTS = [
+def _env_list(name: str):
+    """读取逗号分隔的环境变量为列表"""
+    return [x.strip() for x in os.environ.get(name, "").split(",") if x.strip()]
+
+
+# 允许访问的域名（支持 *.suffix 通配），默认仅本机域名
+# 可用环境变量 FETCH_ALLOWED_HOSTS 覆盖（逗号分隔），例如：*.corp.local,*.intranet.local
+_ALLOWED_HOSTS = _env_list("FETCH_ALLOWED_HOSTS") or [
     "localhost",
     "127.0.0.1",
+    "::1",
     "*.intranet.local",
 ]
 
-# 内网允许的IP段前缀
-_ALLOWED_IP_PREFIXES = (
-    "10.", "172.16.", "172.17.", "172.18.", "172.19.",
-    "172.20.", "172.21.", "172.22.", "172.23.", "172.24.",
-    "172.25.", "172.26.", "172.27.", "172.28.", "172.29.",
-    "172.30.", "172.31.", "192.168.", "127."
-)
+# 额外放行的 IP 网段（CIDR），用于内网使用了"公网段地址"的场景（可选，逗号分隔，叠加在内网默认规则之上）
+# 例如：FETCH_ALLOWED_CIDRS=11.0.0.0/8,30.0.0.0/8
+_ALLOWED_CIDRS = _env_list("FETCH_ALLOWED_CIDRS")
 
-# 请求频率控制：每个域名每秒最大请求数
-_RATE_LIMIT = 5
+_ALLOWED_NETWORKS = []
+for _cidr in _ALLOWED_CIDRS:
+    try:
+        _ALLOWED_NETWORKS.append(ipaddress.ip_network(_cidr, strict=False))
+    except ValueError:
+        logger.warning("忽略非法的网段配置: %s", _cidr)
+
+# 是否完全跳过 IP 网段校验（默认关闭）：置 1 后不限目标网段，仅建议在可信内网环境使用
+_ALLOW_ALL = os.environ.get("FETCH_ALLOW_ALL", "0").strip().lower() in ("1", "true", "yes", "on")
+
+# 是否允许通过 DNS 解析内网域名（默认开启）：域名解析出的所有 IP 都满足放行规则时才放行
+_RESOLVE_DNS = os.environ.get("FETCH_RESOLVE_DNS", "1").strip().lower() not in ("0", "false", "no", "off")
+
+# 请求频率控制：每个域名每秒最大请求数（可用环境变量 FETCH_RATE_LIMIT 覆盖）
+_RATE_LIMIT = int(os.environ.get("FETCH_RATE_LIMIT", "5") or 5)
 _RATE_WINDOW = 1.0  # 1秒窗口
+
+# 限流等待上限（秒）：配额被占满时单页最多等待多久，超过则跳过并标注
+# 避免无界等待导致工具调用长时间挂起
+_RATE_MAX_WAIT = float(os.environ.get("FETCH_RATE_MAX_WAIT", "5") or 5)
+
+# 单次爬取总时间预算（秒），0 表示不限制（默认 300s，防止超长任务挂起）
+_CRAWL_MAX_SECONDS = float(os.environ.get("FETCH_CRAWL_MAX_SECONDS", "300") or 0)
 
 # 请求计数器：{hostname: [(timestamp, ...)]}
 _request_timestamps = defaultdict(list)
@@ -69,28 +95,67 @@ def _import_httpx():
 
 # ===================== 安全校验 =====================
 
-def _is_intranet_url(url: str) -> bool:
-    """校验URL是否为内网地址"""
-    parsed = urlparse(url)
-    hostname = (parsed.hostname or "").lower()
+def _ip_allowed(ip) -> bool:
+    """判断单个 IP 是否允许访问：默认放行所有非公网（私有/特殊用途/保留）网段"""
+    if _ALLOW_ALL:
+        return True
+    if not ip.is_global:
+        return True
+    return any(ip in net for net in _ALLOWED_NETWORKS if net.version == ip.version)
 
-    # localhost
-    if hostname in ("localhost", "127.0.0.1", "::1"):
+
+def _hostname_resolves_allowed(hostname: str) -> bool:
+    """域名 DNS 解析：解析出的所有 IP 都满足放行规则时才放行（避免解析到公网）"""
+    try:
+        infos = socket.getaddrinfo(hostname, None)
+    except (socket.gaierror, OSError, UnicodeError):
+        return False
+    ips = []
+    for info in infos:
+        addr = (info[4][0] or "").split("%", 1)[0]   # 去掉 IPv6 作用域后缀
+        try:
+            ips.append(ipaddress.ip_address(addr))
+        except ValueError:
+            continue
+    if not ips:
+        return False
+    return all(_ip_allowed(ip) for ip in ips)
+
+
+def _is_intranet_url(url: str) -> bool:
+    """校验URL是否在允许访问的范围内（默认放行全部非公网地址，域名可经 DNS 解析判定）"""
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https"):
+        return False
+    hostname = (parsed.hostname or "").lower()
+    if not hostname:
+        return False
+
+    # 全局放行模式：不限目标网段
+    if _ALLOW_ALL:
         return True
 
-    # IP段检查
-    if hostname.replace('.', '').isdigit():
-        return any(hostname.startswith(prefix) for prefix in _ALLOWED_IP_PREFIXES)
-
-    # 域名白名单检查
+    # 域名白名单检查（支持 *.suffix 通配）
     for allowed in _ALLOWED_HOSTS:
+        allowed = allowed.lower()
         if allowed.startswith("*."):
-            suffix = allowed[2:]
-            if hostname.endswith(suffix):
+            suffix = allowed[1:]          # ".intranet.local"
+            if hostname.endswith(suffix) or hostname == allowed[2:]:
                 return True
         elif hostname == allowed:
             return True
 
+    # IP 网段检查（含 IPv6）
+    try:
+        ip = ipaddress.ip_address(hostname)
+    except ValueError:
+        ip = None
+    if ip is not None:
+        return _ip_allowed(ip)
+
+    # 域名 DNS 解析检查：解析结果全部为非公网才放行（内网域名服务器的场景）
+    if _RESOLVE_DNS:
+        return _hostname_resolves_allowed(hostname)
     return False
 
 
@@ -106,6 +171,21 @@ def _check_rate_limit(hostname: str) -> bool:
         return False
     _request_timestamps[hostname].append(now)
     return True
+
+
+def _rate_limit_wait(hostname: str) -> float:
+    """返回还需等待多少秒才能获得一个请求配额（0 表示立即可用）。
+
+    只计算不占用配额，供串行爬取做主动限速（pacing）与有界等待使用。
+    """
+    now = time.time()
+    stamps = [t for t in _request_timestamps[hostname] if now - t < _RATE_WINDOW]
+    _request_timestamps[hostname] = stamps
+    if len(stamps) < _RATE_LIMIT:
+        return 0.0
+    # 需等待最老的 (len - _RATE_LIMIT + 1) 条记录过期才能重新获得配额
+    idx = len(stamps) - _RATE_LIMIT
+    return max(0.0, stamps[idx] + _RATE_WINDOW - now)
 
 
 def _is_allowed_resource(url: str) -> bool:
@@ -416,10 +496,17 @@ def _crawl_site(
     visited = set()
     results = []
     queue = [(start_url, 0)]  # (url, depth)
+    fetched = 0               # 成功抓取的页数
+    skipped = 0               # 因频率限制跳过的页数
+    start_ts = time.time()
+    deadline = start_ts + _CRAWL_MAX_SECONDS if _CRAWL_MAX_SECONDS > 0 else None
 
     try:
         with httpx_mod.Client(timeout=timeout, follow_redirects=True) as client:
             while queue and len(visited) < max_pages:
+                if deadline is not None and time.time() > deadline:
+                    results.append(f"【停止-已达单次爬取时间预算 {_CRAWL_MAX_SECONDS:.0f}s】")
+                    break
                 url, depth = queue.pop(0)
                 if url in visited:
                     continue
@@ -427,10 +514,18 @@ def _crawl_site(
                     continue
                 visited.add(url)
 
-                # 频率控制
-                hostname = urlparse(url).hostname
-                if not _check_rate_limit(hostname or ""):
+                # 频率控制：主动限速优先；配额被占满时做有界等待，超过上限才跳过
+                hostname = urlparse(url).hostname or ""
+                wait = _rate_limit_wait(hostname)
+                if wait > 0:
+                    if wait > _RATE_MAX_WAIT:
+                        results.append(f"【跳过-频率限制(已达等待上限 {_RATE_MAX_WAIT:.0f}s)】{url}")
+                        skipped += 1
+                        continue
+                    time.sleep(wait)
+                if not _check_rate_limit(hostname):
                     results.append(f"【跳过-频率限制】{url}")
+                    skipped += 1
                     continue
 
                 try:
@@ -442,6 +537,7 @@ def _crawl_site(
 
                     html = resp.text
                     content = _extract_main_content(html)
+                    fetched += 1
 
                     # 从正文摘要中取前500字符作为预览
                     preview = content[:500].replace('\n', ' | ')
@@ -470,8 +566,10 @@ def _crawl_site(
     header = (
         f"【爬取完成】\n"
         f"起始URL: {start_url}\n"
-        f"已访问: {len(visited)} 页\n"
+        f"已抓取: {fetched} 页\n"
+        f"已跳过: {skipped} 页\n"
         f"最大深度: {max_depth}\n"
+        f"耗时: {time.time() - start_ts:.1f}s\n"
         f"{'='*50}\n\n"
     )
     return header + "\n".join(results)

@@ -2,3 +2,7 @@ mcp>=1.22.0,<2
 httpx>=0.27.0
 uvicorn>=0.30.0
 beautifulsoup4>=4.12.0
+
+# JS 渲染（可选）：构建镜像时设置 WITH_RENDER=1 会自动安装 playwright 并下载 chromium
+# 本地开发如需渲染，可手动执行：pip install "playwright>=1.40,<2" && playwright install chromium
+# playwright>=1.40,<2

@@ -6,6 +6,7 @@ mcp-browser-playwright - 浏览器自动化 MCP Server
 """
 from mcp.server.fastmcp import FastMCP
 import json
+import os
 import base64
 import sys
 import asyncio
@@ -13,6 +14,48 @@ import re
 
 # 创建服务器
 mcp = FastMCP("mcp-browser-playwright", host="0.0.0.0", port=19102, json_response=True)
+
+# =====================================================================
+# 宿主目录挂载映射（docker-compose 将宿主 Downloads/Desktop/Documents 挂到 /mnt/host/*）
+# =====================================================================
+_HOST_MOUNTS = {
+    "downloads": os.environ.get("HOST_DOWNLOADS", "/mnt/host/downloads"),
+    "desktop": os.environ.get("HOST_DESKTOP", "/mnt/host/desktop"),
+    "documents": os.environ.get("HOST_DOCUMENTS", "/mnt/host/documents"),
+}
+# 未显式指定路径时的默认落盘目录（容器内，compose 用命名卷持久化）
+_DEFAULT_SAVE_DIR = os.environ.get("SCREENSHOT_DIR", "/data/screenshots")
+
+
+# 匹配 Windows 绝对路径：C:\Users\lx\Downloads\a.png / D:\pics\a.png
+_WIN_PATH_RE = re.compile(r'^[A-Za-z]:[\\/](?:[Uu]sers[\\/])?([^\\/]+)[\\/](.+)$')
+
+
+def _resolve_save_path(save_path: str) -> str:
+    """解析截图的落盘路径。
+
+    - Windows 宿主绝对路径 (C:\\Users\\lx\\Downloads\\a.png) → 映射到容器内 /mnt/host/downloads/a.png
+    - 容器内绝对路径 (/data/screenshots/a.png) → 原样使用
+    - 相对路径 (a.png) → 落到默认落盘目录
+    """
+    path = (save_path or "").strip()
+    if not path:
+        return ""
+
+    m = _WIN_PATH_RE.match(path)
+    if m:
+        # group(2) 形如 "Downloads\\a.png"（已去掉盘符与用户名目录）
+        rel = m.group(2).replace("\\", "/")
+        low = rel.lower()
+        for name, mount in _HOST_MOUNTS.items():
+            if mount and low.startswith(name + "/"):
+                return os.path.join(mount, rel[len(name) + 1:])
+        # 无法识别宿主目录时，按文件名落到宿主 Downloads
+        return os.path.join(_HOST_MOUNTS["downloads"], os.path.basename(rel))
+
+    if os.path.isabs(path):
+        return path
+    return os.path.join(_DEFAULT_SAVE_DIR, path)
 
 # =====================================================================
 # 浏览器实例管理
@@ -161,22 +204,39 @@ async def browser_snapshot() -> str:
 
 
 @mcp.tool()
-async def browser_screenshot(full_page: bool = False) -> str:
-    """对当前页面截图，返回 Base64 编码的 PNG。
+async def browser_screenshot(full_page: bool = False, save_path: str = "",
+                             return_base64: bool = True) -> str:
+    """对当前页面截图，支持落盘保存。
 
     Args:
         full_page: 是否截取整页（默认仅视口）
+        save_path: 可选，落盘保存路径。可传容器内绝对路径（/data/screenshots/a.png），
+                   也可直接传 Windows 宿主路径（C:\\Users\\lx\\Downloads\\a.png，自动映射到挂载的宿主目录）；
+                   省略则仅返回 Base64 不落盘。
+        return_base64: 是否在返回中附带 Base64（默认 True；已落盘且无需内嵌图片时可设 False 减小响应体）
     """
     try:
         page = await _ensure_browser()
         data = await page.screenshot(full_page=full_page, type="png")
-        b64 = base64.b64encode(data).decode("ascii")
-        return json.dumps({
+        payload = {
             "status": "ok",
             "format": "png",
-            "base64": b64,
+            "size": len(data),
             "url": page.url,
-        }, ensure_ascii=False)
+        }
+        saved_path = _resolve_save_path(save_path)
+        if saved_path:
+            parent = os.path.dirname(saved_path)
+            if parent:
+                os.makedirs(parent, exist_ok=True)
+            with open(saved_path, "wb") as f:
+                f.write(data)
+            payload["saved"] = True
+            payload["saved_path"] = saved_path
+        # 未落盘时必须返回 Base64，否则截图数据无处可取
+        if return_base64 or not saved_path:
+            payload["base64"] = base64.b64encode(data).decode("ascii")
+        return json.dumps(payload, ensure_ascii=False)
     except Exception as e:
         return _make_error("SCREENSHOT_ERROR", str(e))
 

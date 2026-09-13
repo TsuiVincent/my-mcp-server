@@ -19,7 +19,7 @@ python server.py
 |--------|------|------|
 | `browser_navigate` | 导航到URL | `url` |
 | `browser_snapshot` | 获取页面无障碍快照（结构化元素树） | 无 |
-| `browser_screenshot` | 页面截图（Base64） | `full_page`(可选) |
+| `browser_screenshot` | 页面截图（Base64，可选落盘） | `full_page`(可选), `save_path`(可选,落盘路径), `return_base64`(可选,默认True) |
 | `browser_go_back` | 后退 | 无 |
 | `browser_go_forward` | 前进 | 无 |
 

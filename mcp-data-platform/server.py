@@ -28,9 +28,9 @@ else:
 
 # 注册所有工具模块
 register_user_kb_tools(mcp, base_dir=base_dir)
-register_database_tools(mcp)
-register_python_executor_tools(mcp)
-register_visualization_tools(mcp)
+register_database_tools(mcp, base_dir=base_dir)
+register_python_executor_tools(mcp, base_dir=base_dir)
+register_visualization_tools(mcp, base_dir=base_dir)
 register_knowledge_search_tools(mcp)
 
 print(f"[MCP Server] mcp-data-platform 已就绪，端口: 19104", file=sys.stderr)
