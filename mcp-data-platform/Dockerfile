@@ -7,6 +7,9 @@ ENV PYTHONUNBUFFERED=1 \
     MPLCONFIGDIR=/tmp/mplconfig
 
 # 安装系统依赖（gcc 用于编译；fonts-noto-cjk 保证图表中文正常显示）
+# 注意：不要改动本层命令/包列表——层缓存与 deb.debian.org 出口带宽极慢（实测 93KB/s，
+# 改层会触发后续 pip 层全量重装 553MB CUDA wheel，耗时数小时）。apt 慢是出口带宽问题，
+# 换国内源实测同样受限，保持原命令以命中缓存。
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     fonts-noto-cjk \

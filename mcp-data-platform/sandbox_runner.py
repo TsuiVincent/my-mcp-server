@@ -332,10 +332,15 @@ try:
 except Exception:
     pass
 
-_ns = {{}}
+# 单个命名空间：globals 与 locals 必须是同一 dict。若像过去那样传
+# exec(code, globals, locals) 两个不同 dict，执行语义等价于「类体作用域」——
+# 模块级推导式/生成器表达式只能解析 globals、看不到 locals 中的模块级名字，
+# 于是 `for f in xs: any(f in n for n in names)` 会抛 NameError: name 'f' is not
+# defined（知识图谱技能的中文字体检测即命中）。传一个 dict 即恢复标准模块作用域。
+_ns = {{'__builtins__': _sandbox_builtins, '__name__': '__main__'}}
 try:
     _code = compile({json.dumps(user_code)}, '<mcp-sandbox>', 'exec')
-    exec(_code, {{'__builtins__': _sandbox_builtins, '__name__': '__main__'}}, _ns)
+    exec(_code, _ns)
 except SystemExit:
     pass
 except Exception as e:
@@ -459,6 +464,10 @@ def execute(code: str, workdir: str = None, timeout: int = DEFAULT_TIMEOUT,
 
     start = time.time()
     try:
+        # 基线快照：持久会话目录中可能留有历史产物（此前会话/执行的文件），
+        # 只收集本次执行「新增或修改」的文件，避免历史文件被当作本次产物
+        # 返回给调用方（如旧折线图混入新对话）。临时目录场景基线自然为空。
+        baseline = _snapshot_dir(out_dir)
         proc = subprocess.Popen(
             [sys.executable, '-I', '-c', script],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -488,7 +497,7 @@ def execute(code: str, workdir: str = None, timeout: int = DEFAULT_TIMEOUT,
         else:
             result['success'] = True
 
-        result['files'] = _collect_files(out_dir)
+        result['files'] = _collect_files(out_dir, baseline=baseline)
         return result
 
     except Exception as e:
@@ -500,8 +509,29 @@ def execute(code: str, workdir: str = None, timeout: int = DEFAULT_TIMEOUT,
             shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
-def _collect_files(out_dir):
-    """收集输出目录内的文件元数据（不返回内容，由调用方按需读取）。"""
+def _snapshot_dir(out_dir):
+    """目录基线快照：{绝对路径: (mtime_ns, size)}。执行前调用，供 _collect_files 做增量 diff。"""
+    snap = {}
+    if not os.path.isdir(out_dir):
+        return snap
+    for root, _dirs, filenames in os.walk(out_dir):
+        for fn in filenames:
+            fp = os.path.join(root, fn)
+            try:
+                st = os.stat(fp)
+                snap[fp] = (st.st_mtime_ns, st.st_size)
+            except OSError:
+                pass
+    return snap
+
+
+def _collect_files(out_dir, baseline=None):
+    """收集输出目录内的文件元数据（不返回内容，由调用方按需读取）。
+
+    baseline（执行前快照）时仅返回「新增或修改」的文件——持久会话目录中的
+    历史产物不再混入本次执行的 files 返回；baseline=None 时保持全量收集
+    （兼容临时目录等无历史场景）。
+    """
     files = []
     if not os.path.isdir(out_dir):
         return files
@@ -510,6 +540,14 @@ def _collect_files(out_dir):
             if fn.startswith('.'):
                 continue
             fp = os.path.join(root, fn)
+            if baseline is not None:
+                try:
+                    st = os.stat(fp)
+                    sig = (st.st_mtime_ns, st.st_size)
+                except OSError:
+                    continue
+                if baseline.get(fp) == sig:
+                    continue  # 历史文件且本次未改动
             rel = os.path.relpath(fp, out_dir).replace('\\', '/')
             try:
                 files.append({

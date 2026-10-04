@@ -224,6 +224,44 @@ def test_stdout_captured_multiline(workdir):
     assert res['stdout'].splitlines() == ['line1', 'line2', '3'], res['stdout']
 
 
+# ── A11：模块级作用域（exec 单命名空间不变量）──
+
+def test_module_level_comprehension_sees_outer_names(workdir):
+    """模块级推导式/生成器表达式能读取外层变量（如 for 循环变量）。
+
+    历史缺陷：沙箱曾用 exec(code, globals, locals) 双命名空间执行用户代码，
+    语义等价于「类体作用域」——推导式只解析 globals、解析不到 locals 里的模块级
+    名字，`for f in xs: any(f in n for n in names)` 抛 NameError: name 'f' is not
+    defined（知识图谱技能的中文字体检测即因此失败）。修复后 globals 与 locals
+    共用同一 dict，恢复标准模块作用域。
+    """
+    code = (
+        "names = ['Noto Sans CJK SC', 'Microsoft YaHei']\n"
+        "picked = ''\n"
+        "for f in ['WenQuanYi Micro Hei', 'Microsoft YaHei']:\n"
+        "    if any(f.lower() in n.lower() for n in names):\n"
+        "        picked = f\n"
+        "        break\n"
+        "print(picked)\n"
+        "print([n for n in names if n.endswith('YaHei')])\n"
+    )
+    res = execute(code, workdir=workdir, timeout=30)
+    assert res['success'] is True, res['stderr']
+    assert res['stdout'].splitlines() == ['Microsoft YaHei', "['Microsoft YaHei']"], res['stdout']
+
+
+def test_module_level_generator_consumed_by_call(workdir):
+    """模块级生成器表达式作为函数实参时同样可见外层变量。"""
+    code = (
+        "base = [1, 2, 3]\n"
+        "k = 2\n"
+        "print(sum(v * k for v in base))\n"
+    )
+    res = execute(code, workdir=workdir, timeout=30)
+    assert res['success'] is True, res['stderr']
+    assert res['stdout'] == '12', res['stdout']
+
+
 # ── A8：图片产物内联 base64（平台据此托管 download_url 并在前端内联渲染）──
 
 class _StubMCP:
