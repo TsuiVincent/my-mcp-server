@@ -23,7 +23,25 @@ logger = logging.getLogger(__name__)
 
 # ===================== 知识库存储 =====================
 
-_file_index: Dict[str, dict] = {}
+# 索引按用户隔离：{user_id: {abs_path: meta}}——防止 A 用户索引的文档被 B 用户检索到
+_file_index: Dict[str, Dict[str, dict]] = {}
+
+# 允许索引的目录根（白名单）：禁止索引容器内任意路径（如 /etc、其它用户目录）
+_KB_ALLOWED_ROOT = os.path.abspath(os.environ.get("KB_ALLOWED_ROOT", "/data/mcp-user-data"))
+
+
+def _norm_uid(user_id: str) -> str:
+    """用户 ID 清洗：仅保留字母数字与 - _，防路径分隔符注入（与沙箱工作目录规则一致）。"""
+    return "".join(c for c in str(user_id or "default") if c.isalnum() or c in ("-", "_")) or "default"
+
+
+def _check_kb_dir(directory: str) -> str:
+    """校验并规范化待索引目录：必须在允许根内，防越权索引容器内任意目录。"""
+    norm = os.path.normpath(os.path.abspath(os.path.expanduser(directory)))
+    if norm != _KB_ALLOWED_ROOT and not norm.startswith(_KB_ALLOWED_ROOT + os.sep):
+        raise ValueError(
+            f"目录越权: {directory}，kb_* 工具仅允许索引 {_KB_ALLOWED_ROOT} 内的目录")
+    return norm
 
 _SUPPORTED_EXTENSIONS = {
     ".txt", ".md", ".csv", ".json", ".html", ".htm",
@@ -128,11 +146,17 @@ def _extract_context(content: str, keyword: str,
 
 # ===================== 索引管理 =====================
 
-def _index_directory(directory: str, recursive: bool = True) -> str:
-    """索引指定目录下的文档"""
+def _index_directory(directory: str, recursive: bool = True, user_id: str = "default") -> str:
+    """索引指定目录下的文档（按用户隔离索引；目录必须在允许根内）"""
+    uid = _norm_uid(user_id)
+    try:
+        directory = _check_kb_dir(directory)
+    except ValueError as e:
+        return f"【错误】{e}"
     if not os.path.isdir(directory):
         return f"【错误】目录不存在: {directory}"
 
+    user_index = _file_index.setdefault(uid, {})
     indexed_count = 0
     error_count = 0
     skipped_count = 0
@@ -151,8 +175,8 @@ def _index_directory(directory: str, recursive: bool = True) -> str:
 
         # 跳过已索引且未修改的文件
         mtime = os.path.getmtime(abs_path)
-        if abs_path in _file_index:
-            if _file_index[abs_path].get("mtime") == mtime:
+        if abs_path in user_index:
+            if user_index[abs_path].get("mtime") == mtime:
                 continue
 
         content = _read_file_content(abs_path)
@@ -161,7 +185,7 @@ def _index_directory(directory: str, recursive: bool = True) -> str:
             continue
 
         stat = os.stat(abs_path)
-        _file_index[abs_path] = {
+        user_index[abs_path] = {
             "title": file_path.name,
             "path": abs_path,
             "size": stat.st_size,
@@ -180,21 +204,23 @@ def _index_directory(directory: str, recursive: bool = True) -> str:
         f"  索引: {indexed_count} 个文件\n"
         f"  跳过: {skipped_count} 个文件（不支持的格式）\n"
         f"  失败: {error_count} 个文件\n"
-        f"  索引总数: {len(_file_index)} 个文件"
+        f"  索引总数: {len(user_index)} 个文件"
     )
 
 
 def _search_knowledge(query: str, top_k: int = 10,
-                       file_pattern: str = "", directory: str = "") -> str:
-    """全文关键词搜索"""
-    if not _file_index:
+                       file_pattern: str = "", directory: str = "",
+                       user_id: str = "default") -> str:
+    """全文关键词搜索（仅检索当前用户索引）"""
+    user_index = _file_index.get(_norm_uid(user_id), {})
+    if not user_index:
         return "【提示】知识库为空，请先使用 kb_index_directory 索引文档。"
 
     if not query.strip():
         return "【提示】请输入搜索关键词"
 
     results = []
-    for file_path, info in _file_index.items():
+    for file_path, info in user_index.items():
         # 目录过滤
         if directory and not file_path.startswith(directory):
             continue
@@ -235,13 +261,14 @@ def _search_knowledge(query: str, top_k: int = 10,
     return "\n".join(lines)
 
 
-def _search_with_context(query: str, top_k: int = 3) -> str:
-    """带上下文的搜索"""
-    if not _file_index:
+def _search_with_context(query: str, top_k: int = 3, user_id: str = "default") -> str:
+    """带上下文的搜索（仅检索当前用户索引）"""
+    user_index = _file_index.get(_norm_uid(user_id), {})
+    if not user_index:
         return "【提示】知识库为空，请先使用 kb_index_directory 索引文档。"
 
     results = []
-    for file_path, info in _file_index.items():
+    for file_path, info in user_index.items():
         content = _read_file_content(file_path)
         if content is None or query.lower() not in content.lower():
             continue
@@ -277,13 +304,15 @@ def _search_with_context(query: str, top_k: int = 3) -> str:
 
 
 def _list_documents(directory: str = "",
-                     file_pattern: str = "") -> str:
-    """列出已索引文档"""
-    if not _file_index:
+                     file_pattern: str = "",
+                     user_id: str = "default") -> str:
+    """列出已索引文档（仅当前用户索引）"""
+    user_index = _file_index.get(_norm_uid(user_id), {})
+    if not user_index:
         return "【提示】知识库为空"
 
     files = []
-    for file_path, info in _file_index.items():
+    for file_path, info in user_index.items():
         if directory and not file_path.startswith(directory):
             continue
         if file_pattern and not Path(file_path).match(file_pattern):
@@ -303,10 +332,12 @@ def _list_documents(directory: str = "",
     return "\n".join(lines)
 
 
-def _clear_index() -> str:
-    """清空索引"""
-    count = len(_file_index)
-    _file_index.clear()
+def _clear_index(user_id: str = "default") -> str:
+    """清空当前用户的索引"""
+    uid = _norm_uid(user_id)
+    user_index = _file_index.get(uid, {})
+    count = len(user_index)
+    _file_index.pop(uid, None)
     return f"【已清空】索引已重置，共清除 {count} 个文档索引"
 
 
@@ -317,38 +348,42 @@ def register_knowledge_search_tools(mcp):
 
     @mcp.tool(
         name="kb_index_directory",
-        description="索引指定目录下的文档(txt/md/csv/json/html/log/代码文件等)，建立全文搜索索引。Args: directory(目录路径,必填), recursive(是否递归子目录,默认true)"
+        description="索引指定目录下的文档(txt/md/csv/json/html/log/代码文件等)，建立全文搜索索引（仅本用户可见）。Args: directory(目录路径,必填，仅允许 /data/mcp-user-data 内), recursive(是否递归子目录,默认true), user_id(当前登录用户ID,默认default)"
     )
-    def kb_index_directory(directory: str, recursive: bool = True) -> str:
-        return _index_directory(directory, recursive)
+    def kb_index_directory(directory: str, recursive: bool = True,
+                           user_id: str = "default") -> str:
+        return _index_directory(directory, recursive, user_id)
 
     @mcp.tool(
         name="kb_search",
-        description="全文关键词搜索已索引文档，按相关度排序返回结果。Args: query(搜索关键词,必填), top_k(返回条数,默认10), file_pattern(文件模式过滤如*.md,可选), directory(目录过滤,可选)"
+        description="全文关键词搜索当前用户已索引文档，按相关度排序返回结果。Args: query(搜索关键词,必填), top_k(返回条数,默认10), file_pattern(文件模式过滤如*.md,可选), directory(目录过滤,可选), user_id(当前登录用户ID,默认default)"
     )
     def kb_search(query: str, top_k: int = 10,
-                  file_pattern: str = "", directory: str = "") -> str:
-        return _search_knowledge(query, top_k, file_pattern, directory)
+                  file_pattern: str = "", directory: str = "",
+                  user_id: str = "default") -> str:
+        return _search_knowledge(query, top_k, file_pattern, directory, user_id)
 
     @mcp.tool(
         name="kb_search_with_context",
-        description="带上下文片段的深度搜索，显示关键词附近内容。Args: query(搜索关键词,必填), top_k(返回条数,默认3)"
+        description="带上下文片段的深度搜索（仅当前用户索引），显示关键词附近内容。Args: query(搜索关键词,必填), top_k(返回条数,默认3), user_id(当前登录用户ID,默认default)"
     )
-    def kb_search_with_context(query: str, top_k: int = 3) -> str:
-        return _search_with_context(query, top_k)
+    def kb_search_with_context(query: str, top_k: int = 3,
+                               user_id: str = "default") -> str:
+        return _search_with_context(query, top_k, user_id)
 
     @mcp.tool(
         name="kb_list_documents",
-        description="列出所有已索引文档。Args: directory(按目录过滤,可选), file_pattern(按文件模式过滤,可选)"
+        description="列出当前用户已索引文档。Args: directory(按目录过滤,可选), file_pattern(按文件模式过滤,可选), user_id(当前登录用户ID,默认default)"
     )
-    def kb_list_documents(directory: str = "", file_pattern: str = "") -> str:
-        return _list_documents(directory, file_pattern)
+    def kb_list_documents(directory: str = "", file_pattern: str = "",
+                          user_id: str = "default") -> str:
+        return _list_documents(directory, file_pattern, user_id)
 
     @mcp.tool(
         name="kb_clear_index",
-        description="清空所有文档索引"
+        description="清空当前用户的文档索引。Args: user_id(当前登录用户ID,默认default)"
     )
-    def kb_clear_index() -> str:
-        return _clear_index()
+    def kb_clear_index(user_id: str = "default") -> str:
+        return _clear_index(user_id)
 
     logger.info("知识库检索工具已注册")

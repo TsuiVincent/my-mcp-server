@@ -34,6 +34,7 @@ server_base_url = os.environ.get("MCP_SERVER_BASE_URL", "")
 @mcp.custom_route("/download/{filepath:path}", methods=["GET"])
 async def download_file(request):
     """安全文件下载路由，只允许访问 base_dir 目录下的文件"""
+    import re as _re
     from starlette.responses import JSONResponse
     filepath = request.path_params["filepath"]
     target_path = os.path.abspath(os.path.join(base_dir, filepath))
@@ -42,6 +43,10 @@ async def download_file(request):
     if not os.path.isfile(target_path):
         return JSONResponse({"error": "文件不存在"}, status_code=404)
     filename = os.path.basename(target_path)
+    # 剥离 UUID 前缀（file_upload 落盘时加的防猜测前缀），还原友好下载名
+    m = _re.match(r'^[0-9a-f]{8}_(.+)$', filename)
+    if m:
+        filename = m.group(1)
     return FileResponse(target_path, filename=filename)
 
 

@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import json
+import uuid
 import base64
 import asyncio
 from datetime import datetime
@@ -118,6 +119,15 @@ def register_file_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
         ]
         for allowed in allowed_dirs:
             if full.startswith(os.path.abspath(allowed)):
+                # 沙箱内的新写入文件名加 UUID 前缀：防同名互相覆盖、
+                # 防 /download 端点按可猜测文件名枚举下载他人产物；
+                # 宿主挂载（Downloads/Desktop/Documents）保持原名不改动
+                abs_base = os.path.abspath(base_dir)
+                if full.startswith(abs_base + os.sep):
+                    parent = os.path.dirname(full)
+                    name = os.path.basename(full)
+                    if name and not re.match(r'^[0-9a-f]{8}_', name):
+                        full = os.path.join(parent, f"{uuid.uuid4().hex[:8]}_{name}")
                 return full
         raise ValueError(f"写入路径越权: {path}，仅允许: {base_dir}、Downloads、Desktop、Documents")
 
@@ -236,7 +246,10 @@ Returns:
             raw = base64.b64decode(content_base64)
             # 防止路径穿越攻击
             safe_name = os.path.basename(filename)
-            target = os.path.join(upload_dir, safe_name)
+            # 落盘文件名加 UUID 前缀：不同用户上传同名文件互不覆盖，
+            # 且 /download 路径不可猜测（下载时端点会剥离前缀还原原文件名）
+            stored_name = f"{uuid.uuid4().hex[:8]}_{safe_name}"
+            target = os.path.join(upload_dir, stored_name)
             loop = asyncio.get_event_loop()
             def _write():
                 with open(target, 'wb') as f:

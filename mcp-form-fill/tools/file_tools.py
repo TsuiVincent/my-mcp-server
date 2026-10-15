@@ -14,6 +14,7 @@ import os
 import sys
 import re
 import json
+import uuid
 import base64
 import asyncio
 from datetime import datetime
@@ -125,7 +126,10 @@ Returns:
         try:
             raw = base64.b64decode(content_base64)
             safe_name = os.path.basename(filename)
-            target = os.path.join(upload_dir, safe_name)
+            # 落盘文件名加 UUID 前缀：不同用户上传同名文件互不覆盖，
+            # 且 /download 路径不可猜测（下载时端点会剥离前缀还原原文件名）
+            stored_name = f"{uuid.uuid4().hex[:8]}_{safe_name}"
+            target = os.path.join(upload_dir, stored_name)
             loop = asyncio.get_event_loop()
 
             def _write():
