@@ -6,6 +6,7 @@ Excel 智能填表 MCP 工具模块（从 mcp-spreadsheet-pdf 拆分）
 
 import os
 import json
+import zipfile
 from mcp.server.fastmcp import FastMCP
 
 
@@ -69,6 +70,60 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
             pass
         return ""
 
+    def _err(code: str, message: str) -> str:
+        """统一错误响应格式（与 Word 工具对齐）"""
+        return json.dumps({"status": "error", "code": code, "message": message},
+                          ensure_ascii=False)
+
+    def _open_workbook(openpyxl_mod, path: str):
+        """打开工作簿。损坏/伪装的 xlsx 统一返回 INVALID_FILE，不泄露底层异常。"""
+        if not os.path.exists(path):
+            return None, _err("FILE_NOT_FOUND", f"文件不存在: {path}")
+        if not zipfile.is_zipfile(path):
+            return None, _err(
+                "INVALID_FILE",
+                "文件不是有效的 .xlsx（可能已损坏或为旧版 .xls），请另存为 .xlsx 后重试")
+        try:
+            return openpyxl_mod.load_workbook(path), None
+        except Exception:
+            return None, _err("INVALID_FILE", "无法解析该 Excel 文件，请确认文件未损坏且为 .xlsx 格式")
+
+    def _build_output_path(output_file: str, default_name: str = "已填写.xlsx") -> str:
+        """生成输出路径：尊重 base_dir 内的目录；秒级时间戳 + 同名冲突后缀。"""
+        import uuid
+        from datetime import datetime
+
+        name = (output_file or default_name).strip().replace("\\", "/")
+        if not name:
+            name = default_name
+        if "/" in name:
+            dir_part, file_part = name.rsplit("/", 1)
+        else:
+            dir_part, file_part = "", name
+        stem, ext = os.path.splitext(file_part)
+        if ext.lower() not in ('.xlsx', '.xlsm'):
+            ext = '.xlsx'
+        if not stem:
+            stem = os.path.splitext(default_name)[0]
+
+        abs_base = os.path.abspath(base_dir)
+        if dir_part:
+            if os.path.isabs(dir_part):
+                out_dir = os.path.abspath(dir_part)
+            else:
+                out_dir = os.path.abspath(os.path.join(abs_base, "uploads", dir_part))
+            if not (out_dir == abs_base or out_dir.startswith(abs_base + os.sep)):
+                raise ValueError(f"输出目录越权: {dir_part}（仅允许 {base_dir} 内）")
+        else:
+            out_dir = os.path.join(abs_base, "uploads")
+
+        os.makedirs(out_dir, exist_ok=True)
+        ts = datetime.now().strftime("%Y%m%d%H%M%S")
+        candidate = os.path.join(out_dir, f"{stem}_{ts}{ext}")
+        if os.path.exists(candidate):
+            candidate = os.path.join(out_dir, f"{stem}_{ts}_{uuid.uuid4().hex[:6]}{ext}")
+        return candidate
+
     import re as _re
 
     # 常用字段同义词（对齐 mcp-file-doc 内置同义词的常用子集）
@@ -105,6 +160,17 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
     def _excel_cell_ref(row: int, col: int) -> str:
         from openpyxl.utils import get_column_letter
         return f"{get_column_letter(col)}{row}"
+
+    def _scan_bounds(ws, extra_cols: int = 0):
+        """扫描边界 (max_row, max_col)。
+
+        openpyxl 的 max_column 不统计「无值且无样式」的空白列，
+        「A 列标签 + B 列待填」这类极简表会被算成只有 1 列而漏掉 B 列，
+        因此允许向右补扫 extra_cols 列。
+        """
+        max_row = max(ws.max_row or 0, 1)
+        max_col = max(ws.max_column or 0, 1) + max(int(extra_cols or 0), 0)
+        return max_row, max_col
 
     def _build_excel_merged_map(ws) -> dict:
         """{cell_ref: {"range": "A1:B2", "anchor": bool}}"""
@@ -155,11 +221,39 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
             return {"confidence": "low", "flags": flags}
         return {"confidence": "high", "flags": []}
 
-    def _infer_excel_field_map(ws, merged_map) -> dict:
-        """推断待填格子的字段名（左/上最近非空标签），返回 {(row, col): field_name}"""
-        result = {}
+    def _label_quota(ws) -> dict:
+        """统计每个标签在表内非空格中出现的次数。
+
+        同一标签最多被推断/填充同等次数：既避免纵向空白格重复套用上方标签
+        造成「幻影字段」，又保留「姓名/姓名」「电话/电话」这类真正重复出现的字段。
+        """
+        quota = {}
         max_row = max(ws.max_row or 0, 1)
         max_col = max(ws.max_column or 0, 1)
+        for row in ws.iter_rows(min_row=1, max_row=max_row, min_col=1, max_col=max_col):
+            for cell in row:
+                if cell.value is None:
+                    continue
+                text = str(cell.value)
+                if _is_empty_cell(text):
+                    continue
+                norm = _normalize_field_name(text)
+                if norm:
+                    quota[norm] = quota.get(norm, 0) + 1
+        return quota
+
+    def _infer_excel_field_map(ws, merged_map, extra_cols: int = 0, only_known_fields: bool = False) -> dict:
+        """推断待填格子的字段名（左/上最近非空标签），返回 {(row, col): field_name}
+
+        同一标签最多推断「该标签在表内出现的次数」次，避免纵向空白格重复套用
+        上方标签造成"幻影字段"，同时兼容真正重复的字段行。
+        extra_cols: 向右补扫的空白列数（见 _scan_bounds）
+        only_known_fields: 仅保留同义词表可识别的字段名（补扫时防把数值当标签）
+        """
+        result = {}
+        used_labels = {}
+        quota = _label_quota(ws)
+        max_row, max_col = _scan_bounds(ws, extra_cols)
         for row in ws.iter_rows(min_row=1, max_row=max_row, min_col=1, max_col=max_col):
             for cell in row:
                 mm = merged_map.get(cell.coordinate)
@@ -186,6 +280,13 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
                             label = ut.strip()
                             break
                 if label:
+                    norm_label = _normalize_field_name(label)
+                    if only_known_fields and norm_label not in _EXCEL_FIELD_SYNONYMS:
+                        continue
+                    used = used_labels.get(norm_label, 0)
+                    if used >= quota.get(norm_label, 1):
+                        continue
+                    used_labels[norm_label] = used + 1
                     result[(cell.row, cell.column)] = label
         return result
 
@@ -195,6 +296,10 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
         if v == '':
             return ''
         stripped = v.strip()
+        digits = stripped.lstrip('-')
+        # 前导零（如 "007"、"012345"）按文本保留，避免被转成 int 丢失前导零
+        if len(digits) > 1 and digits.isdigit() and digits.startswith('0'):
+            return v
         if stripped.lstrip('-').isdigit() and len(stripped.lstrip('-')) < 11:
             try:
                 return int(stripped)
@@ -290,6 +395,9 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
         # 本次填充过的坐标与值：用于标签推断时跳过已填格（防刚填入的值被当成字段标签）
         filled_coords = set()
         filled_values = set()
+        # 已使用过的标签：同一标签最多使用「表内出现次数」次，防止纵向/横向推断重复填同一字段
+        used_labels = {}
+        label_quota = _label_quota(ws)
 
         def _do_write(r, c, val, field, src):
             nonlocal filled_count
@@ -299,7 +407,7 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
             # ① 标签+下划线同格（"姓名：____"）：就地替换下划线、保留标签（覆盖坐标填充路径）
             if text and ('____' in text or '＿' in text):
                 label_part = _re.split(r'[_＿]+', text, 1)[0]
-                new_text = _re.sub(r'[_＿]+', str(val), text, count=1)
+                new_text = _re.sub(r'[_＿]+', lambda m: str(val), text, count=1)
                 cell.value = new_text
                 filled_count += 1
                 used_names.add((field or label_part).strip())
@@ -308,8 +416,8 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
                 fill_details.append({"field": (field or label_part).strip(), "value": val,
                                      "cell_ref": _excel_cell_ref(ar, ac), "status": "filled_inline", "source": src})
                 return
-            # 合并区锚点已有值则跳过（防覆盖表头/已有内容）
-            if cell.value not in (None, ''):
+            # 合并区锚点已有值则跳过（防覆盖表头/已有内容）；纯空白视为可填
+            if cell.value is not None and str(cell.value).strip() != '':
                 fill_details.append({"field": field, "value": val,
                                      "cell_ref": _excel_cell_ref(r, c), "status": "skipped_non_empty"})
                 return
@@ -327,8 +435,7 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
                 return True
             return cell_value_text.strip() in filled_values
 
-        max_row = max(ws.max_row or 0, 1)
-        max_col = max(ws.max_column or 0, 1)
+        max_row, max_col = _scan_bounds(ws, 1)
         for row in ws.iter_rows(min_row=1, max_row=max_row, min_col=1, max_col=max_col):
             for cell in row:
                 mm = merged_map.get(cell.coordinate)
@@ -342,7 +449,7 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
                     label_part = _re.split(r'[_＿]+', text, 1)[0]
                     val = _match_excel_field(label_part, fill_map, normalized_map)
                     if val is not None:
-                        new_text = _re.sub(r'[_＿]+', str(val), text, count=1)
+                        new_text = _re.sub(r'[_＿]+', lambda m: str(val), text, count=1)
                         cell.value = new_text
                         filled_count += 1
                         used_names.add(label_part.strip())
@@ -373,9 +480,14 @@ def register_excel_form_tools(mcp: FastMCP, base_dir: str = "/data", **kwargs):
                             break
                 if not label:
                     continue
+                norm_label = _normalize_field_name(label)
+                used = used_labels.get(norm_label, 0)
+                if used >= label_quota.get(norm_label, 1):
+                    continue
                 val = _match_excel_field(label, fill_map, normalized_map)
                 if val is not None:
                     _do_write(cell.row, cell.column, val, label, 'auto_label')
+                    used_labels[norm_label] = used + 1
 
         # ③ 坐标精确填充（fill_cells_json）
         for item in cells_to_fill:
@@ -423,23 +535,29 @@ Returns:
         try:
             openpyxl = _import_openpyxl()
             if openpyxl is None:
-                return json.dumps({"error": "openpyxl 未安装"}, ensure_ascii=False)
+                return _err("DEPENDENCY_MISSING", "openpyxl 未安装")
             target = _resolve_safe_path(path, base_dir)
-            if not os.path.exists(target):
-                return json.dumps({"error": f"文件不存在: {path}"}, ensure_ascii=False)
             if _is_xls(path):
-                return json.dumps({"error": "暂不支持 .xls 旧版格式，请另存为 .xlsx 后上传"}, ensure_ascii=False)
+                return _err("UNSUPPORTED_FORMAT", "暂不支持 .xls 旧版格式，请另存为 .xlsx 后上传")
 
-            wb = openpyxl.load_workbook(target)
+            wb, err = _open_workbook(openpyxl, target)
+            if err:
+                return err
             try:
                 ws = wb[sheet_name] if sheet_name else wb.active
             except KeyError:
-                return json.dumps({"error": f"工作表不存在: {sheet_name}"}, ensure_ascii=False)
+                wb.close()
+                return _err("SHEET_NOT_FOUND", f"工作表不存在: {sheet_name}")
 
             merged_map = _build_excel_merged_map(ws)
             grid = _build_excel_grid(ws)
             layout = _excel_layout_complexity(ws)
             inferred = _infer_excel_field_map(ws, merged_map)
+            if not inferred:
+                # 极简表（A 列标签 + B 列全空且无样式）的 B 列不在 max_column 内，
+                # 向右补扫一列；只保留同义词表可识别的字段，避免把数值当标签
+                inferred = _infer_excel_field_map(
+                    ws, merged_map, extra_cols=1, only_known_fields=True)
             fields = [{
                 "field_name": label,
                 "row": r, "col": c,
@@ -462,7 +580,7 @@ Returns:
                          "输出 fill_cells_json 坐标映射后调用 fill_excel_form。",
             }, ensure_ascii=False, indent=2)
         except Exception as e:
-            return json.dumps({"error": str(e)}, ensure_ascii=False)
+            return _err("EXCEL_PARSE_ERROR", str(e))
 
     @mcp.tool()
     async def fill_excel_form(
@@ -487,28 +605,21 @@ Args:
     verbose: 是否返回详细填充信息
 
 Returns:
-    JSON，包含 output_path、output_link、filled_count 等
+    JSON，包含 output_path、output_link、download_url、filled_count 等
 """
         try:
-            from datetime import datetime
             openpyxl = _import_openpyxl()
             if openpyxl is None:
-                return json.dumps({"error": "openpyxl 未安装"}, ensure_ascii=False)
+                return _err("DEPENDENCY_MISSING", "openpyxl 未安装")
             safe_input = _resolve_safe_path(path, base_dir)
-            if not os.path.exists(safe_input):
-                return json.dumps({"error": f"文件不存在: {path}"}, ensure_ascii=False)
             if _is_xls(path):
-                return json.dumps({"error": "不支持写入 .xls 格式，请使用 .xlsx 格式"}, ensure_ascii=False)
+                return _err("UNSUPPORTED_FORMAT", "不支持写入 .xls 格式，请使用 .xlsx 格式")
 
-            timestamp = datetime.now().strftime("%Y%m%d%H%M")
-            base_out, ext = os.path.splitext(os.path.basename(output_file))
-            if ext.lower() not in ('.xlsx', '.xlsm'):
-                ext = '.xlsx'
-            abs_output = os.path.join(base_dir, "uploads", f"{base_out}_{timestamp}{ext}")
+            abs_output = _build_output_path(output_file)
 
             fill_data = json.loads(fill_data_json)
             if not isinstance(fill_data, list):
-                return json.dumps({"error": "fill_data_json 必须是 JSON 数组"}, ensure_ascii=False)
+                return _err("INVALID_FILL_DATA", "fill_data_json 必须是 JSON 数组")
             fill_map = {}
             for f in fill_data:
                 if isinstance(f, dict) and f.get('field_name') and f.get('value') not in (None, ''):
@@ -519,16 +630,21 @@ Returns:
                 try:
                     cells_to_fill = json.loads(fill_cells_json)
                 except json.JSONDecodeError:
-                    return json.dumps({"error": "fill_cells_json 必须是合法 JSON 数组"}, ensure_ascii=False)
+                    return _err("INVALID_CELLS_JSON", "fill_cells_json 必须是合法 JSON 数组")
                 if not isinstance(cells_to_fill, list):
-                    return json.dumps({"error": "fill_cells_json 必须是数组"}, ensure_ascii=False)
+                    return _err("INVALID_CELLS_JSON", "fill_cells_json 必须是数组")
 
-            wb = openpyxl.load_workbook(safe_input)
+            if not fill_map and not cells_to_fill:
+                return _err("NO_FIELDS", "fill_data_json 与 fill_cells_json 均为空，没有可填写的字段")
+
+            wb, err = _open_workbook(openpyxl, safe_input)
+            if err:
+                return err
             try:
                 ws = wb[sheet_name] if sheet_name else wb.active
             except KeyError:
                 wb.close()
-                return json.dumps({"error": f"工作表不存在: {sheet_name}"}, ensure_ascii=False)
+                return _err("SHEET_NOT_FOUND", f"工作表不存在: {sheet_name}")
 
             merged_map = _build_excel_merged_map(ws)
             filled_count, fill_details, used_names = _fill_excel_sheet(
@@ -536,19 +652,26 @@ Returns:
 
             unmatched = [{"field_name": fn, "value": v} for fn, v in fill_map.items() if fn not in used_names]
 
+            if filled_count == 0 and not cells_to_fill:
+                wb.close()
+                return _err("NO_FIELDS", "未匹配到任何可填写的字段，未生成输出文件")
+
             os.makedirs(os.path.dirname(abs_output), exist_ok=True)
             wb.save(abs_output)
             wb.close()
 
+            download_url = _make_download_url(abs_output)
             result = {
                 "status": "ok",
                 "output_path": abs_output,
-                "output_link": _make_download_url(abs_output),
+                "output_link": download_url,
                 "filled_count": filled_count,
                 "total_fields": len(fill_map),
                 "sheet_name": ws.title,
                 "output_file": os.path.basename(abs_output),
             }
+            if download_url:
+                result["download_url"] = download_url
             if verbose:
                 result["fill_details"] = fill_details
                 result["unmatched_fields"] = unmatched
@@ -556,7 +679,7 @@ Returns:
                 result["unmatched_field_names"] = [u["field_name"] for u in unmatched]
             return json.dumps(result, ensure_ascii=False, indent=2)
         except Exception as e:
-            return json.dumps({"error": str(e)}, ensure_ascii=False)
+            return _err("EXCEL_FILL_ERROR", str(e))
 
     @mcp.tool()
     async def smart_fill_excel(
@@ -579,18 +702,15 @@ Args:
     verbose: 是否返回详细填充信息
 
 Returns:
-    JSON，包含 output_path、output_link、filled_count、unmatched_field_names
+    JSON，包含 output_path、output_link、download_url、filled_count、unmatched_field_names
 """
         try:
-            from datetime import datetime
             openpyxl = _import_openpyxl()
             if openpyxl is None:
-                return json.dumps({"error": "openpyxl 未安装"}, ensure_ascii=False)
+                return _err("DEPENDENCY_MISSING", "openpyxl 未安装")
             safe_input = _resolve_safe_path(path, base_dir)
-            if not os.path.exists(safe_input):
-                return json.dumps({"error": f"文件不存在: {path}"}, ensure_ascii=False)
             if _is_xls(path):
-                return json.dumps({"error": "不支持 .xls 旧版格式，请使用 .xlsx 格式"}, ensure_ascii=False)
+                return _err("UNSUPPORTED_FORMAT", "不支持 .xls 旧版格式，请使用 .xlsx 格式")
 
             # 合并数据：knowledge_data 优先，fill_data_json 兜底
             fill_map = {}
@@ -606,38 +726,45 @@ Returns:
                         if isinstance(f, dict) and f.get('field_name') and f.get('value') not in (None, ''):
                             fill_map[str(f['field_name'])] = str(f['value'])
 
-            timestamp = datetime.now().strftime("%Y%m%d%H%M")
-            out_name = (output_file or "已填写.xlsx").strip()
-            if not out_name.lower().endswith(('.xlsx', '.xlsm')):
-                out_name = out_name + ".xlsx"
-            base_out, ext = os.path.splitext(os.path.basename(out_name))
-            abs_output = os.path.join(base_dir, "uploads", f"{base_out}_{timestamp}{ext}")
+            if not fill_map:
+                return _err("NO_DATA", "knowledge_data 与 fill_data_json 均未提供可用的填充数据")
 
-            wb = openpyxl.load_workbook(safe_input)
+            abs_output = _build_output_path(output_file or "已填写.xlsx")
+
+            wb, err = _open_workbook(openpyxl, safe_input)
+            if err:
+                return err
             try:
                 ws = wb[sheet_name] if sheet_name else wb.active
             except KeyError:
                 wb.close()
-                return json.dumps({"error": f"工作表不存在: {sheet_name}"}, ensure_ascii=False)
+                return _err("SHEET_NOT_FOUND", f"工作表不存在: {sheet_name}")
 
             merged_map = _build_excel_merged_map(ws)
             filled_count, fill_details, used_names = _fill_excel_sheet(
                 wb, ws, fill_map, [], merged_map, verbose)
             unmatched = [{"field_name": fn, "value": v} for fn, v in fill_map.items() if fn not in used_names]
 
+            if filled_count == 0:
+                wb.close()
+                return _err("NO_FIELDS", "未匹配到任何可填写的字段，未生成输出文件")
+
             os.makedirs(os.path.dirname(abs_output), exist_ok=True)
             wb.save(abs_output)
             wb.close()
 
+            download_url = _make_download_url(abs_output)
             result = {
                 "status": "ok",
                 "output_path": abs_output,
-                "output_link": _make_download_url(abs_output),
+                "output_link": download_url,
                 "filled_count": filled_count,
                 "total_fields": len(fill_map),
                 "sheet_name": ws.title,
                 "output_file": os.path.basename(abs_output),
             }
+            if download_url:
+                result["download_url"] = download_url
             if verbose:
                 result["fill_details"] = fill_details
                 result["unmatched_fields"] = unmatched
@@ -645,6 +772,6 @@ Returns:
                 result["unmatched_field_names"] = [u["field_name"] for u in unmatched]
             return json.dumps(result, ensure_ascii=False, indent=2)
         except Exception as e:
-            return json.dumps({"error": str(e)}, ensure_ascii=False)
+            return _err("EXCEL_FILL_ERROR", str(e))
 
     print("[mcp-form-fill] Excel 填表工具已注册", flush=True)

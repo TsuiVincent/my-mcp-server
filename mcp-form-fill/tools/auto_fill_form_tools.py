@@ -88,6 +88,8 @@ _DEFAULT_FIELD_SYNONYMS = {
     '文化程度': '最高学历',
     '学位': '最高学历',
     '联系电话': '手机号码',
+    '手机号码': '手机号码',
+    '手机号': '手机号码',
     '手机': '手机号码',
     '电话号码': '手机号码',
     '联系方式': '手机号码',
@@ -186,7 +188,11 @@ def _load_field_synonyms(config_path: str = None, base_dir: str = "/data") -> di
                 synonyms = {k: v for k, v in data.items() if not k.startswith('_')}
                 if synonyms:
                     print(f"[auto_fill] 已加载同义词配置: {p} ({len(synonyms)} 条)", file=sys.stderr)
-                    return synonyms
+                    # 外部配置优先，但内置常用同义词仍作为兜底合并进来，
+                    # 避免配置缺项（如 手机号/手机号码）导致同义字段匹配失败
+                    merged = dict(_DEFAULT_FIELD_SYNONYMS)
+                    merged.update(synonyms)
+                    return merged
             except Exception as e:
                 print(f"[auto_fill] 加载同义词配置失败 {p}: {e}，使用内置默认", file=sys.stderr)
 
@@ -399,6 +405,26 @@ def _apply_rpr(run, rpr_element):
     run._element.insert(0, rpr_element)
 
 
+def _copy_para_mark_rpr(para):
+    """深拷贝段落标记的 rPr（w:pPr/w:rPr），即「在 Word 里往该段落打字会得到的格式」。
+    返回 None 表示段落标记无直接格式（需继承样式链）。"""
+    from docx.oxml.ns import qn
+    import copy as _copy
+    pPr = para._p.pPr
+    if pPr is None:
+        return None
+    rPr = pPr.find(qn('w:rPr'))
+    if rPr is None:
+        return None
+    rPr = _copy.deepcopy(rPr)
+    # 段落标记的 rPr 是 CT_ParaRPr，允许携带修订相关子元素；而 run 的 rPr 是 CT_RPr，
+    # 不允许这些元素。深拷贝后必须剔除，否则产物 XML 不合 OOXML schema。
+    for tag in ('w:ins', 'w:del', 'w:moveFrom', 'w:moveTo', 'w:rPrChange'):
+        for el in rPr.findall(qn(tag)):
+            rPr.remove(el)
+    return rPr
+
+
 def _fill_cell_preserving_format(cell, value, font_name: str, font_size_pt: float, font_color: str):
     """填充单元格并尽量保留原格式（格式保持核心）。
 
@@ -406,8 +432,9 @@ def _fill_cell_preserving_format(cell, value, font_name: str, font_size_pt: floa
     1. 单元格内含下划线占位的 run → 就地替换其文本（该 run 的 rPr 完整保留，
        下划线等样式不丢失，值为黑色/模板色而非强制默认蓝）；
     2. 单元格内首个非空 run → 追加新 run 并复制其 rPr（与模板观感一致）；
-    3. 均无 → 直接追加 run，不套默认字体（继承文档 Normal 样式），
-       避免强制宋体/字号/颜色破坏模板观感。
+    3. 均无 → 追加 run 并继承段落标记格式（w:pPr/w:rPr，即空格自己的要求，
+       与相邻单元格无关）；段落标记也无格式时保持无 rPr，交由样式链
+       （段落样式→表格样式→文档默认）渲染，始终避免强制宋体/字号/颜色破坏模板观感。
     """
     value_str = str(value)
     if value_str == '':
@@ -431,7 +458,10 @@ def _fill_cell_preserving_format(cell, value, font_name: str, font_size_pt: floa
     run = cell.paragraphs[0].add_run(value_str)
     if ref_rpr is not None:
         _apply_rpr(run, ref_rpr)
-    # 3) 无参考格式：不套任何字体（继承文档默认），保留段落属性
+    else:
+        # 3) 无参考 run：继承段落标记格式（空格自己的要求，与相邻单元格无关）；
+        #    段落标记也无格式时保持无 rPr，交由样式链渲染
+        _apply_rpr(run, _copy_para_mark_rpr(cell.paragraphs[0]))
 
 
 def _fill_para_preserving_format(para, new_text: str):
@@ -445,13 +475,22 @@ def _fill_para_preserving_format(para, new_text: str):
         if rPr is not None:
             ref_rpr = _copy.deepcopy(rPr)
             break
-    saved_alignment = para.alignment
+    # 注意：python-docx 无法解析 w:jc val="start"/"end"（Word 原生值），读取会抛
+    # ValueError。此类对齐值保存在 pPr 中，para.clear() 只清内容不清 pPr，
+    # 因此读取失败时直接放弃保存/恢复，版式仍然保留。
+    try:
+        saved_alignment = para.alignment
+    except ValueError:
+        saved_alignment = None
     para.clear()
     run = para.add_run(new_text)
     if ref_rpr is not None:
         _apply_rpr(run, ref_rpr)
     if saved_alignment is not None:
-        para.alignment = saved_alignment
+        try:
+            para.alignment = saved_alignment
+        except ValueError:
+            pass
 
 
 def _build_table_grid(table) -> list:
@@ -568,6 +607,281 @@ def _make_error_json(code: str, message: str, detail: str = None) -> str:
     return json.dumps(result, ensure_ascii=False)
 
 
+def _cleanup_temp_file(path):
+    """删除 Base64 入口创建的临时文件（失败静默，不影响返回结果）。"""
+    if not path:
+        return
+    try:
+        if os.path.exists(path):
+            os.remove(path)
+    except OSError:
+        pass
+
+
+def _unique_output_path(dir_path: str, stem: str, ext: str) -> str:
+    """生成带秒级时间戳的输出路径；同名文件已存在时追加短 uuid，避免同分钟覆盖。"""
+    from datetime import datetime as _dt
+    ts = _dt.now().strftime("%Y%m%d%H%M%S")
+    os.makedirs(dir_path, exist_ok=True)
+    candidate = os.path.join(dir_path, f"{stem}_{ts}{ext}")
+    if os.path.exists(candidate):
+        candidate = os.path.join(dir_path, f"{stem}_{ts}_{uuid.uuid4().hex[:6]}{ext}")
+    return candidate
+
+
+# 段落字段：「标签：占位」；支持同一段落多个占位（如 "姓名：____　电话：________"）
+# 标签段排除冒号、下划线及中文标点，避免把整句当字段名
+# MULTILINE：单元格多行文本按行识别（$ 匹配行尾），否则多行单元格只能识别最后一行
+_PARA_FIELD_RE = re.compile(
+    r'([^\n：:_＿，,；;。]{1,30})[：:][ \t\u3000]*([_＿]{1,}|$)', re.MULTILINE)
+# 无冒号、以 3+ 空白结尾的纯字段名行（多行单元格按行匹配，不能先 strip 整段）
+_PARA_FIELD_SPACE_RE = re.compile(
+    r'^([^\n：:_＿，,；;。]{1,30})[ \t\u3000]{3,}$', re.MULTILINE)
+
+
+def _extract_para_field_names(text: str) -> list:
+    """提取文本中的全部字段名（支持同段/多行多占位）。"""
+    text = text or ''
+    names = []
+    for m in _PARA_FIELD_RE.finditer(text):
+        label = m.group(1).strip()
+        if label:
+            names.append(label)
+    if not names:
+        m = _PARA_FIELD_SPACE_RE.search(text)
+        if m and m.group(1).strip():
+            names.append(m.group(1).strip())
+    return names
+
+
+def _iter_story_paragraphs(doc):
+    """遍历正文 + 页眉页脚 + 文本框中的段落（按 XML 元素去重）。
+
+    python-docx 的 doc.paragraphs 只覆盖正文顶层段落，页眉/页脚/文本框
+    中的占位符需要单独遍历才能被解析与填充。
+    """
+    from docx.oxml.ns import qn
+    from docx.text.paragraph import Paragraph
+
+    seen = set()
+
+    def _emit(paras):
+        for para in paras:
+            key = para._p
+            if key in seen:
+                continue
+            seen.add(key)
+            yield para
+
+    yield from _emit(doc.paragraphs)
+
+    parts = []
+    for section in doc.sections:
+        for attr in ('header', 'footer', 'first_page_header', 'first_page_footer',
+                     'even_page_header', 'even_page_footer'):
+            try:
+                part = getattr(section, attr)
+                if part.is_linked_to_previous:
+                    continue
+                parts.append(part)
+            except Exception:
+                continue
+        # 页眉页脚段落（延迟到 parts 收集后统一处理）
+    for part in parts:
+        try:
+            yield from _emit(part.paragraphs)
+        except Exception:
+            pass
+
+    # 文本框：正文与页眉页脚中的 w:txbxContent
+    roots = [doc.element.body]
+    for part in parts:
+        try:
+            roots.append(part._element)
+        except Exception:
+            pass
+    for root in roots:
+        for box in root.iter(qn('w:txbxContent')):
+            for p_el in box.iter(qn('w:p')):
+                if p_el in seen:
+                    continue
+                seen.add(p_el)
+                yield Paragraph(p_el, None)
+
+
+# =====================================================================
+# 表单解析/填充共享工具（fill_word_form 与 _do_fill_docx 复用，避免逻辑漂移）
+# =====================================================================
+# 内联占位：2+ 半角/全角下划线（"姓名：____ 电话：＿＿＿＿"）
+_INLINE_PLACEHOLDER_RE = re.compile(r'[_＿]{2,}')
+# 用于「标签含空格」场景：把空白压缩掉后再匹配（"姓    名" → "姓名"）
+_COMPACT_WS_RE = re.compile(r'\s+')
+
+
+def _compact_ws(text: str) -> str:
+    """去掉全部空白（含全角空格），仅用于字段名/标签的宽松比对。"""
+    return _COMPACT_WS_RE.sub('', text or '')
+
+
+def _iter_table_cells(table, _nested: bool = False):
+    """遍历表格单元格（递归进入嵌套表）。
+
+    yield: (table, row_index, cell_index, cell, has_nested, is_nested)
+    - table 为单元格所属的表格（嵌套表的行/列回溯必须用它，不能用顶层表）；
+    - has_nested=True 表示该单元格是嵌套表容器，其文本不含子表内容，
+      填充扫描时应跳过、交由递归的子表处理；
+    - 合并单元格会按逻辑坐标重复产出，与非合并时的行为保持一致。
+    """
+    for ri, row in enumerate(table.rows):
+        for ci, cell in enumerate(row.cells):
+            has_nested = bool(cell.tables)
+            yield table, ri, ci, cell, has_nested, _nested
+            if has_nested:
+                for child in cell.tables:
+                    yield from _iter_table_cells(child, True)
+
+
+def _synonym_names(field_name: str, field_synonyms: dict = None) -> set:
+    """返回与 field_name 同义的全部名字（按标准名归并，如 联系电话/手机号）。
+
+    仅比较「同义词值 == 字段名」会漏掉「两者都映射到同一个标准名」的情况：
+    fill_data 用 联系电话，表单写 手机号，二者都归一到 手机号码。
+    """
+    names = {field_name}
+    synonyms = field_synonyms or {}
+    norm_fn = _normalize_field_name(field_name)
+    canonical = synonyms.get(norm_fn, norm_fn)
+    for syn_key, standard in synonyms.items():
+        if standard == canonical or _normalize_field_name(syn_key) == norm_fn:
+            names.add(syn_key)
+    names.discard('')
+    return names
+
+
+def _collect_name_variants(fill_data: list, field_synonyms: dict = None) -> set:
+    """收集字段名的所有匹配变体：原始名、去标点名、去空白名、同义词。"""
+    variants = set()
+    for f in fill_data:
+        fn = (f or {}).get('field_name', '')
+        if not fn:
+            continue
+        for name in _synonym_names(fn, field_synonyms):
+            variants.add(name)
+            variants.add(_normalize_field_name(name))
+            variants.add(_compact_ws(name))
+    variants.discard('')
+    return variants
+
+
+def _build_field_filter(fill_data: list, field_synonyms: dict = None):
+    """构建段落级快速过滤正则；无字段时返回 None。"""
+    parts = sorted(_collect_name_variants(fill_data, field_synonyms), key=len, reverse=True)
+    if not parts:
+        return None
+    return re.compile('|'.join(re.escape(p) for p in parts))
+
+
+def _para_matches_filter(text: str, filter_re) -> bool:
+    """过滤判断：原文命中，或去掉空白后命中（修复「姓 名」「姓　名」被整段跳过）。"""
+    if filter_re is None:
+        return True
+    if filter_re.search(text or ''):
+        return True
+    compact = _compact_ws(text)
+    return bool(compact) and bool(filter_re.search(compact))
+
+
+def _has_inline_placeholder(text: str) -> bool:
+    """是否含内联占位下划线（半角 _ / 全角 ＿）。"""
+    return bool(_INLINE_PLACEHOLDER_RE.search(text or ''))
+
+
+def _has_placeholder(text: str) -> bool:
+    """段落是否有可填占位：内联下划线、行尾冒号（"姓 名："）或行尾大段空白（"学历　　　"）。"""
+    text = text or ''
+    if _has_inline_placeholder(text):
+        return True
+    if text.rstrip().endswith(('：', ':')):
+        return True
+    # 纯空白占位（半角/全角空格），Word 表单常用制表位对齐
+    return bool(re.search(r'[ \t\u3000]{2,}$', text))
+
+
+def _build_para_patterns(fill_data: list, field_synonyms: dict = None, inline: bool = False) -> list:
+    """预编译段落替换模式，返回 [(field_name, value, compiled), ...]。
+
+    inline=True 用于「非空单元格内的标签+下划线」场景，只匹配带下划线的占位；
+    inline=False 用于整段填写，额外支持「标签+大段空白」与「行尾冒号」。
+    模式按长度倒序，长字段名优先（避免「姓名」抢先匹配「姓名拼音」）。
+    """
+    patterns = []
+    for f in fill_data:
+        fn = (f or {}).get('field_name', '')
+        val = (f or {}).get('value', '')
+        if not fn:
+            continue
+        for name in _synonym_names(fn, field_synonyms):
+            # 模式1：字面量字段名；模式2：允许字段名中间夹空格（"姓    名"）
+            name_patterns = [re.escape(name), r'[\s：:]*'.join(re.escape(c) for c in name)]
+            if inline:
+                tails = [r'[：:][ \t\u3000]*[_＿]+', r'[ \t]*[_＿]+']
+            else:
+                tails = [
+                    r'[：:][ \t\u3000]*[_＿ \t\u3000]*',   # "姓名：____" / "姓名："
+                    r'[ \t\u3000]{2,}[_＿ \t\u3000]*',  # "姓名    ____" / "学历　　　"（全角空格）
+                    r'[：:][ \t]*$',            # 行尾冒号（多行单元格的字段行）
+                ]
+            for tail in tails:
+                for name_pat in name_patterns:
+                    # 标签与占位之间只允许空白/ASCII 修饰（如 "姓名（曾用名）：" 的
+                    # 名称本身已完整包含在 name_pat 中）；禁止跨越中文字符，
+                    # 否则短字段「姓名」会把「姓名拼音：____」误判为自己的占位。
+                    patterns.append((
+                        fn, val,
+                        re.compile(r'(' + name_pat + r'[^\u4e00-\u9fa5：:]*?)' + tail, re.MULTILINE)
+                    ))
+    patterns.sort(key=lambda item: len(item[2].pattern), reverse=True)
+    return patterns
+
+
+def _apply_para_replacements(text: str, patterns: list) -> tuple:
+    """在段落文本上执行替换，返回 (new_text, [(field_name, count), ...])。
+
+    必须使用函数式替换：替换串里的反斜杠、\\1、\\t 等会被 re.sub 当作转义/反向
+    引用解析，导致用户填写的值被篡改（如 "C:\\temp" 变成 "C:<tab>emp"）。
+    """
+    new_text = text or ''
+    counts = {}
+    for fn, val, pat in patterns:
+        # 同一字段在本段落只应用一次模式：字面量模式与「标签夹空格」模式会先后命中
+        # 同一占位（第一次替换后 "姓名：张三" 仍满足 "姓名：" 尾巴），导致值重复写入
+        if counts.get(fn):
+            continue
+        value_str = str(val)
+        new_text, n = pat.subn(lambda m: m.group(1) + '：' + value_str, new_text)
+        if n:
+            counts[fn] = counts.get(fn, 0) + n
+    return new_text, list(counts.items())
+
+
+def _fill_placeholder_paragraphs(paragraphs, patterns: list) -> tuple:
+    """在给定段落集合中就地替换内联占位，返回 (count, [(field_name, count), ...])。"""
+    total = 0
+    matched = {}
+    for para in paragraphs:
+        text = para.text
+        if not text or not _has_inline_placeholder(text):
+            continue
+        new_text, hits = _apply_para_replacements(text, patterns)
+        if not hits or new_text == text:
+            continue
+        _fill_para_preserving_format(para, new_text)
+        for fn, n in hits:
+            matched[fn] = matched.get(fn, 0) + n
+            total += n
+    return total, list(matched.items())
+
+
 def _flatten_person_info(data: dict) -> dict:
     """将分类个人信息（个人基本信息/教育背景/...）扁平化为 key→value"""
     flat = {}
@@ -592,39 +906,42 @@ def _parse_docx_fields(doc) -> list:
     """从 Word 文档中提取所有待填写字段名（共享逻辑）"""
     fields = []
 
-    # 从段落提取
-    for para in doc.paragraphs:
-        text = para.text.strip()
-        if not text:
+    # 从段落提取（正文 + 页眉页脚 + 文本框，支持同段多占位）
+    for para in _iter_story_paragraphs(doc):
+        raw_text = para.text
+        if not raw_text.strip():
             continue
-        matches = re.findall(r'([^\n：:]+)[：: \t]+[_ \t]*$', text)
-        if matches:
-            for m in matches:
-                fields.append(m.strip())
+        for name in _extract_para_field_names(raw_text):
+            fields.append(name)
 
-    # 从表格提取
+    # 从表格提取（递归嵌套表 + 内联占位单元格）
     for table in doc.tables:
-        for ri, row in enumerate(table.rows):
-            for ci, cell in enumerate(row.cells):
-                text = cell.text.strip()
-                if not _is_empty_cell(text):
-                    continue
+        for tbl, ri, ci, cell, has_nested, _nested in _iter_table_cells(table):
+            if has_nested:
+                continue  # 嵌套表容器格，字段由子表递归产出
+            text = cell.text.strip()
+            if not _is_empty_cell(text):
+                # 非空但含内联占位（"姓名：____"）：「标签+下划线同格」也需要解析出字段
+                if _has_inline_placeholder(text):
+                    for name in _extract_para_field_names(cell.text):
+                        fields.append(name)
+                continue
 
-                field_name = None
-                if ci > 0:
-                    for left_ci in range(ci - 1, -1, -1):
-                        left = row.cells[left_ci].text.strip()
-                        if left and not _is_empty_cell(left):
-                            field_name = left
-                            break
-                if not field_name and ri > 0:
-                    for up_ri in range(ri - 1, -1, -1):
-                        above = table.rows[up_ri].cells[ci].text.strip()
-                        if above and not _is_empty_cell(above):
-                            field_name = above
-                            break
-                if field_name:
-                    fields.append(field_name)
+            field_name = None
+            if ci > 0:
+                for left_ci in range(ci - 1, -1, -1):
+                    left = tbl.rows[ri].cells[left_ci].text.strip()
+                    if left and not _is_empty_cell(left):
+                        field_name = left
+                        break
+            if not field_name and ri > 0:
+                for up_ri in range(ri - 1, -1, -1):
+                    above = tbl.rows[up_ri].cells[ci].text.strip()
+                    if above and not _is_empty_cell(above):
+                        field_name = above
+                        break
+            if field_name:
+                fields.append(field_name)
 
     return fields
 
@@ -645,115 +962,92 @@ def _do_fill_docx(
     filled_count = 0
 
     # ============ 填充表格单元格 ============
+    inline_patterns = _build_para_patterns(fill_data, field_synonyms, inline=True)
     for table in doc.tables:
-        for ri, row in enumerate(table.rows):
-            for ci, cell in enumerate(row.cells):
-                cell_text = cell.text.strip()
-                if not _is_empty_cell(cell_text):
-                    continue
+        for tbl, ri, ci, cell, has_nested, _nested in _iter_table_cells(table):
+            if has_nested:
+                continue  # 嵌套表容器格由递归子表处理
+            cell_text = cell.text.strip()
+            if not _is_empty_cell(cell_text):
+                # 非空单元格：仅处理内联占位（如「姓名：____ 电话：＿＿＿＿」）
+                if _has_inline_placeholder(cell_text):
+                    n, hits = _fill_placeholder_paragraphs(cell.paragraphs, inline_patterns)
+                    if n:
+                        filled_count += n
+                        for fn, _cnt in hits:
+                            used_field_names.add(fn)
+                continue
 
-                fill_value = None
-                matched_field = None
+            fill_value = None
+            matched_field = None
 
-                if ci > 0:
-                    for left_ci in range(ci - 1, -1, -1):
-                        left_text = row.cells[left_ci].text.strip()
-                        if left_text and not _is_empty_cell(left_text):
-                            fill_value = _match_field_value(
-                                left_text, fill_map, normalized_map,
-                                field_synonyms, match_cache
-                            )
-                            if fill_value:
-                                matched_field = left_text
+            if ci > 0:
+                for left_ci in range(ci - 1, -1, -1):
+                    left_text = tbl.rows[ri].cells[left_ci].text.strip()
+                    if left_text and not _is_empty_cell(left_text):
+                        fill_value = _match_field_value(
+                            left_text, fill_map, normalized_map,
+                            field_synonyms, match_cache
+                        )
+                        if fill_value:
+                            matched_field = left_text
+                            break
+
+            if not fill_value and ri > 0:
+                for up_ri in range(ri - 1, -1, -1):
+                    above_text = tbl.rows[up_ri].cells[ci].text.strip()
+                    if above_text and not _is_empty_cell(above_text):
+                        fill_value = _match_field_value(
+                            above_text, fill_map, normalized_map,
+                            field_synonyms, match_cache
+                        )
+                        if fill_value:
+                            matched_field = above_text
+                            break
+
+            if fill_value:
+                # 格式保持：就地替换占位 run / 复制单元格内参考 run 格式 / 继承文档默认
+                _fill_cell_preserving_format(cell, fill_value, font_name, font_size_pt, font_color)
+                filled_count += 1
+                if matched_field:
+                    if matched_field in fill_map:
+                        used_field_names.add(matched_field)
+                    else:
+                        norm_matched = _normalize_field_name(matched_field)
+                        for fn in fill_map:
+                            if _normalize_field_name(fn) == norm_matched:
+                                used_field_names.add(fn)
                                 break
-
-                if not fill_value and ri > 0:
-                    for up_ri in range(ri - 1, -1, -1):
-                        above_text = table.rows[up_ri].cells[ci].text.strip()
-                        if above_text and not _is_empty_cell(above_text):
-                            fill_value = _match_field_value(
-                                above_text, fill_map, normalized_map,
-                                field_synonyms, match_cache
-                            )
-                            if fill_value:
-                                matched_field = above_text
-                                break
-
-                if fill_value:
-                    # 格式保持：就地替换占位 run / 复制单元格内参考 run 格式 / 继承文档默认
-                    _fill_cell_preserving_format(cell, fill_value, font_name, font_size_pt, font_color)
-                    filled_count += 1
-                    if matched_field:
-                        if matched_field in fill_map:
-                            used_field_names.add(matched_field)
                         else:
-                            norm_matched = _normalize_field_name(matched_field)
-                            for fn in fill_map:
-                                if _normalize_field_name(fn) == norm_matched:
-                                    used_field_names.add(fn)
-                                    break
-                            else:
-                                if norm_matched in field_synonyms:
-                                    standard = field_synonyms[norm_matched]
-                                    for fn in fill_map:
-                                        if _normalize_field_name(fn) == standard:
-                                            used_field_names.add(fn)
-                                            break
+                            if norm_matched in field_synonyms:
+                                standard = field_synonyms[norm_matched]
+                                for fn in fill_map:
+                                    if _normalize_field_name(fn) == standard:
+                                        used_field_names.add(fn)
+                                        break
 
     # ============ 填充段落 ============
-    all_field_names = []
-    for f in fill_data:
-        all_field_names.append(f['field_name'])
-        norm_fn = _normalize_field_name(f['field_name'])
-        if norm_fn != f['field_name']:
-            all_field_names.append(norm_fn)
-    field_filter_re = re.compile('|'.join(re.escape(fn) for fn in all_field_names)) if all_field_names else None
+    field_filter_re = _build_field_filter(fill_data, field_synonyms)
+    para_patterns = _build_para_patterns(fill_data, field_synonyms)
 
-    para_patterns = []
-    for f in fill_data:
-        fn = f['field_name']
-        val = f['value']
-        names_to_match = {fn}
-        norm_fn = _normalize_field_name(fn)
-        for syn_key, standard in field_synonyms.items():
-            if standard == norm_fn or _normalize_field_name(syn_key) == norm_fn:
-                names_to_match.add(syn_key)
-        for name in names_to_match:
-            p1 = re.compile(r'(' + re.escape(name) + r'[^：:]*?)[：: \t]+[_ \t]*')
-            spaced = r'[\s：:]*'.join(re.escape(c) for c in name)
-            p2 = re.compile(r'(' + spaced + r'[^：:]*?)[：: \t]+[_ \t]*')
-            para_patterns.append((fn, val, p1, p2))
-
-    for para in doc.paragraphs:
-        para_text = para.text.strip()
-        if not para_text:
-            continue
-        if field_filter_re and not field_filter_re.search(para_text):
-            continue
-        has_placeholder = (
-            '____' in para.text or '________' in para.text
-            or para.text.rstrip().endswith(('：', ':'))
-        )
-        if not has_placeholder:
-            continue
-
+    for para in _iter_story_paragraphs(doc):
         full_text = para.text
-        new_text = full_text
-        matched_fn = None
-        for fn, val, p1, p2 in para_patterns:
-            tmp = p1.sub(r'\1：' + str(val), new_text)
-            if tmp == new_text:
-                tmp = p2.sub(r'\1：' + str(val), new_text)
-            if tmp != new_text:
-                new_text = tmp
-                matched_fn = fn
-                break
+        if not full_text.strip():
+            continue
+        # 标签可能被空格拆开（"姓 名"），过滤时同时比对去空白文本
+        if not _para_matches_filter(full_text, field_filter_re):
+            continue
+        if not _has_placeholder(full_text):
+            continue
 
-        if new_text != full_text and matched_fn:
+        # 不 break：同一段落中的多个占位符一次性全部替换
+        new_text, matched_fields = _apply_para_replacements(full_text, para_patterns)
+        if matched_fields and new_text != full_text:
             # 格式保持：重建段落但保留原段落首个 run 的格式（无则继承文档默认）
             _fill_para_preserving_format(para, new_text)
-            filled_count += 1
-            used_field_names.add(matched_fn)
+            for fn, n in matched_fields:
+                filled_count += n
+                used_field_names.add(fn)
 
     unmatched = [fn for fn, val in fill_map.items() if fn not in used_field_names]
     pending = [fn for fn, val in fill_map.items() if val == "【待补充】"]
@@ -1119,6 +1413,12 @@ def register_auto_fill_tools(
             return json.dumps(info, ensure_ascii=False, indent=2)
 
         elif ext in ['.xlsx', '.xls']:
+            if ext == '.xls':
+                # openpyxl 只支持 OOXML 格式，解析 .xls 会抛 InvalidFileException
+                return _make_error_json(
+                    "UNSUPPORTED_FORMAT",
+                    "旧版 .xls 格式不受支持，请另存为 .xlsx 后再读取"
+                )
             try:
                 import openpyxl
             except ImportError:
@@ -1139,7 +1439,10 @@ def register_auto_fill_tools(
             return json.dumps(info, ensure_ascii=False, indent=2)
 
         else:
-            raise ValueError(f"不支持的文件格式: {ext}，请使用 .json/.txt/.docx/.xlsx")
+            return _make_error_json(
+                "UNSUPPORTED_FORMAT",
+                f"不支持的文件格式: {ext}，请使用 .json/.txt/.docx/.xlsx"
+            )
 
     # =====================================================================
     # 工具4: merge_info_sources
@@ -1285,6 +1588,7 @@ Returns:
     JSON，包含 output_filename、filled_count、total_fields、download_url 等。
     默认不返回 filled_base64，请使用 download_url 下载。
 """
+        upload_path = None
         try:
             # 检查文件大小
             size_err = _check_base64_size(file_base64)
@@ -1347,11 +1651,11 @@ Returns:
                     _fill_cell_preserving_format(target, val, font_name, font_size_pt, font_color)
                     filled_count += 1
 
-            # Step 4: 保存填好的文件
-            from datetime import datetime as dt
-            ts = dt.now().strftime("%Y%m%d%H%M")
-            out_filename = f"{os.path.splitext(safe_name)[0]}_已填写_{ts}.docx"
-            out_path = os.path.join(base_dir, "uploads", out_filename)
+            # Step 4: 保存填好的文件（秒级时间戳 + 冲突后缀）
+            out_path = _unique_output_path(
+                os.path.join(base_dir, "uploads"),
+                f"{os.path.splitext(safe_name)[0]}_已填写", ".docx")
+            out_filename = os.path.basename(out_path)
             doc.save(out_path)
 
             download_url = _make_download_url(out_path)
@@ -1377,6 +1681,8 @@ Returns:
 
         except Exception as e:
             return _make_error_json("FILL_ERROR", str(e))
+        finally:
+            _cleanup_temp_file(upload_path)
 
     # =====================================================================
     # 共享核心：_smart_fill_core — smart_fill_form / smart_fill_form_local 共用
@@ -1498,11 +1804,11 @@ Returns:
             doc, fill_data, FIELD_SYNONYMS, font_name, font_size_pt, font_color
         )
 
-        # 保存并返回
-        from datetime import datetime as dt
-        ts = dt.now().strftime("%Y%m%d%H%M")
-        out_filename = f"{os.path.splitext(filename)[0]}_已填写_{ts}.docx"
-        out_path = os.path.join(base_dir, "uploads", out_filename)
+        # 保存并返回（秒级时间戳 + 冲突后缀）
+        out_path = _unique_output_path(
+            os.path.join(base_dir, "uploads"),
+            f"{os.path.splitext(filename)[0]}_已填写", ".docx")
+        out_filename = os.path.basename(out_path)
         doc.save(out_path)
 
         download_url = _make_download_url(out_path)
@@ -1561,6 +1867,7 @@ Args:
 Returns:
     JSON，包含 download_url、filled_count、total_fields 等
 """
+        upload_path = None
         try:
             size_err = _check_base64_size(file_base64)
             if size_err:
@@ -1589,6 +1896,8 @@ Returns:
             )
         except Exception as e:
             return _make_error_json("SMART_FILL_ERROR", str(e))
+        finally:
+            _cleanup_temp_file(upload_path)
 
     # =====================================================================
     # 工具7c: smart_fill_form_local — 一站式智能填表（本地路径入口，无大小限制）
@@ -1662,101 +1971,91 @@ Returns:
         except ImportError:
             return "Error: 请安装 python-docx (pip install python-docx)"
 
-        safe_path = _resolve_read_path(docx_path)
+        try:
+            safe_path = _resolve_read_path(docx_path)
+        except (ValueError, OSError) as e:
+            return _make_error_json("FILE_NOT_FOUND", str(e))
         if not safe_path.lower().endswith('.docx'):
-            raise ValueError(f"parse_word_form 仅支持 .docx 文件，收到: {safe_path}")
+            return _make_error_json(
+                "INVALID_FILE", f"parse_word_form 仅支持 .docx 文件，收到: {safe_path}")
 
-        doc = Document(safe_path)
+        try:
+            doc = Document(safe_path)
+        except Exception as e:
+            return _make_error_json(
+                "INVALID_DOCX", f"无法解析 Word 文档（文件可能已损坏或不是 docx）: {e}")
         fields = []
 
-        # 提取段落中的字段
-        for i, para in enumerate(doc.paragraphs):
-            text = para.text.strip()
+        # 提取段落中的字段（正文 + 页眉页脚 + 文本框，支持同段多占位）
+        # 仅识别有明确占位信号的行（冒号/下划线/大段空白），不再把任意纯文本
+        # 段落当作字段名，避免标题（"人员登记表"）被误报为待填字段。
+        for i, para in enumerate(_iter_story_paragraphs(doc)):
+            raw_text = para.text
+            text = raw_text.strip()
             if not text:
                 continue
-
-            matched = False
-            # 模式1: "字段名：____" 或 "字段名："（结尾是冒号或下划线）
-            matches = re.findall(r'([^\n：:]+)[：: \t]+[_ \t]*$', text)
-            if matches:
-                for m in matches:
-                    fields.append({
-                        'type': 'paragraph',
-                        'field_name': m.strip(),
-                        'index': i,
-                        'text': text
-                    })
-                matched = True
-
-            # 模式2: "字段名    "（纯字段名+大量空格，无冒号）
-            if not matched and re.match(r'^[^\n：:]+\s{3,}$', text):
+            for name in _extract_para_field_names(raw_text):
                 fields.append({
                     'type': 'paragraph',
-                    'field_name': text.strip(),
+                    'field_name': name,
                     'index': i,
                     'text': text
                 })
-                matched = True
 
-            # 模式3: 纯字段名（无冒号、无下划线、无多余空格）
-            # 用于识别 "出生年月"、"政治面貌"、"联系电话" 等独立字段名段落
-            if not matched:
-                # 排除纯数字、纯英文、空行、已识别的标题等
-                if (
-                    len(text) >= 2
-                    and len(text) <= 20
-                    and not re.match(r'^\d+$', text)  # 排除纯数字
-                    and not re.match(r'^[a-zA-Z\s]+$', text)  # 排除纯英文
-                    and '。' not in text  # 排除句子
-                    and '，' not in text
-                    and '、' not in text
-                    and text not in ('个人简历', 'Personal Resume')  # 排除已知标题
-                    and not text.startswith(('一、', '二、', '三、', '四、', '五、', '六、', '七、'))  # 排除章节标题
-                ):
-                    fields.append({
-                        'type': 'paragraph',
-                        'field_name': text,
-                        'index': i,
-                        'text': text
-                    })
-
-        # 提取表格字段（支持合并单元格）
+        # 提取表格字段（支持合并单元格 + 嵌套表 + 标签下划线同格）
         # 注意：不按 _tc 去重，因为纵向合并的空值单元格在视觉上属于多行，
         # 每行有独立的左侧字段名（如 R0C1 对应"姓名"，R1C1 对应"出生年月"）
         for ti, table in enumerate(doc.tables):
-            for ri, row in enumerate(table.rows):
-                for ci, cell in enumerate(row.cells):
-                    text = cell.text.strip()
-                    if not _is_empty_cell(text):
-                        continue  # 非空单元格是字段名，跳过
+            for tbl, ri, ci, cell, has_nested, nested in _iter_table_cells(table):
+                if has_nested:
+                    continue  # 嵌套表容器格，字段由子表递归产出
+                text = cell.text.strip()
+                if not _is_empty_cell(text):
+                    # 非空但含内联占位（"姓名：____"）：按内联字段上报
+                    if _has_inline_placeholder(text):
+                        for name in _extract_para_field_names(cell.text):
+                            item = {
+                                'type': 'table_cell_inline',
+                                'field_name': name,
+                                'table_index': ti,
+                                'row_index': ri,
+                                'cell_index': ci,
+                            }
+                            if nested:
+                                item['nested_table'] = True
+                            fields.append(item)
+                    continue  # 其余非空单元格是字段名，跳过
 
-                    field_name = None
-                    # 优先检查左侧单元格
-                    if ci > 0:
-                        for left_ci in range(ci - 1, -1, -1):
-                            left_cell = row.cells[left_ci]
-                            left = left_cell.text.strip()
-                            if left and not _is_empty_cell(left):
-                                field_name = left
-                                break
+                field_name = None
+                # 优先检查左侧单元格
+                if ci > 0:
+                    for left_ci in range(ci - 1, -1, -1):
+                        left_cell = tbl.rows[ri].cells[left_ci]
+                        left = left_cell.text.strip()
+                        if left and not _is_empty_cell(left):
+                            field_name = left
+                            break
 
-                    # 其次检查上方单元格（用于纵向标题行的情况）
-                    if not field_name and ri > 0:
-                        for up_ri in range(ri - 1, -1, -1):
-                            above_cell = table.rows[up_ri].cells[ci]
-                            above = above_cell.text.strip()
-                            if above and not _is_empty_cell(above):
-                                field_name = above
-                                break
+                # 其次检查上方单元格（用于纵向标题行的情况）
+                if not field_name and ri > 0:
+                    for up_ri in range(ri - 1, -1, -1):
+                        above_cell = tbl.rows[up_ri].cells[ci]
+                        above = above_cell.text.strip()
+                        if above and not _is_empty_cell(above):
+                            field_name = above
+                            break
 
-                    if field_name:
-                        fields.append({
-                            'type': 'table_cell',
-                            'field_name': field_name,
-                            'table_index': ti,
-                            'row_index': ri,
-                            'cell_index': ci
-                        })
+                if field_name:
+                    item = {
+                        'type': 'table_cell',
+                        'field_name': field_name,
+                        'table_index': ti,
+                        'row_index': ri,
+                        'cell_index': ci
+                    }
+                    if nested:
+                        item['nested_table'] = True
+                    fields.append(item)
 
         # 输出结构化结果：字段列表 + 各表格逻辑网格 + 布局复杂度（供 LLM 坐标映射通道使用）
         result = {
@@ -1797,6 +2096,7 @@ Args:
 Returns:
     JSON，包含所有待填写字段列表（格式同 parse_word_form）
 """
+        upload_path = None
         try:
             # 检查文件大小
             size_err = _check_base64_size(file_base64)
@@ -1824,7 +2124,7 @@ Returns:
             # 去重但保留顺序
             seen = set()
             unique_fields = []
-            for f in fields:
+            for f in form_fields:
                 norm = _normalize_field_name(f)
                 if norm not in seen:
                     seen.add(norm)
@@ -1839,6 +2139,8 @@ Returns:
             return json.dumps(result, ensure_ascii=False, indent=2)
         except Exception as e:
             return _make_error_json("PARSE_ERROR", str(e))
+        finally:
+            _cleanup_temp_file(upload_path)
 
     # =====================================================================
     # 工具6: fill_word_form
@@ -1888,21 +2190,29 @@ Returns:
         except ImportError:
             return _make_error_json("DEPENDENCY_MISSING", "请安装 python-docx (pip install python-docx)")
 
-        safe_input = _resolve_read_path(docx_path)
+        try:
+            safe_input = _resolve_read_path(docx_path)
+        except (ValueError, OSError) as e:
+            return _make_error_json("FILE_NOT_FOUND", str(e))
         if not safe_input.lower().endswith('.docx'):
             return _make_error_json("INVALID_FILE", f"docx_path 必须是 .docx 文件，收到: {safe_input}")
 
-        # 自动在输出文件名中插入时间戳
-        from datetime import datetime
-        timestamp = datetime.now().strftime("%Y%m%d%H%M")
+        # 自动在输出文件名中插入秒级时间戳（同秒同名时追加短 uuid，避免静默覆盖）
         base, ext = os.path.splitext(output_file)
         if ext.lower() != '.docx':
             ext = '.docx'
-        output_file = f"{base}_{timestamp}{ext}"
+        target = _resolve_write_path(output_file)
+        abs_output = _unique_output_path(
+            os.path.dirname(target), os.path.splitext(os.path.basename(target))[0], ext)
 
-        abs_output = _resolve_write_path(output_file)
-
-        fill_data = json.loads(fill_data_json)
+        try:
+            fill_data = json.loads(fill_data_json)
+        except json.JSONDecodeError as e:
+            return _make_error_json(
+                "INVALID_ARGUMENT", f"fill_data_json 不是合法 JSON: {e}")
+        if not isinstance(fill_data, list):
+            return _make_error_json(
+                "INVALID_ARGUMENT", "fill_data_json 必须是数组，如 [{\"field_name\": \"姓名\", \"value\": \"张三\"}]")
         fill_map = {f['field_name']: f['value'] for f in fill_data}
 
         # =====================================================================
@@ -1915,26 +2225,10 @@ Returns:
             normalized_map[norm] = f['value']
             normalized_map[f['field_name']] = f['value']
 
-        # 预编译所有正则模式
+        # 预编译所有正则模式（与 _do_fill_docx 共用同一套构建逻辑）
         # 同时收集原始字段名和同义词，以便匹配表单中的各种变体（如"学历/学位"）
-        para_patterns = []
-        for f in fill_data:
-            fn = f['field_name']
-            val = f['value']
-            # 收集要匹配的所有名称：原始名 + 同义词
-            names_to_match = {fn}
-            norm_fn = _normalize_field_name(fn)
-            for syn_key, standard in FIELD_SYNONYMS.items():
-                if standard == norm_fn or _normalize_field_name(syn_key) == norm_fn:
-                    names_to_match.add(syn_key)
-
-            for name in names_to_match:
-                # 模式1: 匹配 "字段名...：____"（字段名后面可以有额外字符如"/学位"）
-                p1 = re.compile(r'(' + re.escape(name) + r'[^：:]*?)[：: \t]+[_ \t]*')
-                # 模式2: 宽松匹配 "姓    名：____"（允许字段名中间有空格）
-                spaced = r'[\s：:]*'.join(re.escape(c) for c in name)
-                p2 = re.compile(r'(' + spaced + r'[^：:]*?)[：: \t]+[_ \t]*')
-                para_patterns.append((name, val, p1, p2))
+        para_patterns = _build_para_patterns(fill_data, FIELD_SYNONYMS)
+        inline_patterns = _build_para_patterns(fill_data, FIELD_SYNONYMS, inline=True)
 
         # 缓存 _match_field 结果
         _match_cache = {}
@@ -1991,7 +2285,11 @@ Returns:
             _match_cache[cell_text] = None
             return None
 
-        doc = Document(safe_input)
+        try:
+            doc = Document(safe_input)
+        except Exception as e:
+            return _make_error_json(
+                "INVALID_DOCX", f"无法解析 Word 文档（文件可能已损坏或不是 docx）: {e}")
         filled_count = 0
         fill_details = []
         unmatched_fields = []
@@ -2042,123 +2340,112 @@ Returns:
                 run.font.color.rgb = RGBColor(0x00, 0x00, 0x00)
 
         # =====================================================================
-        # 填充段落：预编译正则 + 联合过滤
+        # 填充段落：正文 + 页眉页脚 + 文本框（与 _do_fill_docx 一致）
         # =====================================================================
-        # 构建联合快速过滤正则："字段A|字段B|字段C"
-        all_field_names = [fn for fn, _, _, _ in para_patterns]
-        # 同时包含原始字段名和去空格后的变体
-        filter_parts = []
-        for fn in all_field_names:
-            filter_parts.append(re.escape(fn))
-            norm_fn = _normalize_field_name(fn)
-            if norm_fn != fn:
-                filter_parts.append(re.escape(norm_fn))
-        field_filter_re = re.compile('|'.join(filter_parts)) if filter_parts else None
+        field_filter_re = _build_field_filter(fill_data, FIELD_SYNONYMS)
 
-        for para in doc.paragraphs:
-            para_text = para.text.strip()
-            if not para_text:
-                continue
-            # 快速过滤：联合正则一次匹配所有字段名
-            if field_filter_re and not field_filter_re.search(para_text):
-                continue
-            # 必须有占位符才处理
-            has_placeholder = (
-                '____' in para.text
-                or '________' in para.text
-                or para.text.rstrip().endswith(('：', ':'))
-            )
-            if not has_placeholder:
-                continue
-
+        for para in _iter_story_paragraphs(doc):
             full_text = para.text
-            new_text = full_text
-            matched_fn = None
-            matched_val = None
-            for fn, val, p1, p2 in para_patterns:
-                tmp = p1.sub(r'\1：' + val, new_text)
-                if tmp == new_text:
-                    tmp = p2.sub(r'\1：' + val, new_text)
-                if tmp != new_text:
-                    new_text = tmp
-                    matched_fn = fn
-                    matched_val = val
-                    break  # 一个段落只匹配一个字段
+            if not full_text.strip():
+                continue
+            # 快速过滤：标签可能被空格拆开（"姓 名"），同时比对去空白文本
+            if not _para_matches_filter(full_text, field_filter_re):
+                continue
+            # 必须有占位符才处理（含全角下划线 ＿）
+            if not _has_placeholder(full_text):
+                continue
 
-            if new_text != full_text and matched_fn:
-                # 格式保持：重建段落但保留原段落首个 run 的格式（无则继承文档默认）
-                _fill_para_preserving_format(para, new_text)
-                filled_count += 1
-                used_field_names.add(matched_fn)
+            # 不 break：同一段落中的多个占位符一次性全部替换
+            new_text, matched_fields = _apply_para_replacements(full_text, para_patterns)
+            if new_text == full_text or not matched_fields:
+                continue
+            # 格式保持：重建段落但保留原段落首个 run 的格式（无则继承文档默认）
+            _fill_para_preserving_format(para, new_text)
+            for fn, n in matched_fields:
+                filled_count += n
+                used_field_names.add(fn)
                 fill_details.append({
-                    "field": matched_fn, "value": matched_val,
+                    "field": fn, "value": fill_map.get(fn, ""),
                     "location": "paragraph", "status": "filled"
                 })
 
         # =====================================================================
-        # 填充表格：支持合并单元格 + 缓存匹配
+        # 填充表格：支持合并单元格 + 嵌套表 + 标签下划线同格 + 缓存匹配
         # 注意：不按 _tc 去重，纵向合并的空值单元格每行有独立的左侧字段名
         # =====================================================================
         for table in doc.tables:
-            for ri, row in enumerate(table.rows):
-                for ci, cell in enumerate(row.cells):
-                    cell_text = cell.text.strip()
-                    if not _is_empty_cell(cell_text):
-                        continue  # 非空单元格是字段名，跳过
+            for tbl, ri, ci, cell, has_nested, _nested in _iter_table_cells(table):
+                if has_nested:
+                    continue  # 嵌套表容器格由递归子表处理
+                cell_text = cell.text.strip()
+                if not _is_empty_cell(cell_text):
+                    # 非空单元格：仅处理内联占位（如「姓名：____ 电话：＿＿＿＿」）
+                    if _has_inline_placeholder(cell_text):
+                        n, hits = _fill_placeholder_paragraphs(cell.paragraphs, inline_patterns)
+                        if n:
+                            filled_count += n
+                            used_field_names.update(fn for fn, _cnt in hits)
+                            for fn, cnt in hits:
+                                fill_details.append({
+                                    "field": fn, "value": fill_map.get(fn, ""),
+                                    "location": f"table[row={ri},col={ci}]",
+                                    "status": "filled", "count": cnt
+                                })
+                    continue
 
-                    fill_value = None
-                    matched_field = None
+                fill_value = None
+                matched_field = None
 
-                    # 方向1: 左侧单元格
-                    if ci > 0:
-                        for left_ci in range(ci - 1, -1, -1):
-                            left_cell = row.cells[left_ci]
-                            left_text = left_cell.text.strip()
-                            if left_text and not _is_empty_cell(left_text):
-                                fill_value = _match_field_cached(left_text)
-                                if fill_value:
-                                    matched_field = left_text
+                # 方向1: 左侧单元格
+                if ci > 0:
+                    for left_ci in range(ci - 1, -1, -1):
+                        left_cell = tbl.rows[ri].cells[left_ci]
+                        left_text = left_cell.text.strip()
+                        if left_text and not _is_empty_cell(left_text):
+                            fill_value = _match_field_cached(left_text)
+                            if fill_value:
+                                matched_field = left_text
+                                break
+
+                # 方向2: 上方单元格
+                if not fill_value and ri > 0:
+                    for up_ri in range(ri - 1, -1, -1):
+                        above_cell = tbl.rows[up_ri].cells[ci]
+                        above_text = above_cell.text.strip()
+                        if above_text and not _is_empty_cell(above_text):
+                            fill_value = _match_field_cached(above_text)
+                            if fill_value:
+                                matched_field = above_text
+                                break
+
+                if fill_value:
+                    # 格式保持：就地替换占位 run / 复制单元格内参考 run 格式 / 继承文档默认
+                    _fill_cell_preserving_format(cell, fill_value, font_name, font_size_pt, font_color)
+                    filled_count += 1
+                    # 通过 matched_field 反查原始 field_name
+                    if matched_field:
+                        # 先精确匹配
+                        if matched_field in fill_map:
+                            used_field_names.add(matched_field)
+                        else:
+                            # 规范化匹配
+                            norm_matched = _normalize_field_name(matched_field)
+                            for fn in fill_map:
+                                if _normalize_field_name(fn) == norm_matched:
+                                    used_field_names.add(fn)
                                     break
-
-                    # 方向2: 上方单元格
-                    if not fill_value and ri > 0:
-                        for up_ri in range(ri - 1, -1, -1):
-                            above_cell = table.rows[up_ri].cells[ci]
-                            above_text = above_cell.text.strip()
-                            if above_text and not _is_empty_cell(above_text):
-                                fill_value = _match_field_cached(above_text)
-                                if fill_value:
-                                    matched_field = above_text
-                                    break
-
-                    if fill_value:
-                        # 格式保持：就地替换占位 run / 复制单元格内参考 run 格式 / 继承文档默认
-                        _fill_cell_preserving_format(cell, fill_value, font_name, font_size_pt, font_color)
-                        filled_count += 1
-                        # 通过 matched_field 反查原始 field_name
-                        if matched_field:
-                            # 先精确匹配
-                            if matched_field in fill_map:
-                                used_field_names.add(matched_field)
                             else:
-                                # 规范化匹配
-                                norm_matched = _normalize_field_name(matched_field)
-                                for fn in fill_map:
-                                    if _normalize_field_name(fn) == norm_matched:
-                                        used_field_names.add(fn)
-                                        break
-                                else:
-                                    # 同义词映射匹配
-                                    if norm_matched in FIELD_SYNONYMS:
-                                        standard = FIELD_SYNONYMS[norm_matched]
-                                        for fn in fill_map:
-                                            if _normalize_field_name(fn) == standard:
-                                                used_field_names.add(fn)
-                                                break
-                        fill_details.append({
-                            "field": matched_field, "value": fill_value,
-                            "location": f"table[row={ri},col={ci}]", "status": "filled"
-                        })
+                                # 同义词映射匹配
+                                if norm_matched in FIELD_SYNONYMS:
+                                    standard = FIELD_SYNONYMS[norm_matched]
+                                    for fn in fill_map:
+                                        if _normalize_field_name(fn) == standard:
+                                            used_field_names.add(fn)
+                                            break
+                    fill_details.append({
+                        "field": matched_field, "value": fill_value,
+                        "location": f"table[row={ri},col={ci}]", "status": "filled"
+                    })
 
         # =====================================================================
         # 坐标精确填充（fill_cells_json）——异形表主通道
